@@ -564,3 +564,36 @@ ON CONFLICT (slug) DO UPDATE SET
     content = EXCLUDED.content,
     category = EXCLUDED.category,
     status = EXCLUDED.status;
+
+-- Admin User & Profile Seed (email: admin@smkn1digital.sch.id | pass: admin12345)
+DO $$
+DECLARE
+    v_user_id UUID;
+BEGIN
+    SELECT id INTO v_user_id FROM auth.users WHERE email = 'admin@smkn1digital.sch.id';
+    
+    IF v_user_id IS NULL THEN
+        v_user_id := gen_random_uuid();
+        INSERT INTO auth.users (
+            instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
+            raw_app_meta_data, raw_user_meta_data, created_at, updated_at, confirmation_token, recovery_token
+        ) VALUES (
+            '00000000-0000-0000-0000-000000000000', v_user_id, 'authenticated', 'authenticated',
+            'admin@smkn1digital.sch.id', crypt('admin12345', gen_salt('bf')), now(),
+            '{"provider":"email","providers":["email"]}', '{"full_name":"Administrator SPMB","role":"super_admin"}',
+            now(), now(), '', ''
+        );
+    ELSE
+        UPDATE auth.users
+        SET 
+            encrypted_password = crypt('admin12345', gen_salt('bf')),
+            email_confirmed_at = COALESCE(email_confirmed_at, now()),
+            raw_user_meta_data = '{"full_name":"Administrator SPMB","role":"super_admin"}'::jsonb,
+            updated_at = now()
+        WHERE id = v_user_id;
+    END IF;
+
+    INSERT INTO public.admin_profiles (user_id, full_name, role)
+    VALUES (v_user_id, 'Administrator SPMB', 'super_admin')
+    ON CONFLICT (user_id) DO UPDATE SET role = 'super_admin';
+END $$;

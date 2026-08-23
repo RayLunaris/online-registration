@@ -213,10 +213,69 @@ export const StatusCheckPage: React.FC = () => {
                   </p>
                 </div>
                 <div className="flex flex-col items-start sm:items-end gap-2 shrink-0">
-                  <span className="text-xs text-slate-400">Status Pendaftaran:</span>
+                  <span className="text-xs text-slate-400">Status Kelulusan:</span>
                   {getStatusBadge(student.status)}
                 </div>
               </div>
+
+              {/* Diterima / Accepted Special Callout Banner */}
+              {student.status === 'Diterima' && (
+                <div className="bg-emerald-900 border-y border-emerald-700 p-5 sm:p-6 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-emerald-800 text-emerald-200 text-xs font-bold uppercase tracking-wider">
+                      <Sparkles className="h-3.5 w-3.5" />
+                      <span>Selamat! Anda Dinyatakan Lulus</span>
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-black text-white">
+                      Diterima di: {student.major_choices?.find((c) => c.choice_order === 1)?.major?.name || 'Program Keahlian Pilihan Utama'}
+                    </h3>
+                    <p className="text-xs text-emerald-200 leading-relaxed max-w-2xl">
+                      Segera lakukan daftar ulang fisik di Sekretariat SPMB SMK Negeri 1 Digital Teknologi dengan membawa dokumen persyaratan asli dan Kartu Peserta Resmi.
+                    </p>
+                  </div>
+                  <Link to={`/kartu-peserta/${student.registration_number}`}>
+                    <Button className="bg-white text-emerald-900 hover:bg-emerald-50 text-xs font-bold h-11 px-5 gap-2 shadow-lg shrink-0">
+                      <Printer className="h-4 w-4 text-emerald-800" />
+                      <span>Cetak Kartu Peserta</span>
+                    </Button>
+                  </Link>
+                </div>
+              )}
+              {/* Cadangan Special Callout Banner */}
+              {student.status === 'Cadangan' && (
+                <div className="bg-purple-950 border-y border-purple-800 p-5 sm:p-6 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-purple-900 text-purple-200 text-xs font-bold uppercase tracking-wider">
+                      <Clock className="h-3.5 w-3.5" />
+                      <span>Status: Cadangan (Waiting List)</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-white">
+                      Anda berada dalam kuota cadangan untuk: {student.major_choices?.find((c) => c.choice_order === 1)?.major?.name || 'Program Keahlian'}
+                    </h3>
+                    <p className="text-xs text-purple-200 leading-relaxed max-w-2xl">
+                      Jika terdapat calon siswa utama yang tidak melakukan daftar ulang fisik hingga batas waktu, posisi akan diisi oleh peserta cadangan berdasarkan urutan ranking.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Tidak Diterima Special Callout Banner */}
+              {student.status === 'Tidak Diterima' && (
+                <div className="bg-red-950 border-y border-red-800 p-5 sm:p-6 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-red-900 text-red-200 text-xs font-bold uppercase tracking-wider">
+                      <XCircle className="h-3.5 w-3.5" />
+                      <span>Belum Lolos Seleksi Kuota</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-white">
+                      Mohon maaf, Anda belum memenuhi batas kuota penerimaan SPMB tahun ini.
+                    </h3>
+                    <p className="text-xs text-red-200 leading-relaxed max-w-2xl">
+                      Terima kasih atas partisipasi dan antusiasme Anda. Tetap semangat dalam meraih cita-cita dan mengejar masa depan pendidikan vokasi terbaik!
+                    </p>
+                  </div>
+                </div>
+              )}
 
               {/* Visual Progress Stepper */}
               <div className="bg-slate-800/90 px-6 py-5 border-t border-slate-700 print:hidden">
@@ -367,13 +426,14 @@ export const StatusCheckPage: React.FC = () => {
 
                     {/* Print / Action Buttons */}
                     <div className="pt-2 print:hidden flex flex-col sm:flex-row gap-2">
-                      <Button
-                        onClick={() => window.print()}
-                        className="flex-1 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold h-10 gap-2 shadow-sm"
-                      >
-                        <Printer className="h-4 w-4" />
-                        Cetak Bukti Pendaftaran (PDF)
-                      </Button>
+                      <Link to={`/kartu-peserta/${student.registration_number}`} className="flex-1">
+                        <Button
+                          className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold h-10 gap-2 shadow-sm"
+                        >
+                          <Printer className="h-4 w-4" />
+                          Kartu Peserta Resmi (PDF & QR)
+                        </Button>
+                      </Link>
                       <Button
                         variant="outline"
                         onClick={() => {

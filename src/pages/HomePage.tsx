@@ -28,6 +28,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { FAQSection } from '@/components/common/FAQSection';
+import { useLanguage } from '@/context/LanguageContext';
 import { schoolService } from '@/services/schoolService';
 import { announcementService } from '@/services/announcementService';
 import { School, Major, Announcement } from '@/types/spmb';
@@ -83,6 +84,7 @@ export const HomePage: React.FC = () => {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [quickRegNumber, setQuickRegNumber] = useState('');
   const [selectedMajor, setSelectedMajor] = useState<Major | null>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const loadData = async () => {
@@ -118,7 +120,7 @@ export const HomePage: React.FC = () => {
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50/80 px-3.5 py-1 text-xs font-semibold text-blue-700 shadow-sm">
               <Sparkles className="h-3.5 w-3.5 text-blue-600" />
-              <span>SPMB Tahun Pelajaran {school?.academic_year || '2026/2027'} Telah Dibuka</span>
+              <span>{t('hero.badge')} ({school?.academic_year || '2026/2027'})</span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
@@ -126,14 +128,14 @@ export const HomePage: React.FC = () => {
             </h1>
 
             <p className="text-lg sm:text-xl text-slate-600 leading-relaxed">
-              {school?.hero_tagline || 'Membangun Generasi Vokasi Berkarakter, Cerdas, dan Siap Kerja Global.'}
+              {school?.hero_tagline || t('hero.desc')}
             </p>
 
             {/* CTAs */}
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
               <Link to="/daftar" className="w-full sm:w-auto">
                 <Button size="lg" className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold text-base px-8 h-12 shadow-md shadow-blue-600/25 gap-2">
-                  Daftar Sekarang
+                  {t('hero.btnRegister')}
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
@@ -141,7 +143,7 @@ export const HomePage: React.FC = () => {
               <Link to="/cek-status" className="w-full sm:w-auto">
                 <Button size="lg" variant="outline" className="w-full sm:w-auto font-medium text-base px-6 h-12 gap-2 border-slate-300 hover:bg-slate-100">
                   <Search className="h-4 w-4 text-slate-500" />
-                  Cek Status Pendaftaran
+                  {t('hero.btnCheck')}
                 </Button>
               </Link>
             </div>
@@ -150,19 +152,19 @@ export const HomePage: React.FC = () => {
             <div className="pt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
               <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-sm">
                 <div className="text-2xl font-bold text-blue-600">{school?.target_students || '400'}</div>
-                <div className="text-xs text-slate-500 font-medium">Total Kuota Siswa</div>
+                <div className="text-xs text-slate-500 font-medium">{t('hero.statQuota')}</div>
               </div>
               <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-sm">
                 <div className="text-2xl font-bold text-indigo-600">{majors.length || 4}</div>
-                <div className="text-xs text-slate-500 font-medium">Jurusan Unggulan</div>
+                <div className="text-xs text-slate-500 font-medium">{t('hero.statMajors')}</div>
               </div>
               <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-sm">
                 <div className="text-2xl font-bold text-emerald-600">100%</div>
-                <div className="text-xs text-slate-500 font-medium">Pendaftaran Online</div>
+                <div className="text-xs text-slate-500 font-medium">Online</div>
               </div>
               <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-sm">
                 <div className="text-2xl font-bold text-purple-600">30+</div>
-                <div className="text-xs text-slate-500 font-medium">Mitra Industri</div>
+                <div className="text-xs text-slate-500 font-medium">{t('hero.statPartners')}</div>
               </div>
             </div>
           </div>
