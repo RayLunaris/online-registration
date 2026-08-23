@@ -65,8 +65,18 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <a href="#syarat" className="hover:text-white transition-colors">
+                <Link to="/pengumuman" className="hover:text-white transition-colors">
+                  Berita & Pengumuman Resmi
+                </Link>
+              </li>
+              <li>
+                <a href="/#syarat" className="hover:text-white transition-colors">
                   Persyaratan & Dokumen
+                </a>
+              </li>
+              <li>
+                <a href="/#faq" className="hover:text-white transition-colors">
+                  Tanya Jawab (FAQ)
                 </a>
               </li>
               <li>

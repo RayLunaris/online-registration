@@ -61,6 +61,48 @@ export const announcementService = {
     return data as Announcement[];
   },
 
+  async getAllAnnouncements(category?: string, searchQuery?: string): Promise<Announcement[]> {
+    if (!isSupabaseConfigured()) {
+      let filtered = DEFAULT_ANNOUNCEMENTS;
+      if (category && category !== 'Semua') {
+        filtered = filtered.filter(a => a.category.toLowerCase() === category.toLowerCase());
+      }
+      if (searchQuery && searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        filtered = filtered.filter(a => a.title.toLowerCase().includes(q) || a.content.toLowerCase().includes(q));
+      }
+      return filtered;
+    }
+
+    let query = supabase
+      .from('announcements')
+      .select('*')
+      .eq('status', 'Published')
+      .order('published_at', { ascending: false });
+
+    if (category && category !== 'Semua') {
+      query = query.eq('category', category);
+    }
+
+    if (searchQuery && searchQuery.trim()) {
+      query = query.ilike('title', `%${searchQuery.trim()}%`);
+    }
+
+    const { data, error } = await query;
+    if (error || !data) {
+      let filtered = DEFAULT_ANNOUNCEMENTS;
+      if (category && category !== 'Semua') {
+        filtered = filtered.filter(a => a.category.toLowerCase() === category.toLowerCase());
+      }
+      if (searchQuery && searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        filtered = filtered.filter(a => a.title.toLowerCase().includes(q) || a.content.toLowerCase().includes(q));
+      }
+      return filtered;
+    }
+    return data as Announcement[];
+  },
+
   async getAnnouncementBySlug(slug: string): Promise<Announcement | null> {
     if (!isSupabaseConfigured()) {
       return DEFAULT_ANNOUNCEMENTS.find((a) => a.slug === slug) || null;
@@ -76,4 +118,10 @@ export const announcementService = {
     }
     return data as Announcement;
   },
+
+  async getRelatedAnnouncements(currentSlug: string, limit = 3): Promise<Announcement[]> {
+    const all = await this.getPublishedAnnouncements(10);
+    return all.filter(a => a.slug !== currentSlug).slice(0, limit);
+  }
 };
+

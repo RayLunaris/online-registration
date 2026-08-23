@@ -14,13 +14,16 @@ export const Navbar: React.FC = () => {
   const navLinks = [
     { name: 'Beranda', path: '/' },
     { name: 'Jurusan', path: '/#jurusan' },
+    { name: 'Syarat', path: '/#syarat' },
     { name: 'Alur Pendaftaran', path: '/#alur' },
+    { name: 'Pengumuman', path: '/pengumuman' },
     { name: 'Cek Status', path: '/cek-status' },
-    { name: 'Pengumuman', path: '/#pengumuman' },
+    { name: 'FAQ', path: '/#faq' },
   ];
 
   const isActive = (path: string) => {
     if (path === '/') return location.pathname === '/';
+    if (path.startsWith('/#')) return false;
     return location.pathname.startsWith(path);
   };
 
