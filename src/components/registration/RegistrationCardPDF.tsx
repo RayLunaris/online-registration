@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import JsBarcode from 'jsbarcode';
-import { GraduationCap, User, CheckCircle2, QrCode as QrIcon } from 'lucide-react';
+import { GraduationCap, User, QrCode as QrIcon } from 'lucide-react';
 import { StudentCompleteDetail, RegistrationFormData, School, Major } from '@/types/spmb';
 import { formatDate, formatScore } from '@/lib/utils';
 
@@ -268,7 +268,7 @@ export const RegistrationCardPDF: React.FC<Props> = ({
                 </tr>
                 <tr className="border-b border-slate-100">
                   <td className="py-1 text-slate-500 font-medium">Nama Orang Tua</td>
-                  <td className="py-1 text-slate-800">Ayah: {fatherName} | Ibu: {motherName}</td>
+                  <td className="py-1 text-slate-800">Ayah: {fatherName} | Ibu: {motherName} {parentPhone !== '-' ? `(${parentPhone})` : ''}</td>
                 </tr>
                 <tr>
                   <td className="py-1 text-slate-500 font-medium">Alamat Domisili</td>

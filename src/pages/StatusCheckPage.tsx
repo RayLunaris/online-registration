@@ -11,11 +11,7 @@ import {
   Award,
   GraduationCap,
   BookOpen,
-  FileCheck,
   User,
-  Phone,
-  Mail,
-  MapPin,
   Sparkles,
   School as SchoolIcon,
   RefreshCw

@@ -8,11 +8,9 @@ import {
   Check, 
   Search, 
   AlertCircle, 
-  GraduationCap, 
   RefreshCw 
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { RegistrationCardPDF } from '@/components/registration/RegistrationCardPDF';
 import { exportElementToPdf } from '@/lib/pdfGenerator';
 import { studentService } from '@/services/studentService';

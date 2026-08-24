@@ -1,19 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  Award, 
-  Play, 
   CheckCircle2, 
-  Download, 
   RefreshCw, 
-  GraduationCap, 
-  Clock, 
-  XCircle, 
-  Users, 
   Send, 
   FileSpreadsheet,
-  AlertCircle,
-  Sparkles,
   Search
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -27,9 +18,8 @@ import {
   MajorSelectionGroup, 
   RankedCandidate 
 } from '@/services/selectionService';
-import { exportRecapReportToExcel, exportStudentsToExcel } from '@/lib/exportUtils';
-import { adminService } from '@/services/adminService';
-import { Major, StudentStatus } from '@/types/spmb';
+import { exportRecapReportToExcel } from '@/lib/exportUtils';
+import { StudentStatus } from '@/types/spmb';
 import { formatScore } from '@/lib/utils';
 
 export const AdminSelectionPage: React.FC = () => {
@@ -177,7 +167,6 @@ export const AdminSelectionPage: React.FC = () => {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {groups.map((grp) => {
           const isSelected = selectedMajorId === grp.major.id;
-          const isFull = grp.acceptedCount >= grp.quota;
 
           return (
             <div
@@ -259,7 +248,7 @@ export const AdminSelectionPage: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/60 font-medium">
-                    {filteredCandidates.map((cand, idx) => {
+                    {filteredCandidates.map((cand) => {
                       const candidateGlobalIndex = allCandidates.findIndex(
                         (c) => c.student.id === cand.student.id
                       );

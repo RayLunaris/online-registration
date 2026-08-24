@@ -21,7 +21,7 @@ import {
   Image as ImageIcon
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -34,7 +34,7 @@ import {
   SourceSchool, 
   RegistrationFormData, 
   SUBJECT_LIST, 
-  AchievementLevel, 
+  AchievementLevel,
   ACHIEVEMENT_POINTS 
 } from '@/types/spmb';
 import { 
@@ -42,8 +42,7 @@ import {
   parentDataSchema, 
   majorChoiceSchema, 
   reportScoresSchema, 
-  documentsSchema, 
-  achievementItemSchema 
+  documentsSchema 
 } from '@/schemas/registrationSchema';
 import { RegistrationSuccessCard } from '@/components/registration/RegistrationSuccessCard';
 import { formatScore } from '@/lib/utils';
@@ -369,7 +368,6 @@ export const RegistrationPage: React.FC = () => {
             {WIZARD_STEPS.map((step) => {
               const isCurrent = currentStep === step.id;
               const isCompleted = currentStep > step.id;
-              const StepIcon = step.icon;
 
               return (
                 <button

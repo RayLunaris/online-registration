@@ -6,9 +6,7 @@ import {
   Share2, 
   Check, 
   BookOpen, 
-  Sparkles, 
   ArrowRight,
-  Clock,
   ChevronRight
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';

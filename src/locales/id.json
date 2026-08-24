@@ -1,0 +1,52 @@
+{
+  "nav": {
+    "home": "Beranda",
+    "majors": "Jurusan",
+    "requirements": "Syarat",
+    "flow": "Alur",
+    "announcements": "Pengumuman",
+    "checkStatus": "Cek Status",
+    "faq": "Tanya Jawab (FAQ)",
+    "register": "Daftar Sekarang",
+    "adminPortal": "Portal Admin"
+  },
+  "hero": {
+    "badge": "Penerimaan Peserta Didik Baru 2026/2027",
+    "title": "Wujudkan Masa Depan Vokasi Unggul & Siap Kerja Global",
+    "desc": "Pendaftaran online resmi SMK Negeri 1 Digital Teknologi. Dapatkan pendidikan kejuruan berkualitas berstandar industri internasional.",
+    "btnRegister": "Daftar SPMB Online",
+    "btnCheck": "Cek Status Pendaftaran",
+    "statQuota": "Total Kuota Siswa",
+    "statMajors": "Program Keahlian",
+    "statPartners": "Mitra Industri"
+  },
+  "sections": {
+    "majorsTitle": "Program Keahlian Unggulan",
+    "majorsDesc": "Pilih jurusan keahlian sesuai dengan minat dan bakat Anda",
+    "flowTitle": "Alur Pendaftaran SPMB",
+    "flowDesc": "4 langkah mudah pendaftaran siswa baru secara daring",
+    "reqTitle": "Syarat & Ketentuan Pendaftaran",
+    "faqTitle": "Pertanyaan yang Sering Diajukan (FAQ)",
+    "newsTitle": "Berita & Pengumuman Terbaru"
+  },
+  "status": {
+    "title": "Cek Status Pendaftaran",
+    "desc": "Masukkan nomor registrasi pendaftaran (contoh: REG-2026-00001)",
+    "btnSearch": "Cari Data Pendaftaran",
+    "cardTitle": "Status Kelulusan & Seleksi"
+  },
+  "registration": {
+    "title": "Formulir Pendaftaran Siswa Baru",
+    "step1": "Data Pribadi & Orang Tua",
+    "step2": "Asal Sekolah & Pilihan Jurusan",
+    "step3": "Nilai Rapor 5 Semester",
+    "step4": "Prestasi & Upload Berkas",
+    "step5": "Konfirmasi & Submit"
+  },
+  "footer": {
+    "about": "Sekolah Menengah Kejuruan Pusat Keunggulan berfokus pada teknologi digital dan industri 4.0.",
+    "quickLinks": "Tautan Cepat",
+    "contact": "Kontak Sekretariat",
+    "rights": "Hak Cipta Dilindungi."
+  }
+}

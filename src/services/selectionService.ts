@@ -2,9 +2,7 @@ import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { 
   StudentCompleteDetail, 
   Major, 
-  SelectionResult, 
-  StudentStatus, 
-  ACHIEVEMENT_POINTS 
+  StudentStatus 
 } from '@/types/spmb';
 import { adminService } from './adminService';
 

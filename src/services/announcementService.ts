@@ -81,7 +81,7 @@ export const announcementService = {
       .order('published_at', { ascending: false });
 
     if (category && category !== 'Semua') {
-      query = query.eq('category', category);
+      query = query.eq('category', category as any);
     }
 
     if (searchQuery && searchQuery.trim()) {

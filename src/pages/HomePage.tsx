@@ -4,87 +4,129 @@ import {
   ArrowRight, 
   CheckCircle2, 
   Code, 
-  Network, 
+  Server, 
   Palette, 
   Calculator, 
-  FileText, 
   Calendar, 
-  Search,
+  GraduationCap, 
+  Check, 
   Sparkles,
-  Award,
-  Briefcase,
-  Layers,
-  ShieldCheck,
-  Building2,
-  Users,
-  CheckCircle,
-  HelpCircle,
-  Clock,
-  BookOpen
+  Search,
+  Award
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Dialog } from '@/components/ui/dialog';
 import { FAQSection } from '@/components/common/FAQSection';
-import { useLanguage } from '@/context/LanguageContext';
 import { schoolService } from '@/services/schoolService';
 import { announcementService } from '@/services/announcementService';
 import { School, Major, Announcement } from '@/types/spmb';
 import { formatDate } from '@/lib/utils';
 
-// Detailed info for major popup modal
-const MAJOR_DETAILS: Record<string, { competencies: string[]; careers: string[]; facilities: string }> = {
+// Program Keahlian Real Content
+const MAJOR_INFO: Record<string, {
+  icon: React.ElementType;
+  accentBg: string;
+  accentText: string;
+  badgeBg: string;
+  shortDesc: string;
+  focusStudy: string[];
+  careerProspects: string[];
+  facilities: string;
+  partnerIndustries: string[];
+}> = {
   RPL: {
-    competencies: [
-      'Pemrograman Web Frontend & Backend (React, Node.js, PHP/Laravel)',
-      'Pengembangan Aplikasi Mobile (Flutter & Android)',
-      'Basis Data Relasional & Cloud (PostgreSQL, Supabase, Firebase)',
-      'Dasar AI & Machine Learning'
-    ],
-    careers: ['Junior Web Developer', 'Mobile App Developer', 'Frontend Engineer', 'Database Administrator'],
-    facilities: 'Lab Software Engineering dengan iMac & PC Spesifikasi Tinggi, Koneksi Fiber Optik Dedicated.'
+    icon: Code,
+    accentBg: 'bg-teal-600',
+    accentText: 'text-teal-700',
+    badgeBg: 'bg-teal-50 border-teal-200 text-teal-800',
+    shortDesc: 'Mempelajari rekayasa perangkat lunak modern: pengembangan web, aplikasi mobile, cloud database, dan integrasi API industri.',
+    focusStudy: ['Web Development (React, Next.js, Node.js)', 'Mobile Apps (Flutter, Kotlin)', 'Cloud Backend & SQL Database', 'Dasar AI & Machine Learning'],
+    careerProspects: ['Junior Web Developer', 'Mobile Application Developer', 'Frontend Engineer', 'Junior Database Administrator'],
+    facilities: 'Laboratorium Rekayasa Perangkat Lunak dengan 40 unit PC Intel Core i7, Fiber Optic Dedicated 1 Gbps, dan server staging lokal.',
+    partnerIndustries: ['PT Telkom Indonesia', 'Gojek Tech Academy', 'Agate Studio', 'Midtrans'],
   },
   TKJ: {
-    competencies: [
-      'Administrasi Server Linux & Windows Server',
-      'Manajemen Jaringan MikroTik & Cisco (Routing, Switching, Firewall)',
-      'Keamanan Siber (Cybersecurity Essentials)',
-      'Cloud Architecture & Virtualization'
-    ],
-    careers: ['Network Engineer', 'System Administrator', 'Cloud Technician', 'Cybersecurity Analyst Junior'],
-    facilities: 'Lab Jaringan Komputer dengan Cisco Rack Server, Router MikroTik CCR, Fiber Optic Splicer.'
+    icon: Server,
+    accentBg: 'bg-cyan-700',
+    accentText: 'text-cyan-800',
+    badgeBg: 'bg-cyan-50 border-cyan-200 text-cyan-800',
+    shortDesc: 'Fokus pada infrastruktur jaringan komputer, instalasi fiber optic, administrasi server Linux/Windows, cloud computing, dan cybersecurity.',
+    focusStudy: ['Routing & Switching (Cisco & MikroTik)', 'Administrasi Server Linux Enterprise', 'Keamanan Jaringan & Firewall', 'Fiber Optic Splicing & OTDR'],
+    careerProspects: ['Network Technician / Administrator', 'Junior System Administrator', 'IT Support Specialist', 'Fiber Optic Engineer'],
+    facilities: 'Laboratorium Jaringan Komputer dilengkapi Cisco Rack Router, MikroTik Cloud Router, Server Rack 42U, dan Fusion Splicer.',
+    partnerIndustries: ['PT Telkom Akses', 'Biznet Networks', 'Lintasarta', 'Indosat Ooredoo Hutchison'],
   },
   DKV: {
-    competencies: [
-      'Desain Grafis, Branding & Identitas Visual (Adobe Photoshop, Illustrator)',
-      'Desain UI/UX & Digital Prototyping (Figma)',
-      'Motion Graphics, 2D Animation & Video Editing (After Effects, Premiere Pro)',
-      'Fotografi Studio & Sinematografi'
-    ],
-    careers: ['UI/UX Designer', 'Graphic Designer', 'Motion Graphic Artist', 'Creative Content Producer'],
-    facilities: 'Studio Fotografi & Videografi dengan Green Screen, Lighting Pro, Pen Display Tablet & Render Farm.'
+    icon: Palette,
+    accentBg: 'bg-indigo-600',
+    accentText: 'text-indigo-700',
+    badgeBg: 'bg-indigo-50 border-indigo-200 text-indigo-800',
+    shortDesc: 'Menggabungkan seni visual dan teknologi kreatif: desain grafis, antarmuka UI/UX, motion graphics, fotografi studio, dan sinematografi digital.',
+    focusStudy: ['Desain Grafis & Branding (Photoshop, Illustrator)', 'UI/UX Design & Prototyping (Figma)', 'Motion Graphics & Video (After Effects, Premiere)', 'Fotografi & Sinematografi Digital'],
+    careerProspects: ['Graphic Designer', 'UI/UX Junior Designer', 'Motion Graphic Artist', 'Creative Video Editor'],
+    facilities: 'Studio Kreatif Multimedia dengan Cyclorama Green Screen, Lighting Kit Pro, Drawing Pen Display, dan Workstation Rendering.',
+    partnerIndustries: ['Tribun Digital Media', 'Narasi TV', 'Kreavi Creative Agency', 'Arsana Studios'],
   },
   AKL: {
-    competencies: [
-      'Sistem Akuntansi Komputer (MYOB, Accurate, Excel Advanced)',
-      'Pengelolaan Kas, Perpajakan & E-Faktur',
-      'Administrasi Keuangan & Perbankan Syariah',
-      'Auditing & Analisis Laporan Keuangan Digital'
-    ],
-    careers: ['Accounting Staff', 'Tax Administration Officer', 'Bank Teller / CS Officer', 'Junior Auditor'],
-    facilities: 'Lab Mini Bank Digital, Software Akuntansi Berlisensi Resmi, Mesin Hitung & Terminal Kasir Kas.'
-  }
+    icon: Calculator,
+    accentBg: 'bg-emerald-700',
+    accentText: 'text-emerald-800',
+    badgeBg: 'bg-emerald-50 border-emerald-200 text-emerald-800',
+    shortDesc: 'Mempelajari tata kelola akuntansi modern berbasis komputer, perpajakan e-Faktur, perbankan syariah, dan sistem pelaporan keuangan digital.',
+    focusStudy: ['Komputer Akuntansi (Accurate & MYOB)', 'Perpajakan & Pengisian e-Faktur/e-SPT', 'Akuntansi Keuangan & Perbankan', 'Spreadsheet Advanced Finansial'],
+    careerProspects: ['Staf Akuntansi & Keuangan', 'Staf Administrasi Perpajakan', 'Customer Service / Teller Bank', 'Junior Auditor'],
+    facilities: 'Laboratorium Mini Bank Digital dengan software akuntansi berlisensi resmi, mesin hitung uang, dan simulasi teller perbankan.',
+    partnerIndustries: ['Bank Mandiri', 'Bank Syariah Indonesia (BSI)', 'Kantor Akuntan Publik (KAP)', 'PT Pegadaian'],
+  },
 };
+
+const SCHEDULE_ITEMS = [
+  {
+    phase: 'Tahap 1',
+    title: 'Pendaftaran Online & Upload Berkas',
+    date: '1 Mei - 20 Juni 2026',
+    status: 'Sedang Berlangsung',
+    active: true,
+    desc: 'Pengisian biodata, nilai rapor semester 1-5, dan unggah dokumen persyaratan di website resmi.',
+  },
+  {
+    phase: 'Tahap 2',
+    title: 'Verifikasi & Validasi Dokumen',
+    date: '21 - 25 Juni 2026',
+    status: 'Akan Datang',
+    active: false,
+    desc: 'Pemeriksaan keabsahan nilai rapor dan piagam kejuaraan oleh Panitia SPMB Sekolah.',
+  },
+  {
+    phase: 'Tahap 3',
+    title: 'Pengumuman Hasil Seleksi',
+    date: '28 Juni 2026 (Pukul 10.00 WIB)',
+    status: 'Akan Datang',
+    active: false,
+    desc: 'Pengumuman kelulusan berbasis sistem perangkingan nilai akhir kuota jurusan di portal Cek Status.',
+  },
+  {
+    phase: 'Tahap 4',
+    title: 'Daftar Ulang Peserta Diterima',
+    date: '30 Juni - 4 Juli 2026',
+    status: 'Akan Datang',
+    active: false,
+    desc: 'Verifikasi fisik berkas asli dan penyerahan surat pernyataan di Sekretariat SPMB Sekolah.',
+  },
+];
 
 export const HomePage: React.FC = () => {
   const [school, setSchool] = useState<School | null>(null);
   const [majors, setMajors] = useState<Major[]>([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
-  const [quickRegNumber, setQuickRegNumber] = useState('');
-  const [selectedMajor, setSelectedMajor] = useState<Major | null>(null);
-  const { t } = useLanguage();
+  const [quickReg, setQuickReg] = useState('');
+  const [selectedMajorModal, setSelectedMajorModal] = useState<Major | null>(null);
+
+  // Interactive Scoring Calculator State
+  const [calcRapor, setCalcRapor] = useState<number>(85);
+  const [calcPrestasi, setCalcPrestasi] = useState<number>(0);
 
   useEffect(() => {
     const loadData = async () => {
@@ -100,504 +142,650 @@ export const HomePage: React.FC = () => {
     loadData();
   }, []);
 
-  const getMajorIcon = (iconName: string | null) => {
-    switch (iconName) {
-      case 'Code': return <Code className="h-6 w-6 text-blue-600" />;
-      case 'Network': return <Network className="h-6 w-6 text-indigo-600" />;
-      case 'Palette': return <Palette className="h-6 w-6 text-purple-600" />;
-      case 'Calculator': return <Calculator className="h-6 w-6 text-emerald-600" />;
-      default: return <Code className="h-6 w-6 text-blue-600" />;
-    }
+  const handleQuickSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!quickReg.trim()) return;
+    window.location.href = `/cek-status?reg=${encodeURIComponent(quickReg.trim())}`;
   };
 
+  const calculatedTotal = (calcRapor * 0.7) + (calcPrestasi * 0.3);
+
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* 1. HERO SECTION */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 via-white to-slate-50 py-16 sm:py-24 border-b">
-        <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] pointer-events-none" />
-        
-        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50/80 px-3.5 py-1 text-xs font-semibold text-blue-700 shadow-sm">
-              <Sparkles className="h-3.5 w-3.5 text-blue-600" />
-              <span>{t('hero.badge')} ({school?.academic_year || '2026/2027'})</span>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
-              {school?.name || 'SMK Negeri 1 Digital Teknologi'}
-            </h1>
-
-            <p className="text-lg sm:text-xl text-slate-600 leading-relaxed">
-              {school?.hero_tagline || t('hero.desc')}
-            </p>
-
-            {/* CTAs */}
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-              <Link to="/daftar" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold text-base px-8 h-12 shadow-md shadow-blue-600/25 gap-2">
-                  {t('hero.btnRegister')}
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-
-              <Link to="/cek-status" className="w-full sm:w-auto">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto font-medium text-base px-6 h-12 gap-2 border-slate-300 hover:bg-slate-100">
-                  <Search className="h-4 w-4 text-slate-500" />
-                  {t('hero.btnCheck')}
-                </Button>
-              </Link>
-            </div>
-
-            {/* Quick Stats */}
-            <div className="pt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
-              <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-sm">
-                <div className="text-2xl font-bold text-blue-600">{school?.target_students || '400'}</div>
-                <div className="text-xs text-slate-500 font-medium">{t('hero.statQuota')}</div>
-              </div>
-              <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-sm">
-                <div className="text-2xl font-bold text-indigo-600">{majors.length || 4}</div>
-                <div className="text-xs text-slate-500 font-medium">{t('hero.statMajors')}</div>
-              </div>
-              <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-sm">
-                <div className="text-2xl font-bold text-emerald-600">100%</div>
-                <div className="text-xs text-slate-500 font-medium">Online</div>
-              </div>
-              <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-sm">
-                <div className="text-2xl font-bold text-purple-600">30+</div>
-                <div className="text-xs text-slate-500 font-medium">{t('hero.statPartners')}</div>
-              </div>
-            </div>
+    <div className="flex flex-col min-h-screen bg-slate-50 text-slate-900 font-sans">
+      
+      {/* 1. OFFICIAL INSTITUTIONAL NOTICE STRIP */}
+      <div className="bg-slate-950 text-slate-300 border-b border-slate-800 text-xs py-2 px-4">
+        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+          <div className="flex items-center gap-2 font-medium">
+            <span className="inline-block h-2 w-2 rounded-full bg-teal-400 animate-pulse" />
+            <span className="text-white font-semibold">Penerimaan Peserta Didik Baru (SPMB) T.A. 2026/2027</span>
+            <span className="text-slate-600 hidden md:inline">|</span>
+            <span className="text-slate-400 hidden md:inline">SMK Negeri 1 Digital Teknologi Jakarta</span>
+          </div>
+          <div className="flex items-center gap-4 text-[11px] text-slate-400 font-mono">
+            <span>NPSN: <strong className="text-slate-200">20109988</strong></span>
+            <span>Akreditasi: <strong className="text-teal-400">A (Unggul)</strong></span>
+            <span className="text-emerald-400 font-semibold">100% Gratis</span>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* 2. KEUNGGULAN SEKOLAH (WHY CHOOSE US) */}
-      <section className="py-16 bg-slate-50 border-b">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <Badge variant="secondary" className="mb-2 text-blue-700 bg-blue-100">
-              Keunggulan Kami
-            </Badge>
-            <h2 className="text-3xl font-bold text-slate-900 tracking-tight">
-              Mengapa Memilih {school?.name || 'SMK Digital'}?
-            </h2>
-            <p className="text-slate-600 text-sm mt-2">
-              Pendidikan kejuruan modern yang mengintegrasikan kurikulum industri, teknologi terdepan, dan sertifikasi profesi.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                title: 'Kurikulum Industri',
-                desc: 'Materi pembelajaran diselaraskan langsung dengan kebutuhan industri teknologi masa kini.',
-                icon: Layers,
-                color: 'text-blue-600 bg-blue-50',
-              },
-              {
-                title: 'Sertifikasi Profesi',
-                desc: 'Lulusan dibekali sertifikasi kompetensi BNSP dan sertifikasi vendor internasional.',
-                icon: ShieldCheck,
-                color: 'text-emerald-600 bg-emerald-50',
-              },
-              {
-                title: 'Laboratorium Standar Global',
-                desc: 'Fasilitas praktikum lengkap dengan perangkat keras dan software lisensi industri.',
-                icon: Building2,
-                color: 'text-purple-600 bg-purple-50',
-              },
-              {
-                title: 'Penyaluran Kerja 90%+',
-                desc: 'Bursa Kerja Khusus (BKK) aktif bermitra dengan lebih dari 30 perusahaan terkemuka.',
-                icon: Briefcase,
-                color: 'text-amber-600 bg-amber-50',
-              },
-            ].map((feature, idx) => (
-              <div
-                key={idx}
-                className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow space-y-3"
-              >
-                <div className={`p-3 rounded-xl w-fit ${feature.color}`}>
-                  <feature.icon className="h-6 w-6" />
+      {/* 2. HERO SECTION - ASYMMETRIC SPLIT 7/5 COL (Strict SKILL Compliance) */}
+      <section className="bg-white border-b border-slate-200 pt-10 sm:pt-14 pb-12 sm:pb-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            
+            {/* Left Content (7 Cols) */}
+            <div className="lg:col-span-7 space-y-6">
+              <div className="space-y-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-xs font-bold">
+                  <GraduationCap className="h-4 w-4 text-teal-600 shrink-0" />
+                  <span>Pusat Keunggulan Pendidikan Vokasi Teknologi</span>
                 </div>
-                <h3 className="font-bold text-slate-900 text-base">{feature.title}</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">{feature.desc}</p>
+
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+                  Pendidikan Kejuruan Berkualitas, Siap Kerja dan Berdaya Saing Global.
+                </h1>
+
+                <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl font-normal">
+                  Portal resmi pendaftaran daring calon siswa <strong className="text-slate-900 font-semibold">{school?.name || 'SMK Negeri 1 Digital Teknologi'}</strong> dengan 4 program keahlian unggulan standar industri.
+                </p>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* 3. JURUSAN SECTION */}
-      <section id="jurusan" className="py-16 bg-white border-b">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <Badge variant="secondary" className="mb-2 text-blue-700 bg-blue-100">
-              Kompetensi Keahlian
-            </Badge>
-            <h2 className="text-3xl font-bold text-slate-900 tracking-tight">
-              Pilihan Jurusan Masa Depan
-            </h2>
-            <p className="text-slate-600 text-sm mt-2">
-              Pilih program keahlian yang sesuai dengan minat dan potensi karir impian Anda.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {majors.map((major) => (
-              <Card key={major.id} className="hover:shadow-lg transition-all duration-200 border-slate-200 flex flex-col justify-between group">
-                <CardHeader>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="p-2.5 rounded-xl bg-slate-100 group-hover:bg-blue-50 transition-colors">
-                      {getMajorIcon(major.icon)}
-                    </div>
-                    <Badge variant="outline" className="font-bold text-xs bg-slate-50">
-                      {major.code}
-                    </Badge>
-                  </div>
-                  <CardTitle className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
-                    {major.name}
-                  </CardTitle>
-                  <CardDescription className="text-xs leading-relaxed line-clamp-3 mt-1">
-                    {major.description}
-                  </CardDescription>
-                </CardHeader>
-
-                <CardContent className="pt-0 space-y-3">
-                  <div className="flex items-center justify-between pt-3 border-t border-slate-100 text-xs text-slate-500 font-medium">
-                    <span>Kuota Tersedia:</span>
-                    <span className="font-bold text-blue-600 text-sm">{major.quota} Kursi</span>
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setSelectedMajor(major)}
-                    className="w-full text-xs font-semibold text-slate-700 hover:text-blue-600 border-slate-200 hover:bg-slate-50"
-                  >
-                    Lihat Rincian & Karir
+              {/* Primary Action Buttons */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
+                <Link to="/daftar">
+                  <Button className="w-full sm:w-auto h-11 px-7 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-xs gap-2">
+                    <span>Daftar Sekarang (Gratis)</span>
+                    <ArrowRight className="h-4 w-4" />
                   </Button>
-                </CardContent>
-              </Card>
+                </Link>
+
+                <Link to="/cek-status">
+                  <Button variant="outline" className="w-full sm:w-auto h-11 px-6 border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs">
+                    Cek Status Pendaftaran
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Quick Status Check Card */}
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 max-w-lg space-y-2">
+                <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                  <span>Sudah mendaftar? Cek status nomor registrasi:</span>
+                  <span className="text-[11px] text-slate-400 font-mono font-normal">Contoh: REG-2026-00001</span>
+                </label>
+                <form onSubmit={handleQuickSearch} className="flex gap-2">
+                  <Input 
+                    placeholder="Masukkan Nomor Registrasi..."
+                    value={quickReg}
+                    onChange={(e) => setQuickReg(e.target.value.toUpperCase())}
+                    className="h-9 bg-white border-slate-300 text-slate-900 font-mono text-xs placeholder:text-slate-400 focus-visible:ring-teal-600"
+                  />
+                  <Button 
+                    type="submit"
+                    className="h-9 px-4 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shrink-0"
+                  >
+                    <Search className="h-3.5 w-3.5 mr-1" />
+                    <span>Periksa</span>
+                  </Button>
+                </form>
+              </div>
+            </div>
+
+            {/* Right Card: Institutional Telemetry & Key Metrics (5 Cols) */}
+            <div className="lg:col-span-5 space-y-4">
+              <div className="bg-slate-900 text-white rounded-2xl p-6 sm:p-7 shadow-md border border-slate-800 space-y-5">
+                <div className="border-b border-slate-800 pb-4 flex items-center justify-between">
+                  <div>
+                    <span className="text-[11px] font-mono text-teal-400 font-bold uppercase tracking-wider block">
+                      Informasi Daya Tampung
+                    </span>
+                    <h3 className="text-lg font-bold text-white mt-0.5">
+                      Tahun Ajaran 2026/2027
+                    </h3>
+                  </div>
+                  <Badge className="bg-teal-950 text-teal-300 border-teal-800 text-[11px] font-mono">
+                    Online
+                  </Badge>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="p-3.5 rounded-xl bg-slate-800/90 border border-slate-700/80">
+                    <span className="text-xs text-slate-400 block">Daya Tampung</span>
+                    <span className="text-2xl font-black text-white font-mono mt-0.5 block">
+                      {school?.target_students || 400} Siswa
+                    </span>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-slate-800/90 border border-slate-700/80">
+                    <span className="text-xs text-slate-400 block">Program Keahlian</span>
+                    <span className="text-2xl font-black text-teal-400 font-mono mt-0.5 block">
+                      4 Jurusan
+                    </span>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-slate-800/90 border border-slate-700/80">
+                    <span className="text-xs text-slate-400 block">Metode Seleksi</span>
+                    <span className="text-xs font-bold text-white mt-1 block">
+                      Nilai Rapor & Prestasi
+                    </span>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-slate-800/90 border border-slate-700/80">
+                    <span className="text-xs text-slate-400 block">Biaya Pendaftaran</span>
+                    <span className="text-xs font-bold text-emerald-400 mt-1 block">
+                      100% Bebas Biaya
+                    </span>
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-slate-800 text-xs text-slate-300 space-y-2">
+                  <div className="flex items-start gap-2">
+                    <Check className="h-4 w-4 text-teal-400 shrink-0 mt-0.5" />
+                    <span>Lulusan dibekali Sertifikasi Kompetensi Resmi BNSP dan Vendor Global.</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Check className="h-4 w-4 text-teal-400 shrink-0 mt-0.5" />
+                    <span>Praktek Kerja Lapangan (PKL) terfasilitasi di 30+ mitra industri digital.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 3. JADWAL RESMI SPMB (#alur) */}
+      <section id="alur" className="py-14 bg-white border-b border-slate-200 scroll-mt-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8">
+            <div>
+              <span className="text-xs font-bold text-teal-700 uppercase tracking-wider block mb-1">
+                Agenda dan Timeline
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                Jadwal Resmi Penerimaan Siswa Baru
+              </h2>
+            </div>
+            <span className="text-xs text-slate-500 font-mono">
+              Waktu: Waktu Indonesia Barat (WIB)
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {SCHEDULE_ITEMS.map((item, idx) => (
+              <div 
+                key={idx}
+                className={`p-5 rounded-xl border transition-all ${
+                  item.active 
+                    ? 'bg-teal-50/80 border-teal-300 ring-1 ring-teal-400/40 shadow-xs' 
+                    : 'bg-white border-slate-200 hover:border-slate-300'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded ${
+                    item.active ? 'bg-teal-700 text-white' : 'bg-slate-100 text-slate-600'
+                  }`}>
+                    {item.phase}
+                  </span>
+                  <span className={`text-[11px] font-semibold ${
+                    item.active ? 'text-teal-800' : 'text-slate-400'
+                  }`}>
+                    {item.status}
+                  </span>
+                </div>
+
+                <h3 className="text-sm font-bold text-slate-900 mb-1">{item.title}</h3>
+                <p className="text-xs font-semibold text-teal-800 mb-2 font-mono flex items-center gap-1.5">
+                  <Calendar className="h-3.5 w-3.5 text-teal-600" />
+                  <span>{item.date}</span>
+                </p>
+                <p className="text-xs text-slate-600 leading-relaxed">{item.desc}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* MODAL DETAIL JURUSAN */}
-      {selectedMajor && (
-        <Dialog open={Boolean(selectedMajor)} onOpenChange={(open) => !open && setSelectedMajor(null)}>
-          <DialogHeader>
-            <div className="flex items-center gap-2 mb-1">
-              <Badge className="bg-blue-600 text-white text-xs">{selectedMajor.code}</Badge>
-              <span className="text-xs text-slate-500">Kuota: {selectedMajor.quota} Siswa</span>
-            </div>
-            <DialogTitle className="text-xl font-bold text-slate-900">
-              {selectedMajor.name}
-            </DialogTitle>
-            <DialogDescription className="text-xs text-slate-600 mt-1">
-              {selectedMajor.description}
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="space-y-4 my-2 text-left">
-            {/* Kompetensi yang Dipelajari */}
-            <div>
-              <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
-                Kompetensi Utama:
-              </h4>
-              <ul className="space-y-1.5 text-xs text-slate-600">
-                {(MAJOR_DETAILS[selectedMajor.code]?.competencies || [
-                  'Teori kejuruan mendalam & praktikum lab',
-                  'Penyelesaian proyek nyata (Project-Based Learning)',
-                  'Etika profesional & budaya kerja industri'
-                ]).map((comp, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <CheckCircle className="h-3.5 w-3.5 text-emerald-600 mt-0.5 shrink-0" />
-                    <span>{comp}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Prospek Karir */}
-            <div>
-              <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
-                Peluang Profesi & Karir:
-              </h4>
-              <div className="flex flex-wrap gap-1.5">
-                {(MAJOR_DETAILS[selectedMajor.code]?.careers || ['Tenaga Ahli Kejuruan', 'Wirausaha Mandiri']).map((career, idx) => (
-                  <Badge key={idx} variant="secondary" className="text-[11px] bg-slate-100 text-slate-700">
-                    {career}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-
-            {/* Fasilitas */}
-            <div className="p-3 bg-blue-50/70 rounded-lg border border-blue-100 text-xs text-blue-900">
-              <span className="font-semibold block mb-0.5">Fasilitas Lab Khusus:</span>
-              {MAJOR_DETAILS[selectedMajor.code]?.facilities || 'Laboratorium komputer dan bengkel praktek standar industri.'}
-            </div>
-          </div>
-
-          <DialogFooter className="mt-4 flex flex-row justify-between items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setSelectedMajor(null)}
-              className="text-xs"
-            >
-              Tutup
-            </Button>
-            <Link to="/daftar">
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white text-xs gap-1.5">
-                Daftar Jurusan Ini
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Button>
-            </Link>
-          </DialogFooter>
-        </Dialog>
-      )}
-
-      {/* 4. SYARAT & KETENTUAN PENDAFTARAN */}
-      <section id="syarat" className="py-16 bg-slate-50 border-b">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <Badge variant="secondary" className="mb-2 text-purple-700 bg-purple-100">
-              Persiapan Berkas
-            </Badge>
-            <h2 className="text-3xl font-bold text-slate-900 tracking-tight">
-              Syarat & Dokumen Pendaftaran
+      {/* 4. PROGRAM KEAHLIAN BENTO (#jurusan) */}
+      <section id="jurusan" className="py-16 bg-slate-50 border-b border-slate-200 scroll-mt-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl space-y-10">
+          <div className="max-w-3xl">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              4 Program Keahlian Unggulan
             </h2>
-            <p className="text-slate-600 text-sm mt-2">
-              Pastikan Anda telah menyiapkan berkas-berkas berikut sebelum mengisi formulir online.
+            <p className="text-xs sm:text-sm text-slate-600 mt-1.5">
+              Setiap calon siswa dapat memilih maksimal 2 program keahlian: Pilihan 1 sebagai prioritas utama dan Pilihan 2 sebagai alternatif cadangan.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Berkas Wajib */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-              <div className="flex items-center gap-2.5 text-blue-600">
-                <FileText className="h-5 w-5" />
-                <h3 className="font-bold text-slate-900 text-base">Dokumen Wajib Diunggah</h3>
-              </div>
-              <ul className="space-y-3 text-xs sm:text-sm text-slate-600">
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="h-4 w-4 text-blue-600 shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-slate-800 block">Pasfoto 3x4 Berwarna</strong>
-                    Format JPG/PNG, ukuran maksimal 2MB, latar belakang merah atau biru.
-                  </div>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="h-4 w-4 text-blue-600 shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-slate-800 block">Scan Ijazah / Surat Keterangan Lulus (SKL)</strong>
-                    Format PDF atau JPG/PNG, ukuran maksimal 5MB.
-                  </div>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="h-4 w-4 text-blue-600 shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-slate-800 block">Scan Kartu Keluarga (KK)</strong>
-                    Format PDF atau JPG/PNG, memastikan NIK calon siswa dan orang tua terbaca jelas.
-                  </div>
-                </li>
-              </ul>
-            </div>
+            {majors.map((major) => {
+              const info = MAJOR_INFO[major.code] || MAJOR_INFO.RPL;
+              const IconComp = info.icon;
+              return (
+                <div 
+                  key={major.id}
+                  className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-7 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-5"
+                >
+                  <div className="space-y-4">
+                    {/* Header Card */}
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className={`h-12 w-12 rounded-xl ${info.accentBg} text-white flex items-center justify-center font-bold text-base shadow-xs`}>
+                          <IconComp className="h-6 w-6" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono font-bold text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                              {major.code}
+                            </span>
+                            <span className="text-xs text-teal-700 font-semibold font-mono">
+                              Kuota: {major.quota} Kursi
+                            </span>
+                          </div>
+                          <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-snug mt-0.5">
+                            {major.name}
+                          </h3>
+                        </div>
+                      </div>
+                      <Badge variant="outline" className="bg-slate-50 text-slate-700 border-slate-200 text-xs">
+                        Aktif
+                      </Badge>
+                    </div>
 
-            {/* Syarat Nilai & Prestasi */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-              <div className="flex items-center gap-2.5 text-purple-600">
-                <Award className="h-5 w-5" />
-                <h3 className="font-bold text-slate-900 text-base">Nilai Rapor & Prestasi</h3>
-              </div>
-              <ul className="space-y-3 text-xs sm:text-sm text-slate-600">
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="h-4 w-4 text-purple-600 shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-slate-800 block">Nilai Rapor Semester 1 s.d 5 (Bobot 70%)</strong>
-                    Mata pelajaran: Matematika, Bahasa Indonesia, Bahasa Inggris, IPA, dan IPS.
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                      {info.shortDesc}
+                    </p>
+
+                    {/* Materi Utama */}
+                    <div className="space-y-1.5">
+                      <span className="text-xs font-bold text-slate-800 uppercase tracking-wider block">
+                        Fokus Kompetensi:
+                      </span>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-slate-600">
+                        {info.focusStudy.map((item, idx) => (
+                          <li key={idx} className="flex items-center gap-1.5">
+                            <span className="h-1.5 w-1.5 rounded-full bg-teal-600 shrink-0" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Prospek Karir */}
+                    <div className="pt-2 border-t border-slate-100 space-y-1">
+                      <span className="text-xs font-bold text-slate-800 block">
+                        Peluang Karir Lulusan:
+                      </span>
+                      <p className="text-xs text-slate-600">
+                        {info.careerProspects.join(' • ')}
+                      </p>
+                    </div>
                   </div>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="h-4 w-4 text-purple-600 shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-slate-800 block">Sertifikat Kejuaraan / Prestasi (Bobot 30%)</strong>
-                    Piagam lomba akademik / non-akademik tingkat Kabupaten/Kota, Provinsi, Nasional, atau Internasional (opsional).
+
+                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                    <Button 
+                      variant="ghost" 
+                      onClick={() => setSelectedMajorModal(major)}
+                      className="text-xs text-teal-700 hover:text-teal-800 hover:bg-teal-50 font-semibold p-0 h-auto"
+                    >
+                      <span>Lihat Fasilitas & Mitra</span>
+                      <ArrowRight className="h-3.5 w-3.5 ml-1" />
+                    </Button>
+                    <Link to="/daftar">
+                      <Button size="sm" className="bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold px-4 h-9">
+                        Pilih {major.code}
+                      </Button>
+                    </Link>
                   </div>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="h-4 w-4 text-purple-600 shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-slate-800 block">Batas Usia Calon Siswa</strong>
-                    Maksimal berusia 21 tahun pada tanggal 1 Juli tahun pelajaran berjalan.
-                  </div>
-                </li>
-              </ul>
-            </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* 5. ALUR PENDAFTARAN */}
-      <section id="alur" className="py-16 bg-white border-b">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <Badge variant="secondary" className="mb-2 text-emerald-700 bg-emerald-100">
-              Langkah Mudah
-            </Badge>
-            <h2 className="text-3xl font-bold text-slate-900 tracking-tight">
-              Alur Proses Pendaftaran
+      {/* 5. SISTEM PENILAIAN SELEKSI & INTERACTIVE CALCULATOR */}
+      <section className="py-16 bg-white border-b border-slate-200">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl space-y-10">
+          <div className="max-w-3xl">
+            <span className="text-xs font-bold text-teal-700 uppercase tracking-wider block mb-1">
+              Standar Seleksi Terbuka
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              Formula Perhitungan Nilai Akhir Seleksi
             </h2>
-            <p className="text-slate-600 text-sm mt-2">
-              4 langkah praktis menyelesaikan pendaftaran dari rumah tanpa antrean.
+            <p className="text-xs sm:text-sm text-slate-600 mt-1">
+              Seleksi berlangsung otomatis dan transparan berdasarkan formula pembobotan resmi: 70% rata-rata rapor semester 1-5 dan 30% piagam prestasi kejuaraan.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Left 3 summary cards (7 Cols) */}
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {/* Box 1: Rapor 70% */}
+              <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                <div className="h-9 w-9 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-xs font-mono">
+                  70%
+                </div>
+                <h3 className="text-xs font-bold text-slate-900">Rata-rata Rapor (Sem. 1-5)</h3>
+                <p className="text-[11px] text-slate-600 leading-relaxed">
+                  5 mata pelajaran utama: Matematika, B. Indonesia, B. Inggris, IPA, dan IPS.
+                </p>
+              </div>
+
+              {/* Box 2: Prestasi 30% */}
+              <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                <div className="h-9 w-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xs font-mono">
+                  30%
+                </div>
+                <h3 className="text-xs font-bold text-slate-900">Piagam Kejuaraan</h3>
+                <p className="text-[11px] text-slate-600 leading-relaxed">
+                  Internasional: 100 pt<br />
+                  Nasional: 80 pt<br />
+                  Provinsi: 60 pt<br />
+                  Kab/Kota: 40 pt
+                </p>
+              </div>
+
+              {/* Box 3: Total Skor */}
+              <div className="p-5 rounded-2xl bg-teal-900 text-white space-y-2">
+                <div className="h-9 w-9 rounded-xl bg-teal-700 text-white flex items-center justify-center font-bold text-xs font-mono">
+                  100%
+                </div>
+                <h3 className="text-xs font-bold text-white">Total Skor Akhir</h3>
+                <p className="text-[11px] text-teal-200 leading-relaxed">
+                  (Rapor × 0.7) + (Prestasi × 0.3). Perankingan otomatis per kuota.
+                </p>
+              </div>
+            </div>
+
+            {/* Right: Interactive Simulator Widget (5 Cols) */}
+            <div className="lg:col-span-5 bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 space-y-4">
+              <div className="border-b border-slate-800 pb-3 flex items-center justify-between">
+                <div>
+                  <span className="text-[11px] font-mono text-teal-400 font-bold uppercase tracking-wider block">
+                    Simulasi Mandiri
+                  </span>
+                  <h3 className="text-sm font-bold text-white">Kalkulator Prediksi Skor</h3>
+                </div>
+                <Sparkles className="h-4 w-4 text-teal-400" />
+              </div>
+
+              {/* Slider / Input Rapor */}
+              <div className="space-y-1.5">
+                <div className="flex justify-between text-xs">
+                  <span className="text-slate-300">Rata-rata Nilai Rapor:</span>
+                  <span className="font-mono font-bold text-teal-400">{calcRapor.toFixed(1)}</span>
+                </div>
+                <input 
+                  type="range" 
+                  min="60" 
+                  max="100" 
+                  step="0.5"
+                  value={calcRapor}
+                  onChange={(e) => setCalcRapor(parseFloat(e.target.value))}
+                  className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-teal-400"
+                />
+                <div className="flex justify-between text-[10px] text-slate-500 font-mono">
+                  <span>60.0</span>
+                  <span>80.0</span>
+                  <span>100.0</span>
+                </div>
+              </div>
+
+              {/* Select Prestasi */}
+              <div className="space-y-1.5">
+                <label className="text-xs text-slate-300 block">Tingkat Prestasi Tertinggi:</label>
+                <select 
+                  value={calcPrestasi}
+                  onChange={(e) => setCalcPrestasi(parseInt(e.target.value))}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-teal-500 font-mono"
+                >
+                  <option value={0}>Tidak Ada Piagam (0 Poin)</option>
+                  <option value={20}>Tingkat Sekolah (20 Poin)</option>
+                  <option value={40}>Tingkat Kabupaten/Kota (40 Poin)</option>
+                  <option value={60}>Tingkat Provinsi (60 Poin)</option>
+                  <option value={80}>Tingkat Nasional (80 Poin)</option>
+                  <option value={100}>Tingkat Internasional (100 Poin)</option>
+                </select>
+              </div>
+
+              {/* Calculation Result */}
+              <div className="p-3.5 bg-slate-800/90 rounded-xl border border-slate-700/80 flex items-center justify-between">
+                <div>
+                  <span className="text-[11px] text-slate-400 block">Estimasi Skor Seleksi:</span>
+                  <span className="text-2xl font-black text-teal-400 font-mono">
+                    {calculatedTotal.toFixed(2)}
+                  </span>
+                </div>
+                <Link to="/daftar">
+                  <Button size="sm" className="bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold h-9">
+                    Daftar Sekarang
+                  </Button>
+                </Link>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 6. DOKUMEN PERSYARATAN & CARA MENDAFTAR (#syarat) */}
+      <section id="syarat" className="py-16 bg-slate-50 border-b border-slate-200 scroll-mt-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl space-y-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <span className="text-xs font-bold text-teal-700 uppercase tracking-wider block mb-1">
+                Persiapan Berkas
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                Dokumen Wajib Persyaratan Pendaftaran
+              </h2>
+            </div>
+            <Link to="/daftar">
+              <Button className="bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold h-10 px-5 gap-1.5">
+                <span>Buka Formulir Pendaftaran</span>
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               {
-                step: '01',
-                title: 'Isi Data Pribadi',
-                desc: 'Lengkapi biodata calon siswa, data orang tua/wali, serta asal sekolah SMP/MTs.',
-                icon: FileText,
+                title: 'Pasfoto Berwarna 3x4',
+                format: 'Format JPG / PNG (Maks. 2MB)',
+                note: 'Foto terbaru berseragam sekolah atau pakaian rapi latar belakang merah/biru.',
               },
               {
-                step: '02',
-                title: 'Input Nilai & Berkas',
-                desc: 'Masukkan nilai rapor semester 1-5 dan unggah foto 3x4 serta sertifikat prestasi.',
-                icon: Award,
+                title: 'Scan Ijazah / SKL Asli',
+                format: 'Format PDF / JPG (Maks. 5MB)',
+                note: 'Ijazah SMP/MTs atau Surat Keterangan Lulus (SKL) resmi dari kepala sekolah.',
               },
               {
-                step: '03',
-                title: 'Cetak Kartu Peserta',
-                desc: 'Dapatkan nomor pendaftaran unik dan cetak kartu bukti pendaftaran format PDF.',
-                icon: CheckCircle2,
+                title: 'Scan Kartu Keluarga (KK)',
+                format: 'Format PDF / JPG (Maks. 5MB)',
+                note: 'Kartu Keluarga asli terbitan Dukcapil dengan NIK calon siswa yang tertera jelas.',
               },
               {
-                step: '04',
-                title: 'Pengumuman Seleksi',
-                desc: 'Pantau status hasil seleksi otomatis berbasis ranking rapor & prestasi di website.',
-                icon: Calendar,
+                title: 'Nilai Rapor & Piagam',
+                format: 'Format PDF / JPG (Maks. 5MB)',
+                note: 'Rapor semester 1 s/d 5 serta sertifikat prestasi juara (jika ada).',
               },
-            ].map((item, idx) => (
-              <div key={idx} className="relative bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="text-3xl font-black text-blue-600/30">
-                    {item.step}
-                  </div>
-                  <item.icon className="h-6 w-6 text-blue-600" />
+            ].map((doc, idx) => (
+              <div key={idx} className="p-5 rounded-xl bg-white border border-slate-200 space-y-2">
+                <div className="flex items-center gap-2 text-teal-800 text-xs font-bold">
+                  <CheckCircle2 className="h-4 w-4 text-teal-600 shrink-0" />
+                  <span>{doc.title}</span>
                 </div>
-                <h3 className="font-bold text-slate-900 text-base">{item.title}</h3>
-                <p className="text-xs text-slate-500 leading-relaxed">{item.desc}</p>
+                <span className="text-xs font-mono font-semibold text-slate-800 block">
+                  {doc.format}
+                </span>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  {doc.note}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 6. CEK STATUS QUICK BANNER */}
-      <section className="py-12 bg-blue-600 text-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center space-y-4">
-            <h2 className="text-2xl sm:text-3xl font-bold">Sudah Mendaftar? Cek Status Anda</h2>
-            <p className="text-blue-100 text-sm">
-              Ketikkan nomor pendaftaran yang tertera pada kartu bukti pendaftaran Anda.
-            </p>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (quickRegNumber.trim()) {
-                  window.location.href = `/cek-status?reg=${encodeURIComponent(quickRegNumber.trim())}`;
-                }
-              }}
-              className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto pt-2"
-            >
-              <Input
-                placeholder="Contoh: REG-2026-00001"
-                value={quickRegNumber}
-                onChange={(e) => setQuickRegNumber(e.target.value)}
-                className="bg-white text-slate-900 placeholder:text-slate-400 h-11"
-              />
-              <Button type="submit" className="bg-slate-900 hover:bg-slate-800 text-white h-11 px-6 shrink-0">
-                Periksa Status
-              </Button>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. PENGUMUMAN TERBARU & BERITA */}
+      {/* 7. BERITA & PENGUMUMAN TERKINI */}
       {announcements.length > 0 && (
-        <section id="pengumuman" className="py-16 bg-white border-b">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
+        <section className="py-16 bg-white border-b border-slate-200">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl space-y-8">
+            <div className="flex items-center justify-between">
               <div>
-                <Badge variant="secondary" className="mb-2 text-purple-700 bg-purple-100">
-                  Informasi Resmi
-                </Badge>
-                <h2 className="text-3xl font-bold text-slate-900 tracking-tight">
-                  Berita & Pengumuman Terbaru
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                  Pengumuman & Berita Terbaru
                 </h2>
+                <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                  Informasi resmi seputar teknis pendaftaran dan jadwal kegiatan sekolah.
+                </p>
               </div>
               <Link to="/pengumuman">
-                <Button variant="outline" size="sm" className="gap-1.5 text-xs font-semibold text-blue-600 hover:bg-blue-50 border-blue-200">
-                  Lihat Semua Pengumuman
-                  <ArrowRight className="h-3.5 w-3.5" />
+                <Button variant="outline" size="sm" className="text-xs border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold h-9">
+                  <span>Semua Berita</span>
+                  <ArrowRight className="h-3.5 w-3.5 ml-1" />
                 </Button>
               </Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {announcements.map((item) => (
-                <Card key={item.id} className="overflow-hidden border-slate-200 hover:shadow-lg transition-all duration-200 group flex flex-col justify-between">
-                  <div>
-                    {item.thumbnail_url && (
-                      <div className="h-44 w-full overflow-hidden bg-slate-100 relative">
-                        <img
-                          src={item.thumbnail_url}
-                          alt={item.title}
-                          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                        <Badge className="absolute top-2.5 left-2.5 bg-slate-900/80 backdrop-blur-sm text-white text-[10px]">
-                          {item.category}
-                        </Badge>
-                      </div>
-                    )}
-                    <CardHeader className="p-5 pb-2">
-                      <div className="flex items-center text-xs text-slate-500 mb-1.5">
-                        <Calendar className="h-3 w-3 mr-1 text-slate-400" />
-                        <span>{formatDate(item.published_at)}</span>
-                      </div>
-                      <CardTitle className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2">
-                        <Link to={`/pengumuman/${item.slug}`}>
-                          {item.title}
-                        </Link>
-                      </CardTitle>
-                      <CardDescription className="text-xs text-slate-600 line-clamp-3 mt-2">
-                        {item.content}
-                      </CardDescription>
-                    </CardHeader>
+                <Link
+                  key={item.id}
+                  to={`/pengumuman/${item.slug}`}
+                  className="p-6 rounded-2xl bg-slate-50/80 border border-slate-200 hover:border-teal-400 hover:bg-white transition-all flex flex-col justify-between group space-y-4 shadow-xs"
+                >
+                  <div className="space-y-2.5">
+                    <div className="flex items-center justify-between text-xs text-slate-500">
+                      <Badge variant="outline" className="bg-white border-slate-300 text-teal-800 text-[11px] font-semibold">
+                        {item.category}
+                      </Badge>
+                      <span className="font-mono">{formatDate(item.published_at || item.created_at)}</span>
+                    </div>
+                    <h3 className="text-base font-bold text-slate-900 group-hover:text-teal-700 transition-colors line-clamp-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                      {item.content}
+                    </p>
                   </div>
-                  <CardContent className="p-5 pt-0">
-                    <Link
-                      to={`/pengumuman/${item.slug}`}
-                      className="inline-flex items-center text-xs font-semibold text-blue-600 hover:text-blue-700 gap-1 pt-3 border-t border-slate-100 w-full"
-                    >
-                      <span>Baca Selengkapnya</span>
-                      <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </CardContent>
-                </Card>
+                  <span className="text-xs text-teal-700 font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                    <span>Baca Pengumuman</span>
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
+                </Link>
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* 8. FAQ SECTION */}
+      {/* 8. FAQ COMPONENT INTEGRATION */}
       <FAQSection />
+
+      {/* 9. FINAL CALLOUT CTA BANNER */}
+      <section className="py-14 bg-slate-950 text-white border-b border-slate-800">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl text-center space-y-5">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-950 border border-teal-800 text-teal-300 text-xs font-semibold">
+            <Award className="h-3.5 w-3.5" />
+            <span>Pendaftaran Daring T.A. 2026/2027</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight max-w-2xl mx-auto">
+            Siapkan Diri Anda Menjadi Tenaga Ahli Vokasi Masa Depan
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-400 max-w-xl mx-auto leading-relaxed">
+            Daftarkan diri Anda sekarang secara gratis dan dapatkan pendidikan kejuruan berstandar industri dengan fasilitas laboratorium mutakhir.
+          </p>
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link to="/daftar">
+              <Button className="h-11 px-8 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-sm gap-2">
+                <span>Daftar Sekarang (Gratis)</span>
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+            <Link to="/cek-status">
+              <Button variant="outline" className="h-11 px-6 border-slate-700 hover:bg-slate-900 text-slate-300 font-semibold text-xs">
+                Cek Status Nomor Pendaftaran
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* MODAL RINCIAN JURUSAN & FASILITAS LAB */}
+      {selectedMajorModal && (
+        <Dialog open={Boolean(selectedMajorModal)} onOpenChange={(open) => !open && setSelectedMajorModal(null)}>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+            <div className="relative z-50 w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 text-slate-900 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+              {/* Header Modal */}
+              <div className="flex items-start justify-between border-b border-slate-100 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="h-12 w-12 rounded-xl bg-teal-600 text-white flex items-center justify-center font-mono font-bold text-lg shadow-sm">
+                    {selectedMajorModal.code}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-900">{selectedMajorModal.name}</h3>
+                    <span className="text-xs text-teal-700 font-semibold font-mono">Daya Tampung: {selectedMajorModal.quota} Siswa</span>
+                  </div>
+                </div>
+                <button 
+                  type="button"
+                  onClick={() => setSelectedMajorModal(null)}
+                  className="text-slate-400 hover:text-slate-700 p-1 text-base font-bold"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Isi Modal */}
+              <div className="space-y-4 text-xs">
+                <div>
+                  <h4 className="font-bold text-slate-900 uppercase tracking-wider mb-1">Deskripsi Kompetensi</h4>
+                  <p className="text-slate-600 leading-relaxed">{selectedMajorModal.description}</p>
+                </div>
+
+                {MAJOR_INFO[selectedMajorModal.code] && (
+                  <>
+                    <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                      <h4 className="font-bold text-slate-900 uppercase tracking-wider">Fasilitas Laboratorium Praktek</h4>
+                      <p className="text-slate-600 leading-relaxed">
+                        {MAJOR_INFO[selectedMajorModal.code].facilities}
+                      </p>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-teal-50/70 border border-teal-200 space-y-2">
+                      <h4 className="font-bold text-teal-900 uppercase tracking-wider">Perusahaan Mitra & Tempat PKL</h4>
+                      <div className="flex flex-wrap gap-1.5">
+                        {MAJOR_INFO[selectedMajorModal.code].partnerIndustries.map((partner, idx) => (
+                          <span key={idx} className="px-2.5 py-1 rounded bg-white text-teal-900 font-semibold border border-teal-200 text-xs shadow-2xs">
+                            {partner}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Footer Modal */}
+              <div className="pt-4 border-t border-slate-100 flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setSelectedMajorModal(null)} className="text-xs border-slate-300 text-slate-700 h-9">
+                  Tutup
+                </Button>
+                <Link to="/daftar">
+                  <Button className="text-xs bg-teal-600 hover:bg-teal-700 text-white font-bold h-9">
+                    Daftar di Jurusan Ini
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Dialog>
+      )}
+
     </div>
   );
 };

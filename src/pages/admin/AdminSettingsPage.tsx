@@ -4,12 +4,8 @@ import {
   Save, 
   RefreshCw, 
   CheckCircle2, 
-  AlertCircle, 
-  GraduationCap, 
-  Sparkles,
-  Phone,
-  Mail,
-  MapPin
+  AlertCircle,
+  Sparkles 
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';

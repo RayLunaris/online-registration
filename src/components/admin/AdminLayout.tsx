@@ -11,13 +11,11 @@ import {
   ExternalLink, 
   Menu, 
   X, 
-  ShieldCheck, 
   User as UserIcon,
   ChevronRight,
   Award
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
 
 export const AdminLayout: React.FC = () => {

@@ -3,37 +3,28 @@ import { Link } from 'react-router-dom';
 import { 
   Users, 
   Search, 
-  Filter, 
   CheckCircle2, 
-  Clock, 
-  XCircle, 
   FileText, 
   Eye, 
   Trash2, 
   ExternalLink, 
   Printer, 
   Award, 
-  BookOpen, 
-  RefreshCw,
-  School as SchoolIcon,
-  Phone,
-  Mail,
-  User,
-  ShieldCheck,
-  AlertCircle,
-  X
+  RefreshCw, 
+  X,
+  FileSpreadsheet, 
+  Download 
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Dialog } from '@/components/ui/dialog';
 import { adminService } from '@/services/adminService';
 import { schoolService } from '@/services/schoolService';
 import { StudentCompleteDetail, Major, StudentStatus } from '@/types/spmb';
 import { formatDate, formatScore } from '@/lib/utils';
 import { exportStudentsToExcel, exportStudentsToCSV } from '@/lib/exportUtils';
-import { FileSpreadsheet, Download } from 'lucide-react';
 
 export const AdminStudentsPage: React.FC = () => {
   const [students, setStudents] = useState<StudentCompleteDetail[]>([]);

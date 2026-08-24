@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { 
   Search, 
   Calendar, 
-  Tag, 
   ArrowRight, 
   ArrowLeft,
   BookOpen, 
@@ -47,34 +46,34 @@ export const AnnouncementListPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 py-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl space-y-8">
         {/* Navigation Breadcrumb */}
-        <div className="mb-6">
+        <div>
           <Link
             to="/"
-            className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-blue-600 gap-1.5 transition-colors"
+            className="inline-flex items-center text-xs font-semibold text-slate-500 hover:text-teal-700 gap-1.5 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
-            Kembali ke Beranda
+            <span>Kembali ke Beranda</span>
           </Link>
         </div>
 
         {/* Header Title */}
-        <div className="text-center max-w-2xl mx-auto mb-10 space-y-3">
-          <Badge variant="secondary" className="text-blue-700 bg-blue-100 gap-1.5">
-            <Sparkles className="h-3.5 w-3.5" />
-            Pusat Informasi & Pengumuman
-          </Badge>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+        <div className="text-center max-w-2xl mx-auto space-y-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-xs font-bold">
+            <Sparkles className="h-3.5 w-3.5 text-teal-600" />
+            <span>Pusat Informasi & Pengumuman</span>
+          </div>
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             Berita & Pengumuman SPMB
           </h1>
-          <p className="text-slate-600 text-sm sm:text-base">
+          <p className="text-slate-600 text-xs sm:text-sm">
             Dapatkan informasi terkini seputar jadwal pendaftaran, petunjuk teknis, dan hasil seleksi.
           </p>
         </div>
 
         {/* Filter & Search Controls */}
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Category Tabs */}
           <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
             {CATEGORIES.map((category) => (
@@ -85,7 +84,7 @@ export const AnnouncementListPage: React.FC = () => {
                 onClick={() => setSelectedCategory(category)}
                 className={`text-xs h-9 ${
                   selectedCategory === category
-                    ? 'bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-sm'
+                    ? 'bg-teal-600 hover:bg-teal-700 text-white font-semibold shadow-xs'
                     : 'border-slate-200 text-slate-600 hover:bg-slate-50'
                 }`}
               >
@@ -102,7 +101,7 @@ export const AnnouncementListPage: React.FC = () => {
               placeholder="Cari judul pengumuman..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 h-9 text-xs bg-slate-50 border-slate-200 focus:bg-white"
+              className="pl-9 h-9 text-xs bg-slate-50 border-slate-200 focus:bg-white font-sans"
             />
           </div>
         </div>
@@ -123,7 +122,7 @@ export const AnnouncementListPage: React.FC = () => {
             {announcements.map((item) => (
               <Card
                 key={item.id}
-                className="overflow-hidden border-slate-200 hover:shadow-lg transition-all duration-200 flex flex-col justify-between group bg-white"
+                className="overflow-hidden border-slate-200 hover:shadow-md transition-all duration-200 flex flex-col justify-between group bg-white"
               >
                 <div>
                   {item.thumbnail_url ? (
@@ -138,18 +137,18 @@ export const AnnouncementListPage: React.FC = () => {
                       </Badge>
                     </div>
                   ) : (
-                    <div className="h-36 w-full bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center text-blue-500">
+                    <div className="h-36 w-full bg-gradient-to-br from-teal-50 to-slate-100 flex items-center justify-center text-teal-600">
                       <FileText className="h-10 w-10 opacity-40" />
                     </div>
                   )}
 
                   <CardHeader className="p-5 pb-3">
-                    <div className="flex items-center gap-2 text-xs text-slate-500 mb-2">
+                    <div className="flex items-center gap-2 text-xs text-slate-500 mb-2 font-mono">
                       <Calendar className="h-3.5 w-3.5 text-slate-400" />
                       <span>{formatDate(item.published_at)}</span>
                     </div>
 
-                    <CardTitle className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2">
+                    <CardTitle className="text-base font-bold text-slate-900 group-hover:text-teal-700 transition-colors line-clamp-2">
                       <Link to={`/pengumuman/${item.slug}`}>
                         {item.title}
                       </Link>
@@ -164,7 +163,7 @@ export const AnnouncementListPage: React.FC = () => {
                 <CardContent className="p-5 pt-0">
                   <Link
                     to={`/pengumuman/${item.slug}`}
-                    className="inline-flex items-center text-xs font-semibold text-blue-600 hover:text-blue-700 gap-1 pt-3 border-t border-slate-100 w-full"
+                    className="inline-flex items-center text-xs font-semibold text-teal-700 hover:text-teal-800 gap-1 pt-3 border-t border-slate-100 w-full"
                   >
                     <span>Baca Selengkapnya</span>
                     <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />

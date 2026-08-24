@@ -49,12 +49,12 @@ export const LoginPage: React.FC = () => {
         </div>
 
         <div className="flex items-center justify-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-500/30">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-600 text-white shadow-lg shadow-teal-500/20">
             <GraduationCap className="h-7 w-7" />
           </div>
           <div className="text-left">
             <h1 className="text-2xl font-black tracking-tight text-white">SPMB Admin</h1>
-            <p className="text-xs text-blue-400">SMK Negeri 1 Digital Teknologi</p>
+            <p className="text-xs text-teal-400 font-mono">SMK Negeri 1 Digital Teknologi</p>
           </div>
         </div>
       </div>
@@ -62,7 +62,7 @@ export const LoginPage: React.FC = () => {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <Card className="border-slate-800 bg-slate-950 text-slate-100 shadow-2xl">
           <CardHeader className="space-y-1 pb-4">
-            <div className="flex items-center gap-2 text-blue-400 text-xs font-semibold uppercase tracking-wider">
+            <div className="flex items-center gap-2 text-teal-400 text-xs font-semibold uppercase tracking-wider">
               <ShieldCheck className="h-4 w-4" />
               <span>Portal Akses Terbatas</span>
             </div>
@@ -76,7 +76,7 @@ export const LoginPage: React.FC = () => {
 
           <CardContent className="space-y-4">
             {!configured && (
-              <div className="p-3 rounded-lg bg-blue-950/60 border border-blue-800/60 text-xs text-blue-300">
+              <div className="p-3 rounded-lg bg-teal-950/60 border border-teal-800/60 text-xs text-teal-300">
                 💡 <strong>Mode Demo:</strong> Anda dapat memasukkan sembarang email & password untuk masuk ke mode simulasi admin.
               </div>
             )}
@@ -99,7 +99,7 @@ export const LoginPage: React.FC = () => {
                     placeholder="admin@smkn1digital.sch.id"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-9 bg-slate-900 border-slate-800 text-white placeholder:text-slate-600 focus-visible:ring-blue-500"
+                    className="pl-9 bg-slate-900 border-slate-800 text-white placeholder:text-slate-600 focus-visible:ring-teal-500"
                     required
                   />
                 </div>
@@ -116,7 +116,7 @@ export const LoginPage: React.FC = () => {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-9 bg-slate-900 border-slate-800 text-white placeholder:text-slate-600 focus-visible:ring-blue-500"
+                    className="pl-9 bg-slate-900 border-slate-800 text-white placeholder:text-slate-600 focus-visible:ring-teal-500"
                     required
                   />
                 </div>
@@ -125,7 +125,7 @@ export const LoginPage: React.FC = () => {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium h-10 shadow-md shadow-blue-600/30"
+                className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium h-10 shadow-md shadow-teal-600/20"
               >
                 {loading ? 'Memproses Masuk...' : 'Masuk ke Dashboard'}
               </Button>

@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  Bell, 
   Plus, 
   Edit2, 
   Trash2, 
   ExternalLink, 
   RefreshCw, 
-  Calendar, 
-  FileText, 
-  X,
-  Sparkles 
+  X 
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';

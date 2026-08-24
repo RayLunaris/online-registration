@@ -152,7 +152,7 @@ export const adminService = {
         .order('created_at', { ascending: false });
 
       if (filter?.status && filter.status !== 'Semua') {
-        query = query.eq('status', filter.status);
+        query = query.eq('status', filter.status as any);
       }
 
       if (filter?.search && filter.search.trim()) {

@@ -17,7 +17,7 @@ export const personalDataSchema = z.object({
   birth_place: z.string().min(2, 'Tempat lahir wajib diisi'),
   birth_date: z.string().min(1, 'Tanggal lahir wajib dipilih'),
   gender: z.enum(['Laki-laki', 'Perempuan'], {
-    errorMap: () => ({ message: 'Pilih jenis kelamin' }),
+    message: 'Pilih jenis kelamin',
   }),
   religion: z.string().min(1, 'Agama wajib dipilih'),
   address: z.string().min(5, 'Alamat lengkap minimal 5 karakter'),
@@ -59,7 +59,7 @@ export const reportScoreItemSchema = z.object({
   semester: z.number().min(1).max(5),
   subject: z.string().min(1),
   score: z
-    .number({ invalid_type_error: 'Nilai harus berupa angka' })
+    .number({ message: 'Nilai harus berupa angka' })
     .min(0, 'Nilai minimal 0')
     .max(100, 'Nilai maksimal 100'),
 });
@@ -84,7 +84,7 @@ export const documentsSchema = z.object({
 
 export const agreementSchema = z.object({
   agreement: z.literal(true, {
-    errorMap: () => ({ message: 'Anda harus menyetujui pernyataan kebenaran data' }),
+    message: 'Anda harus menyetujui pernyataan kebenaran data',
   }),
 });
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { 
-  GraduationCap, 
   Plus, 
   Edit2, 
   Trash2, 
@@ -8,15 +7,14 @@ import {
   Network, 
   Palette, 
   Calculator, 
-  Check, 
-  X, 
-  RefreshCw 
+  RefreshCw,
+  X 
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Dialog } from '@/components/ui/dialog';
 import { adminService } from '@/services/adminService';
 import { Major } from '@/types/spmb';
 

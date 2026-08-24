@@ -1,0 +1,52 @@
+{
+  "nav": {
+    "home": "Home",
+    "majors": "Majors",
+    "requirements": "Requirements",
+    "flow": "Process",
+    "announcements": "Announcements",
+    "checkStatus": "Check Status",
+    "faq": "FAQ",
+    "register": "Register Now",
+    "adminPortal": "Admin Portal"
+  },
+  "hero": {
+    "badge": "New Student Admissions 2026/2027",
+    "title": "Build Your Vocational Future & Global Career Readiness",
+    "desc": "Official online admission for SMK Negeri 1 Digital Technology. Receive high-quality vocational education with global industry standards.",
+    "btnRegister": "Apply SPMB Online",
+    "btnCheck": "Check Admission Status",
+    "statQuota": "Total Student Quota",
+    "statMajors": "Vocational Majors",
+    "statPartners": "Industry Partners"
+  },
+  "sections": {
+    "majorsTitle": "Featured Vocational Majors",
+    "majorsDesc": "Choose your preferred major matching your passion and talent",
+    "flowTitle": "Admissions Process Flow",
+    "flowDesc": "4 simple steps for new student online registration",
+    "reqTitle": "Admission Requirements",
+    "faqTitle": "Frequently Asked Questions (FAQ)",
+    "newsTitle": "Latest News & Announcements"
+  },
+  "status": {
+    "title": "Check Admission Status",
+    "desc": "Enter your registration number (e.g., REG-2026-00001)",
+    "btnSearch": "Search Admission",
+    "cardTitle": "Selection & Acceptance Status"
+  },
+  "registration": {
+    "title": "New Student Application Form",
+    "step1": "Personal & Parent Data",
+    "step2": "School of Origin & Major Choices",
+    "step3": "5 Semesters Report Scores",
+    "step4": "Achievements & Document Uploads",
+    "step5": "Review & Submit"
+  },
+  "footer": {
+    "about": "Center of Excellence Vocational High School focused on digital technology and industry 4.0.",
+    "quickLinks": "Quick Links",
+    "contact": "Admissions Office",
+    "rights": "All Rights Reserved."
+  }
+}
