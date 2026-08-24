@@ -18,7 +18,8 @@ import {
   Sparkles,
   Info,
   CheckCircle2,
-  Image as ImageIcon
+  Image as ImageIcon,
+  AlertTriangle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -142,32 +143,44 @@ export const RegistrationPage: React.FC = () => {
   }, 0);
   const estimatedTotalScore = (averageReportScore * 0.7) + (maxAchievementPoints * 0.3);
 
+  // Realtime field updater that clears error when user starts typing
+  const handleFieldChange = (field: keyof RegistrationFormData, value: any) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field as string]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[field as string];
+        return next;
+      });
+    }
+  };
+
   // Validate step before proceeding
   const validateStep = (step: number): boolean => {
     setErrors({});
     try {
       if (step === 1) {
         personalDataSchema.parse({
-          full_name: formData.full_name,
-          nisn: formData.nisn || undefined,
-          nik: formData.nik || undefined,
-          birth_place: formData.birth_place,
-          birth_date: formData.birth_date,
+          full_name: formData.full_name?.trim() || '',
+          nisn: formData.nisn?.trim() ? formData.nisn.trim() : undefined,
+          nik: formData.nik?.trim() ? formData.nik.trim() : undefined,
+          birth_place: formData.birth_place?.trim() || '',
+          birth_date: formData.birth_date || '',
           gender: formData.gender,
           religion: formData.religion,
-          address: formData.address,
-          phone: formData.phone,
-          email: formData.email,
-          source_school_name: formData.source_school_name,
+          address: formData.address?.trim() || '',
+          phone: formData.phone?.trim() || '',
+          email: formData.email?.trim() || '',
+          source_school_name: formData.source_school_name?.trim() || '',
           graduation_year: Number(formData.graduation_year),
         });
       } else if (step === 2) {
         parentDataSchema.parse({
-          father_name: formData.father_name,
-          mother_name: formData.mother_name,
-          parent_job: formData.parent_job,
-          parent_phone: formData.parent_phone,
-          parent_address: formData.parent_address,
+          father_name: formData.father_name?.trim() || '',
+          mother_name: formData.mother_name?.trim() || '',
+          parent_job: formData.parent_job?.trim() || undefined,
+          parent_phone: formData.parent_phone?.trim() || '',
+          parent_address: formData.parent_address?.trim() || undefined,
         });
       } else if (step === 3) {
         majorChoiceSchema.parse({
@@ -199,6 +212,16 @@ export const RegistrationPage: React.FC = () => {
           errorMap[field] = e.message;
         });
         setErrors(errorMap);
+
+        // Smoothly scroll to the error notification banner
+        setTimeout(() => {
+          const errorBanner = document.getElementById('step-validation-alert');
+          if (errorBanner) {
+            errorBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } else {
+            window.scrollTo({ top: 160, behavior: 'smooth' });
+          }
+        }, 60);
       }
       return false;
     }
@@ -206,12 +229,14 @@ export const RegistrationPage: React.FC = () => {
 
   const handleNextStep = () => {
     if (validateStep(currentStep)) {
+      setErrors({});
       setCurrentStep((prev) => Math.min(prev + 1, 6));
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   const handlePrevStep = () => {
+    setErrors({});
     setCurrentStep((prev) => Math.max(prev - 1, 1));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -422,57 +447,113 @@ export const RegistrationPage: React.FC = () => {
           </CardHeader>
 
           <CardContent className="p-6 sm:p-8 space-y-6">
+            {/* TOP VALIDATION ERROR BANNER */}
+            {Object.keys(errors).length > 0 && (
+              <div
+                id="step-validation-alert"
+                className="p-4 sm:p-5 rounded-2xl bg-amber-50/95 border-2 border-amber-400 text-amber-950 shadow-sm space-y-3 transition-all animate-in fade-in slide-in-from-top-2"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-amber-200 text-amber-800 rounded-xl shrink-0 mt-0.5">
+                    <AlertTriangle className="h-5 w-5" />
+                  </div>
+                  <div className="space-y-1.5 flex-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h4 className="text-sm font-bold text-amber-950">
+                        Perhatian: Ada Data Yang Belum Lengkap / Kurang Tepat
+                      </h4>
+                      <Badge className="bg-amber-600 text-white hover:bg-amber-700 text-[10px]">
+                        {Object.keys(errors).length} Kolom Perlu Diperiksa
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-amber-900 leading-relaxed">
+                      Mohon periksa dan lengkapi kolom yang bertanda merah di bawah ini sebelum melanjutkan ke langkah berikutnya:
+                    </p>
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 text-xs font-medium text-amber-950">
+                      {Object.entries(errors).map(([field, msg]) => (
+                        <li
+                          key={field}
+                          className="flex items-start gap-2 bg-white/90 p-2.5 rounded-lg border border-amber-200/80 shadow-xs"
+                        >
+                          <AlertCircle className="h-4 w-4 text-red-500 shrink-0 mt-0.5" />
+                          <span className="leading-tight text-slate-800">{msg}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* STEP 1: BIODATA SISWA & ASAL SEKOLAH */}
             {currentStep === 1 && (
               <div className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Nama Lengkap */}
                   <div className="sm:col-span-2 space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700">
-                      Nama Lengkap Calon Siswa <span className="text-red-500">*</span>
+                    <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                      <span>Nama Lengkap Calon Siswa <span className="text-red-500">*</span></span>
+                      <span className="text-[10px] text-slate-400 font-normal">Sesuai Ijazah / Akta Kelahiran</span>
                     </label>
                     <Input
-                      placeholder="Sesuai Akta Kelahiran / Ijazah"
+                      placeholder="Contoh: Muhammad Rizky Pratama"
                       value={formData.full_name}
-                      onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                      className={errors['full_name'] ? 'border-red-500' : ''}
+                      onChange={(e) => handleFieldChange('full_name', e.target.value)}
+                      className={errors['full_name'] ? 'border-red-500 bg-red-50/20' : ''}
                     />
-                    {errors['full_name'] && (
-                      <p className="text-[11px] text-red-500 font-medium">{errors['full_name']}</p>
+                    {errors['full_name'] ? (
+                      <p className="text-[11px] text-red-600 font-medium flex items-center gap-1">
+                        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                        {errors['full_name']}
+                      </p>
+                    ) : (
+                      <p className="text-[10px] text-slate-500">Tuliskan nama lengkap tanpa singkatan berlebihan.</p>
                     )}
                   </div>
 
                   {/* NISN */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700">
-                      NISN (10 Digit)
+                    <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                      <span>NISN (10 Digit Angka)</span>
+                      <span className="text-[10px] text-slate-400 font-normal">Opsional</span>
                     </label>
                     <Input
                       placeholder="Contoh: 0071234567"
                       maxLength={10}
                       value={formData.nisn || ''}
-                      onChange={(e) => setFormData({ ...formData, nisn: e.target.value })}
-                      className={errors['nisn'] ? 'border-red-500' : ''}
+                      onChange={(e) => handleFieldChange('nisn', e.target.value.replace(/[^0-9]/g, ''))}
+                      className={errors['nisn'] ? 'border-red-500 bg-red-50/20' : ''}
                     />
-                    {errors['nisn'] && (
-                      <p className="text-[11px] text-red-500 font-medium">{errors['nisn']}</p>
+                    {errors['nisn'] ? (
+                      <p className="text-[11px] text-red-600 font-medium flex items-center gap-1">
+                        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                        {errors['nisn']}
+                      </p>
+                    ) : (
+                      <p className="text-[10px] text-slate-500">Boleh dikosongkan jika belum memiliki NISN.</p>
                     )}
                   </div>
 
                   {/* NIK */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700">
-                      NIK (16 Digit KTP/KK)
+                    <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                      <span>NIK Calon Siswa (16 Digit)</span>
+                      <span className="text-[10px] text-slate-400 font-normal">Opsional</span>
                     </label>
                     <Input
-                      placeholder="16 digit sesuai Kartu Keluarga"
+                      placeholder="Contoh: 3201234567890001"
                       maxLength={16}
                       value={formData.nik || ''}
-                      onChange={(e) => setFormData({ ...formData, nik: e.target.value })}
-                      className={errors['nik'] ? 'border-red-500' : ''}
+                      onChange={(e) => handleFieldChange('nik', e.target.value.replace(/[^0-9]/g, ''))}
+                      className={errors['nik'] ? 'border-red-500 bg-red-50/20' : ''}
                     />
-                    {errors['nik'] && (
-                      <p className="text-[11px] text-red-500 font-medium">{errors['nik']}</p>
+                    {errors['nik'] ? (
+                      <p className="text-[11px] text-red-600 font-medium flex items-center gap-1">
+                        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                        {errors['nik']}
+                      </p>
+                    ) : (
+                      <p className="text-[10px] text-slate-500">16 digit angka yang tercantum di Kartu Keluarga (KK).</p>
                     )}
                   </div>
 
@@ -482,13 +563,18 @@ export const RegistrationPage: React.FC = () => {
                       Tempat Lahir <span className="text-red-500">*</span>
                     </label>
                     <Input
-                      placeholder="Kota / Kabupaten Kelahiran"
+                      placeholder="Contoh: Surabaya / Sidoarjo"
                       value={formData.birth_place}
-                      onChange={(e) => setFormData({ ...formData, birth_place: e.target.value })}
-                      className={errors['birth_place'] ? 'border-red-500' : ''}
+                      onChange={(e) => handleFieldChange('birth_place', e.target.value)}
+                      className={errors['birth_place'] ? 'border-red-500 bg-red-50/20' : ''}
                     />
-                    {errors['birth_place'] && (
-                      <p className="text-[11px] text-red-500 font-medium">{errors['birth_place']}</p>
+                    {errors['birth_place'] ? (
+                      <p className="text-[11px] text-red-600 font-medium flex items-center gap-1">
+                        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                        {errors['birth_place']}
+                      </p>
+                    ) : (
+                      <p className="text-[10px] text-slate-500">Kota atau Kabupaten tempat kelahiran.</p>
                     )}
                   </div>
 
@@ -500,11 +586,16 @@ export const RegistrationPage: React.FC = () => {
                     <Input
                       type="date"
                       value={formData.birth_date}
-                      onChange={(e) => setFormData({ ...formData, birth_date: e.target.value })}
-                      className={errors['birth_date'] ? 'border-red-500' : ''}
+                      onChange={(e) => handleFieldChange('birth_date', e.target.value)}
+                      className={errors['birth_date'] ? 'border-red-500 bg-red-50/20' : ''}
                     />
-                    {errors['birth_date'] && (
-                      <p className="text-[11px] text-red-500 font-medium">{errors['birth_date']}</p>
+                    {errors['birth_date'] ? (
+                      <p className="text-[11px] text-red-600 font-medium flex items-center gap-1">
+                        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                        {errors['birth_date']}
+                      </p>
+                    ) : (
+                      <p className="text-[10px] text-slate-500">Pilih tanggal, bulan, dan tahun kelahiran.</p>
                     )}
                   </div>
 
@@ -515,7 +606,7 @@ export const RegistrationPage: React.FC = () => {
                     </label>
                     <select
                       value={formData.gender}
-                      onChange={(e) => setFormData({ ...formData, gender: e.target.value as any })}
+                      onChange={(e) => handleFieldChange('gender', e.target.value as any)}
                       className="w-full h-10 px-3 text-xs bg-background border rounded-md border-input focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="Laki-laki">Laki-laki</option>
@@ -530,7 +621,7 @@ export const RegistrationPage: React.FC = () => {
                     </label>
                     <select
                       value={formData.religion}
-                      onChange={(e) => setFormData({ ...formData, religion: e.target.value })}
+                      onChange={(e) => handleFieldChange('religion', e.target.value)}
                       className="w-full h-10 px-3 text-xs bg-background border rounded-md border-input focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="Islam">Islam</option>
@@ -544,53 +635,70 @@ export const RegistrationPage: React.FC = () => {
 
                   {/* No HP / WA */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700">
-                      No. WhatsApp / HP Aktif <span className="text-red-500">*</span>
+                    <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                      <span>No. WhatsApp / HP Siswa <span className="text-red-500">*</span></span>
+                      <span className="text-[10px] text-slate-400 font-normal">Min. 10 Digit</span>
                     </label>
                     <Input
                       placeholder="Contoh: 081234567890"
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className={errors['phone'] ? 'border-red-500' : ''}
+                      onChange={(e) => handleFieldChange('phone', e.target.value)}
+                      className={errors['phone'] ? 'border-red-500 bg-red-50/20' : ''}
                     />
-                    {errors['phone'] && (
-                      <p className="text-[11px] text-red-500 font-medium">{errors['phone']}</p>
+                    {errors['phone'] ? (
+                      <p className="text-[11px] text-red-600 font-medium flex items-center gap-1">
+                        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                        {errors['phone']}
+                      </p>
+                    ) : (
+                      <p className="text-[10px] text-slate-500">Nomor aktif untuk menerima notifikasi info SPMB.</p>
                     )}
                   </div>
 
                   {/* Email */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700">
-                      Alamat Email Aktif <span className="text-red-500">*</span>
+                    <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                      <span>Alamat Email Aktif <span className="text-red-500">*</span></span>
+                      <span className="text-[10px] text-slate-400 font-normal">Harus format email</span>
                     </label>
                     <Input
                       type="email"
-                      placeholder="nama@email.com"
+                      placeholder="Contoh: siswa@gmail.com"
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className={errors['email'] ? 'border-red-500' : ''}
+                      onChange={(e) => handleFieldChange('email', e.target.value)}
+                      className={errors['email'] ? 'border-red-500 bg-red-50/20' : ''}
                     />
-                    {errors['email'] && (
-                      <p className="text-[11px] text-red-500 font-medium">{errors['email']}</p>
+                    {errors['email'] ? (
+                      <p className="text-[11px] text-red-600 font-medium flex items-center gap-1">
+                        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                        {errors['email']}
+                      </p>
+                    ) : (
+                      <p className="text-[10px] text-slate-500">Email untuk menerima salinan bukti pendaftaran.</p>
                     )}
                   </div>
 
                   {/* Alamat Lengkap */}
                   <div className="sm:col-span-2 space-y-1.5">
                     <label className="text-xs font-bold text-slate-700">
-                      Alamat Domisili Lengkap <span className="text-red-500">*</span>
+                      Alamat Tempat Tinggal / Domisili Lengkap <span className="text-red-500">*</span>
                     </label>
                     <textarea
                       rows={2}
-                      placeholder="Nama Jalan, RT/RW, Kelurahan, Kecamatan, Kota/Kabupaten"
+                      placeholder="Contoh: Jl. Ahmad Yani No. 45, RT 03/RW 02, Kel. Wonokromo, Kec. Wonokromo, Kota Surabaya"
                       value={formData.address}
-                      onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                      onChange={(e) => handleFieldChange('address', e.target.value)}
                       className={`w-full p-3 text-xs bg-background border rounded-md border-input focus:ring-2 focus:ring-blue-500 ${
-                        errors['address'] ? 'border-red-500' : ''
+                        errors['address'] ? 'border-red-500 bg-red-50/20' : ''
                       }`}
                     />
-                    {errors['address'] && (
-                      <p className="text-[11px] text-red-500 font-medium">{errors['address']}</p>
+                    {errors['address'] ? (
+                      <p className="text-[11px] text-red-600 font-medium flex items-center gap-1">
+                        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                        {errors['address']}
+                      </p>
+                    ) : (
+                      <p className="text-[10px] text-slate-500">Tuliskan nama jalan, RT/RW, kelurahan, kecamatan, dan kota domisili.</p>
                     )}
                   </div>
                 </div>
@@ -606,22 +714,29 @@ export const RegistrationPage: React.FC = () => {
                     {/* Pilih Master Asal Sekolah */}
                     <div className="sm:col-span-2 space-y-1.5">
                       <label className="text-xs font-bold text-slate-700">
-                        Nama SMP/MTs Asal <span className="text-red-500">*</span>
+                        Nama SMP / MTs Asal <span className="text-red-500">*</span>
                       </label>
                       <Input
                         list="source-schools-list"
-                        placeholder="Ketik atau pilih nama SMP/MTs Anda"
+                        placeholder="Ketik atau pilih nama SMP/MTs asal Anda"
                         value={formData.source_school_name}
                         onChange={(e) => {
                           const val = e.target.value;
                           const found = sourceSchools.find((s) => s.name.toLowerCase() === val.toLowerCase());
-                          setFormData({
-                            ...formData,
+                          setFormData((prev) => ({
+                            ...prev,
                             source_school_name: val,
                             source_school_id: found ? found.id : undefined,
-                          });
+                          }));
+                          if (errors['source_school_name']) {
+                            setErrors((prev) => {
+                              const next = { ...prev };
+                              delete next['source_school_name'];
+                              return next;
+                            });
+                          }
                         }}
-                        className={errors['source_school_name'] ? 'border-red-500' : ''}
+                        className={errors['source_school_name'] ? 'border-red-500 bg-red-50/20' : ''}
                       />
                       <datalist id="source-schools-list">
                         {sourceSchools.map((s) => (
@@ -630,8 +745,13 @@ export const RegistrationPage: React.FC = () => {
                           </option>
                         ))}
                       </datalist>
-                      {errors['source_school_name'] && (
-                        <p className="text-[11px] text-red-500 font-medium">{errors['source_school_name']}</p>
+                      {errors['source_school_name'] ? (
+                        <p className="text-[11px] text-red-600 font-medium flex items-center gap-1">
+                          <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                          {errors['source_school_name']}
+                        </p>
+                      ) : (
+                        <p className="text-[10px] text-slate-500">Ketik nama SMP/MTs Anda jika tidak ada di pilihan daftar.</p>
                       )}
                     </div>
 
@@ -642,7 +762,7 @@ export const RegistrationPage: React.FC = () => {
                       </label>
                       <select
                         value={formData.graduation_year}
-                        onChange={(e) => setFormData({ ...formData, graduation_year: Number(e.target.value) })}
+                        onChange={(e) => handleFieldChange('graduation_year', Number(e.target.value))}
                         className="w-full h-10 px-3 text-xs bg-background border rounded-md border-input focus:ring-2 focus:ring-blue-500"
                       >
                         <option value={2026}>2026 (Tahun Ini)</option>
@@ -665,13 +785,18 @@ export const RegistrationPage: React.FC = () => {
                       Nama Lengkap Ayah Kandung / Wali <span className="text-red-500">*</span>
                     </label>
                     <Input
-                      placeholder="Nama ayah"
+                      placeholder="Contoh: Ahmad Hidayat"
                       value={formData.father_name}
-                      onChange={(e) => setFormData({ ...formData, father_name: e.target.value })}
-                      className={errors['father_name'] ? 'border-red-500' : ''}
+                      onChange={(e) => handleFieldChange('father_name', e.target.value)}
+                      className={errors['father_name'] ? 'border-red-500 bg-red-50/20' : ''}
                     />
-                    {errors['father_name'] && (
-                      <p className="text-[11px] text-red-500 font-medium">{errors['father_name']}</p>
+                    {errors['father_name'] ? (
+                      <p className="text-[11px] text-red-600 font-medium flex items-center gap-1">
+                        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                        {errors['father_name']}
+                      </p>
+                    ) : (
+                      <p className="text-[10px] text-slate-500">Tuliskan nama lengkap ayah atau wali siswa.</p>
                     )}
                   </div>
 
@@ -681,41 +806,53 @@ export const RegistrationPage: React.FC = () => {
                       Nama Lengkap Ibu Kandung <span className="text-red-500">*</span>
                     </label>
                     <Input
-                      placeholder="Nama ibu"
+                      placeholder="Contoh: Siti Aminah"
                       value={formData.mother_name}
-                      onChange={(e) => setFormData({ ...formData, mother_name: e.target.value })}
-                      className={errors['mother_name'] ? 'border-red-500' : ''}
+                      onChange={(e) => handleFieldChange('mother_name', e.target.value)}
+                      className={errors['mother_name'] ? 'border-red-500 bg-red-50/20' : ''}
                     />
-                    {errors['mother_name'] && (
-                      <p className="text-[11px] text-red-500 font-medium">{errors['mother_name']}</p>
+                    {errors['mother_name'] ? (
+                      <p className="text-[11px] text-red-600 font-medium flex items-center gap-1">
+                        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                        {errors['mother_name']}
+                      </p>
+                    ) : (
+                      <p className="text-[10px] text-slate-500">Tuliskan nama lengkap ibu kandung.</p>
                     )}
                   </div>
 
                   {/* Pekerjaan Orang Tua */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700">
-                      Pekerjaan Orang Tua / Wali
+                    <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                      <span>Pekerjaan Orang Tua / Wali</span>
+                      <span className="text-[10px] text-slate-400 font-normal">Opsional</span>
                     </label>
                     <Input
-                      placeholder="Contoh: Karyawan Swasta / Wiraswasta / PNS"
+                      placeholder="Contoh: Karyawan Swasta / Wiraswasta / PNS / Petani"
                       value={formData.parent_job || ''}
-                      onChange={(e) => setFormData({ ...formData, parent_job: e.target.value })}
+                      onChange={(e) => handleFieldChange('parent_job', e.target.value)}
                     />
                   </div>
 
                   {/* No HP Orang Tua */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700">
-                      No. WhatsApp / HP Orang Tua <span className="text-red-500">*</span>
+                    <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                      <span>No. WhatsApp / HP Orang Tua <span className="text-red-500">*</span></span>
+                      <span className="text-[10px] text-slate-400 font-normal">Min. 10 Digit</span>
                     </label>
                     <Input
-                      placeholder="Nomor HP orang tua yang bisa dihubungi"
+                      placeholder="Contoh: 081298765432"
                       value={formData.parent_phone}
-                      onChange={(e) => setFormData({ ...formData, parent_phone: e.target.value })}
-                      className={errors['parent_phone'] ? 'border-red-500' : ''}
+                      onChange={(e) => handleFieldChange('parent_phone', e.target.value)}
+                      className={errors['parent_phone'] ? 'border-red-500 bg-red-50/20' : ''}
                     />
-                    {errors['parent_phone'] && (
-                      <p className="text-[11px] text-red-500 font-medium">{errors['parent_phone']}</p>
+                    {errors['parent_phone'] ? (
+                      <p className="text-[11px] text-red-600 font-medium flex items-center gap-1">
+                        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                        {errors['parent_phone']}
+                      </p>
+                    ) : (
+                      <p className="text-[10px] text-slate-500">Nomor aktif orang tua yang dapat dihubungi sekolah.</p>
                     )}
                   </div>
 
@@ -727,7 +864,7 @@ export const RegistrationPage: React.FC = () => {
                       </label>
                       <button
                         type="button"
-                        onClick={() => setFormData({ ...formData, parent_address: formData.address })}
+                        onClick={() => handleFieldChange('parent_address', formData.address)}
                         className="text-[11px] text-blue-600 hover:underline font-semibold"
                       >
                         Sama dengan alamat siswa
@@ -735,9 +872,9 @@ export const RegistrationPage: React.FC = () => {
                     </div>
                     <textarea
                       rows={2}
-                      placeholder="Alamat tempat tinggal orang tua"
+                      placeholder="Alamat tempat tinggal orang tua (boleh dikosongkan jika sama)"
                       value={formData.parent_address || ''}
-                      onChange={(e) => setFormData({ ...formData, parent_address: e.target.value })}
+                      onChange={(e) => handleFieldChange('parent_address', e.target.value)}
                       className="w-full p-3 text-xs bg-background border rounded-md border-input focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
@@ -766,7 +903,7 @@ export const RegistrationPage: React.FC = () => {
                       {majors.map((major) => (
                         <div
                           key={major.id}
-                          onClick={() => setFormData({ ...formData, choice_1_major_id: major.id })}
+                          onClick={() => handleFieldChange('choice_1_major_id', major.id)}
                           className={`p-4 rounded-xl border cursor-pointer transition-all ${
                             formData.choice_1_major_id === major.id
                               ? 'border-blue-600 bg-blue-50/70 ring-2 ring-blue-600/20 shadow-sm'
@@ -787,7 +924,10 @@ export const RegistrationPage: React.FC = () => {
                       ))}
                     </div>
                     {errors['choice_1_major_id'] && (
-                      <p className="text-[11px] text-red-500 font-medium">{errors['choice_1_major_id']}</p>
+                      <p className="text-[11px] text-red-500 font-medium flex items-center gap-1">
+                        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                        {errors['choice_1_major_id']}
+                      </p>
                     )}
                   </div>
 
@@ -807,10 +947,7 @@ export const RegistrationPage: React.FC = () => {
                             key={major.id}
                             onClick={() => {
                               if (!isSelected1) {
-                                setFormData({
-                                  ...formData,
-                                  choice_2_major_id: isSelected2 ? '' : major.id,
-                                });
+                                handleFieldChange('choice_2_major_id', isSelected2 ? '' : major.id);
                               }
                             }}
                             className={`p-4 rounded-xl border transition-all ${
@@ -838,7 +975,10 @@ export const RegistrationPage: React.FC = () => {
                       })}
                     </div>
                     {errors['choice_2_major_id'] && (
-                      <p className="text-[11px] text-red-500 font-medium">{errors['choice_2_major_id']}</p>
+                      <p className="text-[11px] text-red-500 font-medium flex items-center gap-1">
+                        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                        {errors['choice_2_major_id']}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -1164,7 +1304,16 @@ export const RegistrationPage: React.FC = () => {
                     <input
                       type="checkbox"
                       checked={agreementChecked}
-                      onChange={(e) => setAgreementChecked(e.target.checked)}
+                      onChange={(e) => {
+                        setAgreementChecked(e.target.checked);
+                        if (errors['agreement']) {
+                          setErrors((prev) => {
+                            const next = { ...prev };
+                            delete next['agreement'];
+                            return next;
+                          });
+                        }
+                      }}
                       className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 mt-0.5"
                     />
                     <span className="text-xs text-slate-700 leading-relaxed">
@@ -1172,7 +1321,10 @@ export const RegistrationPage: React.FC = () => {
                     </span>
                   </label>
                   {errors['agreement'] && (
-                    <p className="text-[11px] text-red-500 font-medium">{errors['agreement']}</p>
+                    <p className="text-[11px] text-red-500 font-medium flex items-center gap-1">
+                      <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                      {errors['agreement']}
+                    </p>
                   )}
                 </div>
 
@@ -1187,47 +1339,59 @@ export const RegistrationPage: React.FC = () => {
             )}
 
             {/* ACTION NAVIGATION BUTTONS */}
-            <div className="pt-6 border-t border-slate-100 flex items-center justify-between gap-3">
-              {currentStep > 1 ? (
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handlePrevStep}
-                  className="text-xs font-semibold h-10 gap-1.5"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  Sebelumnya
-                </Button>
-              ) : (
-                <div />
+            <div className="pt-6 border-t border-slate-100 space-y-3">
+              {/* Bottom Mini Alert when error occurs */}
+              {Object.keys(errors).length > 0 && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-xl flex items-center gap-2 text-xs text-red-700 font-medium">
+                  <AlertCircle className="h-4 w-4 shrink-0 text-red-600" />
+                  <span>
+                    Masih ada <strong>{Object.keys(errors).length} kolom</strong> yang belum lengkap atau perlu diperbaiki di atas. Silakan lengkapi terlebih dahulu.
+                  </span>
+                </div>
               )}
 
-              {currentStep < 6 ? (
-                <Button
-                  type="button"
-                  onClick={handleNextStep}
-                  className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold h-10 gap-1.5 px-6"
-                >
-                  Langkah Selanjutnya
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              ) : (
-                <Button
-                  type="button"
-                  disabled={isSubmitting || !agreementChecked}
-                  onClick={handleSubmitRegistration}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold h-10 gap-2 px-8 shadow-md shadow-emerald-600/20"
-                >
-                  {isSubmitting ? (
-                    <span>Mengirim Pendaftaran...</span>
-                  ) : (
-                    <>
-                      <CheckCircle2 className="h-4 w-4" />
-                      <span>Kirim Formulir Pendaftaran</span>
-                    </>
-                  )}
-                </Button>
-              )}
+              <div className="flex items-center justify-between gap-3">
+                {currentStep > 1 ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handlePrevStep}
+                    className="text-xs font-semibold h-10 gap-1.5"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                    Sebelumnya
+                  </Button>
+                ) : (
+                  <div />
+                )}
+
+                {currentStep < 6 ? (
+                  <Button
+                    type="button"
+                    onClick={handleNextStep}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold h-10 gap-1.5 px-6 shadow-sm"
+                  >
+                    Langkah Selanjutnya
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                ) : (
+                  <Button
+                    type="button"
+                    disabled={isSubmitting || !agreementChecked}
+                    onClick={handleSubmitRegistration}
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold h-10 gap-2 px-8 shadow-md shadow-emerald-600/20"
+                  >
+                    {isSubmitting ? (
+                      <span>Mengirim Pendaftaran...</span>
+                    ) : (
+                      <>
+                        <CheckCircle2 className="h-4 w-4" />
+                        <span>Kirim Formulir Pendaftaran</span>
+                      </>
+                    )}
+                  </Button>
+                )}
+              </div>
             </div>
           </CardContent>
         </Card>

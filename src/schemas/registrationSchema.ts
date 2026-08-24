@@ -1,50 +1,50 @@
 import { z } from 'zod';
 
 export const personalDataSchema = z.object({
-  full_name: z.string().min(3, 'Nama lengkap minimal 3 karakter'),
+  full_name: z.string().min(3, 'Nama lengkap calon siswa wajib diisi (minimal 3 huruf)'),
   nisn: z
     .string()
     .optional()
-    .refine((val) => !val || /^[0-9]{10}$/.test(val), {
-      message: 'NISN harus terdiri dari 10 digit angka',
+    .refine((val) => !val || /^[0-9]{10}$/.test(val.trim()), {
+      message: 'NISN harus tepat 10 digit angka (atau kosongkan jika belum punya)',
     }),
   nik: z
     .string()
     .optional()
-    .refine((val) => !val || /^[0-9]{16}$/.test(val), {
-      message: 'NIK harus terdiri dari 16 digit angka',
+    .refine((val) => !val || /^[0-9]{16}$/.test(val.trim()), {
+      message: 'NIK harus tepat 16 digit angka sesuai Kartu Keluarga/KTP (atau kosongkan)',
     }),
-  birth_place: z.string().min(2, 'Tempat lahir wajib diisi'),
+  birth_place: z.string().min(2, 'Tempat lahir wajib diisi (minimal 2 huruf)'),
   birth_date: z.string().min(1, 'Tanggal lahir wajib dipilih'),
   gender: z.enum(['Laki-laki', 'Perempuan'], {
     message: 'Pilih jenis kelamin',
   }),
   religion: z.string().min(1, 'Agama wajib dipilih'),
-  address: z.string().min(5, 'Alamat lengkap minimal 5 karakter'),
+  address: z.string().min(5, 'Alamat domisili wajib diisi lengkap (minimal 5 karakter)'),
   phone: z
     .string()
-    .min(10, 'Nomor telepon/WhatsApp minimal 10 digit')
-    .regex(/^[0-9+ -]+$/, 'Format nomor telepon tidak valid'),
-  email: z.string().email('Format email tidak valid'),
+    .min(10, 'Nomor HP/WhatsApp minimal 10 digit angka')
+    .regex(/^[0-9+ -]+$/, 'Nomor HP/WhatsApp hanya boleh berisi angka (contoh: 081234567890)'),
+  email: z.string().email('Format email belum benar (contoh yang benar: nama@gmail.com)'),
   source_school_id: z.string().optional(),
-  source_school_name: z.string().min(3, 'Nama asal sekolah minimal 3 karakter'),
+  source_school_name: z.string().min(3, 'Nama asal sekolah SMP/MTs wajib diisi (minimal 3 karakter)'),
   graduation_year: z.number().min(2020).max(2026, 'Tahun lulus tidak valid'),
 });
 
 export const parentDataSchema = z.object({
-  father_name: z.string().min(3, 'Nama ayah minimal 3 karakter'),
-  mother_name: z.string().min(3, 'Nama ibu minimal 3 karakter'),
+  father_name: z.string().min(3, 'Nama lengkap ayah kandung/wali wajib diisi (minimal 3 huruf)'),
+  mother_name: z.string().min(3, 'Nama lengkap ibu kandung wajib diisi (minimal 3 huruf)'),
   parent_job: z.string().optional(),
   parent_phone: z
     .string()
-    .min(10, 'Nomor HP/WA orang tua minimal 10 digit')
-    .regex(/^[0-9+ -]+$/, 'Format nomor telepon tidak valid'),
+    .min(10, 'Nomor HP/WhatsApp orang tua minimal 10 digit angka')
+    .regex(/^[0-9+ -]+$/, 'Nomor telepon orang tua hanya boleh angka (contoh: 081234567890)'),
   parent_address: z.string().optional(),
 });
 
 export const majorChoiceSchema = z
   .object({
-    choice_1_major_id: z.string().min(1, 'Pilihan Jurusan 1 wajib dipilih'),
+    choice_1_major_id: z.string().min(1, 'Pilihan Jurusan 1 (Prioritas Utama) wajib dipilih'),
     choice_2_major_id: z.string().optional(),
   })
   .refine(
@@ -59,7 +59,7 @@ export const reportScoreItemSchema = z.object({
   semester: z.number().min(1).max(5),
   subject: z.string().min(1),
   score: z
-    .number({ message: 'Nilai harus berupa angka' })
+    .number({ message: 'Nilai harus berupa angka (0 - 100)' })
     .min(0, 'Nilai minimal 0')
     .max(100, 'Nilai maksimal 100'),
 });
@@ -70,7 +70,7 @@ export const reportScoresSchema = z.object({
 
 export const achievementItemSchema = z.object({
   level: z.enum(['Internasional', 'Nasional', 'Provinsi', 'Kabupaten/Kota', 'Sekolah']),
-  title: z.string().min(3, 'Nama kejuaraan minimal 3 karakter'),
+  title: z.string().min(3, 'Nama kejuaraan/prestasi minimal 3 huruf'),
   description: z.string().optional(),
   file_url: z.string().optional(),
 });
@@ -84,7 +84,7 @@ export const documentsSchema = z.object({
 
 export const agreementSchema = z.object({
   agreement: z.literal(true, {
-    message: 'Anda harus menyetujui pernyataan kebenaran data',
+    message: 'Anda harus menyetujui pernyataan kebenaran data dengan mencentang kotak persetujuan',
   }),
 });
 
