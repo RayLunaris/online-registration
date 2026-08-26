@@ -135,7 +135,7 @@ export const AdminAnnouncementsPage: React.FC = () => {
           <Button
             size="sm"
             onClick={handleOpenAdd}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-xs gap-1.5 font-semibold"
+            className="bg-teal-600 hover:bg-teal-700 text-white text-xs gap-1.5 font-semibold"
           >
             <Plus className="h-4 w-4" />
             <span>Buat Pengumuman</span>
@@ -153,7 +153,7 @@ export const AdminAnnouncementsPage: React.FC = () => {
         <CardContent className="p-0">
           {loading ? (
             <div className="py-16 text-center space-y-2">
-              <div className="h-6 w-6 animate-spin rounded-full border-2 border-blue-500 border-t-transparent mx-auto" />
+              <div className="h-6 w-6 animate-spin rounded-full border-2 border-teal-500 border-t-transparent mx-auto" />
               <p className="text-xs text-slate-500">Memuat data pengumuman...</p>
             </div>
           ) : announcements.length > 0 ? (
@@ -197,7 +197,7 @@ export const AdminAnnouncementsPage: React.FC = () => {
                           <Button
                             size="sm"
                             variant="ghost"
-                            className="h-8 px-2 text-blue-400 hover:text-blue-300 hover:bg-blue-950/40"
+                            className="h-8 px-2 text-teal-400 hover:text-teal-300 hover:bg-teal-950/40"
                           >
                             <ExternalLink className="h-3.5 w-3.5" />
                           </Button>
@@ -254,8 +254,10 @@ export const AdminAnnouncementsPage: React.FC = () => {
 
               <form onSubmit={handleSave} className="space-y-4 text-xs">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-semibold">Judul Pengumuman / Berita *</label>
+                  <label htmlFor="ann_title" className="text-slate-300 font-semibold cursor-pointer">Judul Pengumuman / Berita *</label>
                   <Input
+                    id="ann_title"
+                    name="title"
                     placeholder="Contoh: Jadwal Pelaksanaan Seleksi Wawancara SPMB 2026"
                     value={editingAnnouncement.title || ''}
                     onChange={(e) => setEditingAnnouncement({ ...editingAnnouncement, title: e.target.value })}
@@ -266,8 +268,10 @@ export const AdminAnnouncementsPage: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="space-y-1">
-                    <label className="text-slate-300 font-semibold">Kategori</label>
+                    <label htmlFor="ann_category" className="text-slate-300 font-semibold cursor-pointer">Kategori</label>
                     <select
+                      id="ann_category"
+                      name="category"
                       value={editingAnnouncement.category || 'Pengumuman'}
                       onChange={(e) => setEditingAnnouncement({ ...editingAnnouncement, category: e.target.value as any })}
                       className="w-full h-10 px-3 text-xs bg-slate-900 border border-slate-800 rounded-md text-white"
@@ -279,8 +283,10 @@ export const AdminAnnouncementsPage: React.FC = () => {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-slate-300 font-semibold">Status Publikasi</label>
+                    <label htmlFor="ann_status" className="text-slate-300 font-semibold cursor-pointer">Status Publikasi</label>
                     <select
+                      id="ann_status"
+                      name="status"
                       value={editingAnnouncement.status || 'Published'}
                       onChange={(e) => setEditingAnnouncement({ ...editingAnnouncement, status: e.target.value as any })}
                       className="w-full h-10 px-3 text-xs bg-slate-900 border border-slate-800 rounded-md text-white"
@@ -291,8 +297,10 @@ export const AdminAnnouncementsPage: React.FC = () => {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-slate-300 font-semibold">Custom Slug URL</label>
+                    <label htmlFor="ann_slug" className="text-slate-300 font-semibold cursor-pointer">Custom Slug URL</label>
                     <Input
+                      id="ann_slug"
+                      name="slug"
                       placeholder="jadwal-seleksi-2026"
                       value={editingAnnouncement.slug || ''}
                       onChange={(e) => setEditingAnnouncement({ ...editingAnnouncement, slug: e.target.value })}
@@ -302,8 +310,10 @@ export const AdminAnnouncementsPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-semibold">URL Thumbnail Gambar (Opsional)</label>
+                  <label htmlFor="ann_thumbnail_url" className="text-slate-300 font-semibold cursor-pointer">URL Thumbnail Gambar (Opsional)</label>
                   <Input
+                    id="ann_thumbnail_url"
+                    name="thumbnail_url"
                     placeholder="https://images.unsplash.com/..."
                     value={editingAnnouncement.thumbnail_url || ''}
                     onChange={(e) => setEditingAnnouncement({ ...editingAnnouncement, thumbnail_url: e.target.value })}
@@ -312,8 +322,10 @@ export const AdminAnnouncementsPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-semibold">Isi Lengkap Konten Pengumuman *</label>
+                  <label htmlFor="ann_content" className="text-slate-300 font-semibold cursor-pointer">Isi Lengkap Konten Pengumuman *</label>
                   <textarea
+                    id="ann_content"
+                    name="content"
                     rows={6}
                     placeholder="Tuliskan isi pengumuman atau petunjuk teknis secara lengkap di sini..."
                     value={editingAnnouncement.content || ''}
@@ -335,7 +347,7 @@ export const AdminAnnouncementsPage: React.FC = () => {
                   <Button
                     type="submit"
                     disabled={saving}
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold"
+                    className="bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold"
                   >
                     {saving ? 'Menyimpan...' : 'Simpan Pengumuman'}
                   </Button>

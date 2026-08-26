@@ -91,11 +91,14 @@ export const LoginPage: React.FC = () => {
 
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-1">
-                <label className="text-xs font-medium text-slate-300">Email Admin</label>
+                <label htmlFor="admin-email" className="text-xs font-medium text-slate-300">Email Admin</label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-2.5 h-4 w-4 text-slate-500" />
                   <Input
+                    id="admin-email"
+                    name="email"
                     type="email"
+                    autoComplete="email"
                     placeholder="admin@smkn1digital.sch.id"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -107,12 +110,15 @@ export const LoginPage: React.FC = () => {
 
               <div className="space-y-1">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-medium text-slate-300">Kata Sandi</label>
+                  <label htmlFor="admin-password" className="text-xs font-medium text-slate-300">Kata Sandi</label>
                 </div>
                 <div className="relative">
                   <Lock className="absolute left-3 top-2.5 h-4 w-4 text-slate-500" />
                   <Input
+                    id="admin-password"
+                    name="password"
                     type="password"
+                    autoComplete="current-password"
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}

@@ -44,6 +44,7 @@ export const uploadStorageFile = async (
   const { data, error } = await supabase.storage.from(bucket).upload(filePath, file, {
     cacheControl: '3600',
     upsert: true,
+    contentType: filePath.endsWith('.pdf') ? 'application/pdf' : file.type
   });
 
   if (error) {

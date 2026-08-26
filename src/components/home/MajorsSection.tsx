@@ -104,21 +104,21 @@ export const MajorsSection: React.FC<MajorsSectionProps> = ({ majors }) => {
   });
 
   return (
-    <section id="jurusan" className="py-16 sm:py-20 bg-white border-b border-slate-200/80 scroll-mt-16 relative">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl space-y-10">
+    <section id="jurusan" className="py-16 sm:py-20 bg-white border-b border-slate-200/70 scroll-mt-16 relative">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1440px] space-y-10">
         
-        {/* Header & Filter Controls */}
+        {/* Header & Filter Controls (EducateX Style) */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl space-y-2">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-200/70 text-[#0D9488] text-xs font-bold uppercase tracking-wider">
               <BookOpen className="h-3.5 w-3.5" />
               <span>Program Keahlian</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
               Pilihan Program Keahlian Unggulan
             </h2>
             <p className="text-xs sm:text-sm text-slate-600">
-              Setiap calon peserta didik dapat memilih maksimal 2 program keahlian (Pilihan 1 Prioritas & Pilihan 2 Alternatif).
+              Setiap calon siswa dapat memilih maksimal 2 program keahlian (Pilihan 1 Prioritas & Pilihan 2 Alternatif).
             </p>
           </div>
 
@@ -131,7 +131,7 @@ export const MajorsSection: React.FC<MajorsSectionProps> = ({ majors }) => {
                 onClick={() => setActiveFilter(tab.key)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                   activeFilter === tab.key
-                    ? 'bg-[#0D9488] text-white shadow-sm'
+                    ? 'bg-[#0D9488] text-white shadow-2xs'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
                 }`}
               >

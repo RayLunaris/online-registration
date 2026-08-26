@@ -174,12 +174,12 @@ export const AdminSelectionPage: React.FC = () => {
               onClick={() => setSelectedMajorId(grp.major.id)}
               className={`p-4 rounded-xl border cursor-pointer transition-all ${
                 isSelected
-                  ? 'bg-slate-900 border-blue-500 ring-2 ring-blue-500/20 text-white shadow-md'
+                  ? 'bg-slate-900 border-teal-500 ring-2 ring-teal-500/20 text-white shadow-md'
                   : 'bg-slate-950 border-slate-800 text-slate-300 hover:bg-slate-900/60'
               }`}
             >
               <div className="flex items-center justify-between mb-1.5">
-                <Badge className="bg-slate-800 text-blue-400 border-slate-700 text-[10px] font-mono font-bold">
+                <Badge className="bg-slate-800 text-teal-400 border-slate-700 text-[10px] font-mono font-bold">
                   {grp.major.code}
                 </Badge>
                 <span className="text-[10px] text-slate-400">Kuota: {grp.quota}</span>
@@ -201,7 +201,7 @@ export const AdminSelectionPage: React.FC = () => {
           <CardHeader className="p-5 border-b border-slate-800/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
             <div>
               <div className="flex items-center gap-2">
-                <Badge className="bg-blue-950 text-blue-400 border border-blue-800 text-xs font-mono font-bold">
+                <Badge className="bg-teal-950 text-teal-400 border border-teal-800 text-xs font-mono font-bold">
                   {activeGroup.major.code}
                 </Badge>
                 <CardTitle className="text-base font-bold text-white">
@@ -215,11 +215,15 @@ export const AdminSelectionPage: React.FC = () => {
 
             {/* Live Filter Search */}
             <div className="relative w-full md:w-64">
-              <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-500" />
+              <label htmlFor="selection-candidate-search" className="sr-only">Cari nama calon siswa</label>
+              <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-500 pointer-events-none" />
               <Input
+                id="selection-candidate-search"
+                name="candidateSearch"
                 placeholder="Cari nama calon siswa..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                aria-label="Cari nama calon siswa"
                 className="pl-8 h-8 text-xs bg-slate-900 border-slate-800 text-white placeholder:text-slate-500"
               />
             </div>
@@ -228,7 +232,7 @@ export const AdminSelectionPage: React.FC = () => {
           <CardContent className="p-0">
             {loading ? (
               <div className="py-16 text-center space-y-2">
-                <div className="h-6 w-6 animate-spin rounded-full border-2 border-blue-500 border-t-transparent mx-auto" />
+                <div className="h-6 w-6 animate-spin rounded-full border-2 border-teal-500 border-t-transparent mx-auto" />
                 <p className="text-xs text-slate-500">Menjalankan simulasi kalkulasi skor...</p>
               </div>
             ) : filteredCandidates.length > 0 ? (
@@ -273,7 +277,7 @@ export const AdminSelectionPage: React.FC = () => {
                               {cand.rank}
                             </span>
                           </td>
-                          <td className="py-3 px-4 font-mono font-bold text-blue-400">
+                          <td className="py-3 px-4 font-mono font-bold text-teal-400">
                             {cand.student.registration_number}
                           </td>
                           <td className="py-3 px-4 font-semibold text-white">
@@ -317,7 +321,7 @@ export const AdminSelectionPage: React.FC = () => {
                             <Link
                               to={`/kartu-peserta/${cand.student.registration_number}`}
                               target="_blank"
-                              className="text-[11px] text-blue-400 hover:underline"
+                              className="text-[11px] text-teal-400 hover:underline"
                             >
                               Kartu PDF
                             </Link>

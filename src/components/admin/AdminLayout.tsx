@@ -51,14 +51,14 @@ export const AdminLayout: React.FC = () => {
         <div className="space-y-6">
           {/* Logo & Brand */}
           <Link to="/admin" className="flex items-center gap-3 group">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md shadow-blue-600/30">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-600 text-white shadow-md shadow-teal-600/30">
               <GraduationCap className="h-6 w-6" />
             </div>
             <div>
               <span className="font-extrabold text-white text-base tracking-tight block leading-tight">
                 SPMB Panel
               </span>
-              <span className="text-[11px] text-blue-400 font-medium block">
+              <span className="text-[11px] text-teal-400 font-medium block">
                 SMK Negeri 1 Digital
               </span>
             </div>
@@ -75,7 +75,7 @@ export const AdminLayout: React.FC = () => {
                   to={item.path}
                   className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                     active
-                      ? 'bg-blue-600 text-white shadow-md shadow-blue-600/25'
+                      ? 'bg-teal-600 text-white shadow-md shadow-teal-600/25'
                       : 'text-slate-400 hover:text-white hover:bg-slate-900'
                   }`}
                 >
@@ -108,7 +108,7 @@ export const AdminLayout: React.FC = () => {
           {/* User Profile */}
           <div className="p-3 bg-slate-900/90 rounded-xl border border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-2.5 overflow-hidden">
-              <div className="h-8 w-8 rounded-lg bg-blue-950 border border-blue-800 flex items-center justify-center text-blue-400 font-bold text-xs shrink-0">
+              <div className="h-8 w-8 rounded-lg bg-teal-950 border border-teal-800 flex items-center justify-center text-teal-400 font-bold text-xs shrink-0">
                 <UserIcon className="h-4 w-4" />
               </div>
               <div className="truncate">
@@ -138,7 +138,7 @@ export const AdminLayout: React.FC = () => {
       {/* 2. MOBILE HEADER & NAVIGATION */}
       <div className="md:hidden bg-slate-950 border-b border-slate-800 p-4 flex items-center justify-between">
         <Link to="/admin" className="flex items-center gap-2.5">
-          <div className="h-8 w-8 rounded-lg bg-blue-600 text-white flex items-center justify-center">
+          <div className="h-8 w-8 rounded-lg bg-teal-600 text-white flex items-center justify-center">
             <GraduationCap className="h-5 w-5" />
           </div>
           <span className="font-bold text-white text-sm">SPMB Admin</span>
@@ -162,7 +162,7 @@ export const AdminLayout: React.FC = () => {
                 to={item.path}
                 onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium ${
-                  isActive(item.path) ? 'bg-blue-600 text-white' : 'text-slate-400 hover:bg-slate-900'
+                  isActive(item.path) ? 'bg-teal-600 text-white' : 'text-slate-400 hover:bg-slate-900'
                 }`}
               >
                 <item.icon className="h-4 w-4" />
@@ -171,7 +171,7 @@ export const AdminLayout: React.FC = () => {
             ))}
           </nav>
           <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
-            <Link to="/" className="text-xs text-blue-400">Web Publik</Link>
+            <Link to="/" className="text-xs text-teal-400">Web Publik</Link>
             <button onClick={handleLogout} className="text-xs text-red-400">Keluar</button>
           </div>
         </div>

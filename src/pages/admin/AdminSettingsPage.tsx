@@ -61,7 +61,7 @@ export const AdminSettingsPage: React.FC = () => {
   if (loading) {
     return (
       <div className="py-16 text-center space-y-2">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-blue-500 border-t-transparent mx-auto" />
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-teal-500 border-t-transparent mx-auto" />
         <p className="text-xs text-slate-500">Memuat pengaturan sekolah...</p>
       </div>
     );
@@ -112,7 +112,7 @@ export const AdminSettingsPage: React.FC = () => {
         <Card className="bg-slate-950 border-slate-800 text-slate-100 shadow-md">
           <CardHeader className="p-5 pb-3 border-b border-slate-800/80">
             <CardTitle className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
-              <Building2 className="h-4 w-4 text-blue-400" />
+              <Building2 className="h-4 w-4 text-teal-400" />
               Identitas Resmi Sekolah
             </CardTitle>
             <CardDescription className="text-xs text-slate-400">
@@ -122,8 +122,10 @@ export const AdminSettingsPage: React.FC = () => {
           <CardContent className="p-5 space-y-4 text-xs">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="sm:col-span-2 space-y-1">
-                <label className="text-slate-300 font-semibold">Nama Resmi Sekolah *</label>
+                <label htmlFor="school_name" className="text-slate-300 font-semibold cursor-pointer">Nama Resmi Sekolah *</label>
                 <Input
+                  id="school_name"
+                  name="name"
                   value={settings.name || ''}
                   onChange={(e) => setSettings({ ...settings, name: e.target.value })}
                   className="bg-slate-900 border-slate-800 text-white"
@@ -132,8 +134,10 @@ export const AdminSettingsPage: React.FC = () => {
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-semibold">NPSN Sekolah *</label>
+                <label htmlFor="school_npsn" className="text-slate-300 font-semibold cursor-pointer">NPSN Sekolah *</label>
                 <Input
+                  id="school_npsn"
+                  name="npsn"
                   value={settings.npsn || ''}
                   onChange={(e) => setSettings({ ...settings, npsn: e.target.value })}
                   className="bg-slate-900 border-slate-800 text-white font-mono"
@@ -144,8 +148,10 @@ export const AdminSettingsPage: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-slate-300 font-semibold">Tahun Pelajaran SPMB Aktif *</label>
+                <label htmlFor="school_academic_year" className="text-slate-300 font-semibold cursor-pointer">Tahun Pelajaran SPMB Aktif *</label>
                 <Input
+                  id="school_academic_year"
+                  name="academic_year"
                   value={settings.academic_year || '2026/2027'}
                   onChange={(e) => setSettings({ ...settings, academic_year: e.target.value })}
                   className="bg-slate-900 border-slate-800 text-white font-mono"
@@ -155,8 +161,10 @@ export const AdminSettingsPage: React.FC = () => {
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-semibold">Target Total Kuota Siswa Baru</label>
+                <label htmlFor="school_target_students" className="text-slate-300 font-semibold cursor-pointer">Target Total Kuota Siswa Baru</label>
                 <Input
+                  id="school_target_students"
+                  name="target_students"
                   type="number"
                   value={settings.target_students || 400}
                   onChange={(e) => setSettings({ ...settings, target_students: Number(e.target.value) })}
@@ -166,8 +174,10 @@ export const AdminSettingsPage: React.FC = () => {
             </div>
 
             <div className="space-y-1">
-              <label className="text-slate-300 font-semibold">Alamat Lengkap Sekolah *</label>
+              <label htmlFor="school_address" className="text-slate-300 font-semibold cursor-pointer">Alamat Lengkap Sekolah *</label>
               <textarea
+                id="school_address"
+                name="address"
                 rows={2}
                 value={settings.address || ''}
                 onChange={(e) => setSettings({ ...settings, address: e.target.value })}
@@ -178,8 +188,10 @@ export const AdminSettingsPage: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-slate-300 font-semibold">No. Telepon / Hotline Panitia</label>
+                <label htmlFor="school_phone" className="text-slate-300 font-semibold cursor-pointer">No. Telepon / Hotline Panitia</label>
                 <Input
+                  id="school_phone"
+                  name="phone"
                   value={settings.phone || ''}
                   onChange={(e) => setSettings({ ...settings, phone: e.target.value })}
                   className="bg-slate-900 border-slate-800 text-white"
@@ -187,8 +199,10 @@ export const AdminSettingsPage: React.FC = () => {
               </div>
 
               <div className="space-y-1">
-                <label className="text-slate-300 font-semibold">Alamat Email Resmi Sekolah</label>
+                <label htmlFor="school_email" className="text-slate-300 font-semibold cursor-pointer">Alamat Email Resmi Sekolah</label>
                 <Input
+                  id="school_email"
+                  name="email"
                   type="email"
                   value={settings.email || ''}
                   onChange={(e) => setSettings({ ...settings, email: e.target.value })}
@@ -212,8 +226,10 @@ export const AdminSettingsPage: React.FC = () => {
           </CardHeader>
           <CardContent className="p-5 space-y-4 text-xs">
             <div className="space-y-1">
-              <label className="text-slate-300 font-semibold">Tagline Utama Hero Banner</label>
+              <label htmlFor="school_hero_tagline" className="text-slate-300 font-semibold cursor-pointer">Tagline Utama Hero Banner</label>
               <Input
+                id="school_hero_tagline"
+                name="hero_tagline"
                 value={settings.hero_tagline || ''}
                 onChange={(e) => setSettings({ ...settings, hero_tagline: e.target.value })}
                 className="bg-slate-900 border-slate-800 text-white"
@@ -222,8 +238,10 @@ export const AdminSettingsPage: React.FC = () => {
             </div>
 
             <div className="space-y-1">
-              <label className="text-slate-300 font-semibold">Deskripsi Singkat Hero</label>
+              <label htmlFor="school_hero_description" className="text-slate-300 font-semibold cursor-pointer">Deskripsi Singkat Hero</label>
               <textarea
+                id="school_hero_description"
+                name="hero_description"
                 rows={2}
                 value={settings.hero_description || ''}
                 onChange={(e) => setSettings({ ...settings, hero_description: e.target.value })}
@@ -239,7 +257,7 @@ export const AdminSettingsPage: React.FC = () => {
           <Button
             type="submit"
             disabled={saving}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-8 h-10 gap-2 shadow-md shadow-blue-600/30"
+            className="bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold px-8 h-10 gap-2 shadow-md shadow-teal-600/30"
           >
             <Save className="h-4 w-4" />
             <span>{saving ? 'Menyimpan Perubahan...' : 'Simpan Seluruh Pengaturan'}</span>

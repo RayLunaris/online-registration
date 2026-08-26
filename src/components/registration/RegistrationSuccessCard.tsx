@@ -95,7 +95,7 @@ export const RegistrationSuccessCard: React.FC<Props> = ({
             size="sm"
             disabled={downloading}
             onClick={handleDownloadPDF}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-xs h-9 gap-1.5 font-semibold shadow-sm"
+            className="bg-teal-600 hover:bg-teal-700 text-white text-xs h-9 gap-1.5 font-semibold shadow-xs"
           >
             {downloading ? (
               <>
@@ -122,7 +122,7 @@ export const RegistrationSuccessCard: React.FC<Props> = ({
 
           <Link to={`/cek-status?reg=${registrationNumber}`}>
             <Button variant="secondary" size="sm" className="text-xs h-9 gap-1.5 font-semibold">
-              <Search className="h-3.5 w-3.5 text-blue-600" />
+              <Search className="h-3.5 w-3.5 text-teal-600" />
               <span>Cek Status</span>
               <ArrowRight className="h-3 w-3" />
             </Button>

@@ -55,7 +55,7 @@ export const AnnouncementDetailPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-slate-50 py-16 flex items-center justify-center">
         <div className="text-center space-y-3">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent mx-auto" />
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-teal-600 border-t-transparent mx-auto" />
           <p className="text-sm text-slate-500 font-medium">Memuat artikel...</p>
         </div>
       </div>
@@ -74,7 +74,7 @@ export const AnnouncementDetailPage: React.FC = () => {
             Artikel atau pengumuman yang Anda cari mungkin telah dihapus atau URL tidak sesuai.
           </p>
           <Link to="/pengumuman">
-            <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white gap-2 mt-2">
+            <Button size="sm" className="bg-teal-600 hover:bg-teal-700 text-white gap-2 mt-2">
               <ArrowLeft className="h-4 w-4" />
               Kembali ke Daftar Pengumuman
             </Button>
@@ -89,11 +89,11 @@ export const AnnouncementDetailPage: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
         {/* Breadcrumb Navigation */}
         <nav className="flex items-center gap-2 text-xs text-slate-500 mb-6 flex-wrap">
-          <Link to="/" className="hover:text-blue-600 transition-colors">
+          <Link to="/" className="hover:text-teal-600 transition-colors">
             Beranda
           </Link>
           <ChevronRight className="h-3 w-3 text-slate-400" />
-          <Link to="/pengumuman" className="hover:text-blue-600 transition-colors">
+          <Link to="/pengumuman" className="hover:text-teal-600 transition-colors">
             Pengumuman
           </Link>
           <ChevronRight className="h-3 w-3 text-slate-400" />
@@ -119,7 +119,7 @@ export const AnnouncementDetailPage: React.FC = () => {
             {/* Meta Tags */}
             <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-slate-100">
               <div className="flex items-center gap-3">
-                <Badge className="bg-blue-600 text-white text-xs font-semibold py-1 px-3">
+                <Badge className="bg-teal-600 text-white text-xs font-semibold py-1 px-3">
                   {announcement.category}
                 </Badge>
                 <div className="flex items-center gap-1.5 text-xs text-slate-500">
@@ -160,17 +160,17 @@ export const AnnouncementDetailPage: React.FC = () => {
             </div>
 
             {/* Helpful Box */}
-            <div className="mt-10 p-5 rounded-xl bg-blue-50/70 border border-blue-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="mt-10 p-5 rounded-xl bg-teal-50/70 border border-teal-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <h4 className="text-sm font-bold text-blue-900">
+                <h4 className="text-sm font-bold text-teal-900">
                   Ada pertanyaan seputar pengumuman ini?
                 </h4>
-                <p className="text-xs text-blue-700 mt-0.5">
+                <p className="text-xs text-teal-700 mt-0.5">
                   Hubungi sekretariat panitia SPMB melalui WhatsApp atau lihat panduan lengkap di beranda.
                 </p>
               </div>
               <Link to="/#alur">
-                <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white text-xs shrink-0">
+                <Button size="sm" className="bg-teal-600 hover:bg-teal-700 text-white text-xs shrink-0">
                   Lihat Alur Pendaftaran
                 </Button>
               </Link>
@@ -187,7 +187,7 @@ export const AnnouncementDetailPage: React.FC = () => {
               </h3>
               <Link
                 to="/pengumuman"
-                className="text-xs font-semibold text-blue-600 hover:text-blue-700 inline-flex items-center gap-1"
+                className="text-xs font-semibold text-teal-600 hover:text-teal-700 inline-flex items-center gap-1"
               >
                 <span>Lihat Semua</span>
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -208,7 +208,7 @@ export const AnnouncementDetailPage: React.FC = () => {
                       <span>{formatDate(item.published_at)}</span>
                     </div>
                     <CardTitle className="text-sm font-bold text-slate-900 line-clamp-2">
-                      <Link to={`/pengumuman/${item.slug}`} className="hover:text-blue-600 transition-colors">
+                      <Link to={`/pengumuman/${item.slug}`} className="hover:text-teal-600 transition-colors">
                         {item.title}
                       </Link>
                     </CardTitle>

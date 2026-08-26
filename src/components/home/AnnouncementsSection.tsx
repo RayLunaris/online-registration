@@ -14,8 +14,8 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({ anno
   if (!announcements || announcements.length === 0) return null;
 
   return (
-    <section className="py-16 sm:py-20 bg-white border-b border-slate-200/80 relative">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl space-y-10">
+    <section className="py-16 sm:py-20 bg-white border-b border-slate-200/70 relative">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1440px] space-y-10">
         
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">

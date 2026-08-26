@@ -95,12 +95,16 @@ export const AnnouncementListPage: React.FC = () => {
 
           {/* Search Input */}
           <div className="relative w-full md:w-80">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <label htmlFor="announcement-search-input" className="sr-only">Cari judul pengumuman</label>
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
             <Input
+              id="announcement-search-input"
+              name="searchQuery"
               type="text"
               placeholder="Cari judul pengumuman..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Cari judul pengumuman"
               className="pl-9 h-9 text-xs bg-slate-50 border-slate-200 focus:bg-white font-sans"
             />
           </div>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  Users, 
   Search, 
   CheckCircle2, 
   FileText, 
@@ -128,7 +127,7 @@ export const AdminStudentsPage: React.FC = () => {
       case 'Diterima':
         return <Badge className="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px]">Diterima</Badge>;
       case 'Terverifikasi':
-        return <Badge className="bg-blue-950 text-blue-400 border border-blue-800 text-[10px]">Terverifikasi</Badge>;
+        return <Badge className="bg-teal-950 text-teal-400 border border-teal-800 text-[10px]">Terverifikasi</Badge>;
       case 'Cadangan':
         return <Badge className="bg-purple-950 text-purple-400 border border-purple-800 text-[10px]">Cadangan</Badge>;
       case 'Tidak Diterima':
@@ -164,13 +163,13 @@ export const AdminStudentsPage: React.FC = () => {
             size="sm"
             variant="outline"
             onClick={() => exportStudentsToCSV(students)}
-            className="text-xs bg-slate-950 border-slate-800 text-blue-400 hover:bg-slate-800 gap-1.5 font-semibold"
+            className="text-xs bg-slate-950 border-slate-800 text-teal-400 hover:bg-slate-800 gap-1.5 font-semibold"
           >
             <Download className="h-3.5 w-3.5" />
             <span>Ekspor CSV</span>
           </Button>
           <Link to="/admin/seleksi">
-            <Button size="sm" className="bg-purple-600 hover:bg-purple-700 text-white text-xs gap-1.5 font-semibold shadow-sm">
+            <Button size="sm" className="bg-purple-600 hover:bg-purple-700 text-white text-xs gap-1.5 font-semibold shadow-xs">
               <Award className="h-3.5 w-3.5" />
               <span>Scoring Seleksi</span>
             </Button>
@@ -187,27 +186,35 @@ export const AdminStudentsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* FILTER & SEARCH BAR */}
+      {/* FILTER & SEARCH CARD */}
       <Card className="bg-slate-950 border-slate-800 text-slate-100 shadow-md">
-        <CardContent className="p-4 flex flex-col md:flex-row items-center justify-between gap-3">
-          {/* Search Input */}
-          <div className="relative w-full md:w-72">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-500" />
+        <CardContent className="p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+          {/* Live Search Input */}
+          <div className="relative flex-1">
+            <label htmlFor="student-search-input" className="sr-only">Cari Nama, No. Reg, atau SMP</label>
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-500 pointer-events-none" />
             <Input
+              id="student-search-input"
+              name="studentSearch"
               placeholder="Cari Nama / No. Reg / SMP..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 h-9 text-xs bg-slate-900 border-slate-800 text-white placeholder:text-slate-500 focus-visible:ring-blue-500"
+              aria-label="Cari Nama, Nomor Registrasi, atau SMP"
+              className="pl-9 h-9 text-xs bg-slate-900 border-slate-800 text-white placeholder:text-slate-500 focus-visible:ring-teal-500"
             />
           </div>
 
           {/* Status & Major Filters */}
           <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
             {/* Filter Status */}
+            <label htmlFor="filter-status-select" className="sr-only">Filter Status Pendaftaran</label>
             <select
+              id="filter-status-select"
+              name="statusFilter"
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="h-9 px-3 text-xs rounded-md bg-slate-900 border border-slate-800 text-slate-200 focus:ring-1 focus:ring-blue-500"
+              aria-label="Filter Status Pendaftaran"
+              className="h-9 px-3 text-xs rounded-md bg-slate-900 border border-slate-800 text-slate-200 focus:ring-1 focus:ring-teal-500"
             >
               <option value="Semua">Semua Status</option>
               <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
@@ -218,10 +225,14 @@ export const AdminStudentsPage: React.FC = () => {
             </select>
 
             {/* Filter Jurusan */}
+            <label htmlFor="filter-major-select" className="sr-only">Filter Pilihan Jurusan</label>
             <select
+              id="filter-major-select"
+              name="majorFilter"
               value={selectedMajorId}
               onChange={(e) => setSelectedMajorId(e.target.value)}
-              className="h-9 px-3 text-xs rounded-md bg-slate-900 border border-slate-800 text-slate-200 focus:ring-1 focus:ring-blue-500"
+              aria-label="Filter Pilihan Jurusan"
+              className="h-9 px-3 text-xs rounded-md bg-slate-900 border border-slate-800 text-slate-200 focus:ring-1 focus:ring-teal-500"
             >
               <option value="Semua">Semua Jurusan Pilihan 1</option>
               {majors.map((m) => (
@@ -246,7 +257,7 @@ export const AdminStudentsPage: React.FC = () => {
         <CardContent className="p-0">
           {loading ? (
             <div className="py-16 text-center space-y-2">
-              <div className="h-6 w-6 animate-spin rounded-full border-2 border-blue-500 border-t-transparent mx-auto" />
+              <div className="h-6 w-6 animate-spin rounded-full border-2 border-teal-500 border-t-transparent mx-auto" />
               <p className="text-xs text-slate-500">Memuat data pendaftar...</p>
             </div>
           ) : students.length > 0 ? (
@@ -271,7 +282,7 @@ export const AdminStudentsPage: React.FC = () => {
 
                     return (
                       <tr key={student.id} className="hover:bg-slate-900/50 transition-colors">
-                        <td className="py-3 px-4 font-mono font-bold text-blue-400">
+                        <td className="py-3 px-4 font-mono font-bold text-teal-400">
                           {student.registration_number}
                         </td>
                         <td className="py-3 px-4">
@@ -280,7 +291,7 @@ export const AdminStudentsPage: React.FC = () => {
                         </td>
                         <td className="py-3 px-4 text-slate-400">{student.source_school_name}</td>
                         <td className="py-3 px-4 space-x-1">
-                          <Badge variant="outline" className="text-[10px] bg-slate-900 border-slate-700 text-blue-400">
+                          <Badge variant="outline" className="text-[10px] bg-slate-900 border-slate-700 text-teal-400">
                             1: {ch1?.code || '-'}
                           </Badge>
                           {ch2 && (
@@ -300,7 +311,7 @@ export const AdminStudentsPage: React.FC = () => {
                           <Button
                             size="sm"
                             onClick={() => handleOpenDetail(student)}
-                            className="h-8 px-2.5 bg-blue-600 hover:bg-blue-700 text-white text-[11px] gap-1"
+                            className="h-8 px-2.5 bg-teal-600 hover:bg-teal-700 text-white text-[11px] gap-1"
                           >
                             <Eye className="h-3 w-3" />
                             <span>Detail</span>
@@ -321,9 +332,8 @@ export const AdminStudentsPage: React.FC = () => {
               </table>
             </div>
           ) : (
-            <div className="p-12 text-center text-xs text-slate-500 space-y-2">
-              <Users className="h-8 w-8 mx-auto text-slate-600" />
-              <p>Tidak ada data calon siswa yang sesuai dengan filter pencarian.</p>
+            <div className="py-16 text-center text-slate-500 text-xs">
+              Belum ada data pendaftar yang cocok dengan filter pencarian.
             </div>
           )}
         </CardContent>
@@ -337,7 +347,7 @@ export const AdminStudentsPage: React.FC = () => {
               {/* Modal Header */}
               <div className="flex items-start justify-between border-b border-slate-800 pb-4">
                 <div>
-                  <span className="text-xs font-mono font-bold text-blue-400 block mb-1">
+                  <span className="text-xs font-mono font-bold text-teal-400 block mb-1">
                     {selectedStudent.registration_number}
                   </span>
                   <h2 className="text-xl font-bold text-white">{selectedStudent.full_name}</h2>
@@ -349,7 +359,7 @@ export const AdminStudentsPage: React.FC = () => {
                   <Link
                     to={`/kartu-peserta/${selectedStudent.registration_number}`}
                     target="_blank"
-                    className="text-xs text-blue-400 hover:underline flex items-center gap-1 bg-slate-900 px-2.5 py-1 rounded border border-slate-800"
+                    className="text-xs text-teal-400 hover:underline flex items-center gap-1 bg-slate-900 px-2.5 py-1 rounded border border-slate-800"
                   >
                     <Printer className="h-3.5 w-3.5" />
                     <span>Buka Kartu PDF</span>
@@ -370,8 +380,10 @@ export const AdminStudentsPage: React.FC = () => {
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="space-y-1">
-                    <label className="text-[10px] text-slate-400">Status Seleksi</label>
+                    <label htmlFor="student-status-select" className="text-[10px] text-slate-400 cursor-pointer">Status Seleksi</label>
                     <select
+                      id="student-status-select"
+                      name="editingStatus"
                       value={editingStatus}
                       onChange={(e) => setEditingStatus(e.target.value as StudentStatus)}
                       className="w-full h-9 px-2.5 text-xs rounded bg-slate-950 border border-slate-800 text-white"
@@ -385,8 +397,10 @@ export const AdminStudentsPage: React.FC = () => {
                   </div>
 
                   <div className="sm:col-span-2 space-y-1">
-                    <label className="text-[10px] text-slate-400">Catatan Panitia (Opsional)</label>
+                    <label htmlFor="student-notes-input" className="text-[10px] text-slate-400 cursor-pointer">Catatan Panitia (Opsional)</label>
                     <Input
+                      id="student-notes-input"
+                      name="editingNotes"
                       placeholder="Catatan verifikasi berkas atau instruksi daftar ulang"
                       value={editingNotes}
                       onChange={(e) => setEditingNotes(e.target.value)}
@@ -400,7 +414,7 @@ export const AdminStudentsPage: React.FC = () => {
                     size="sm"
                     disabled={savingStatus}
                     onClick={handleSaveStatus}
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs h-8 px-4 gap-1.5 font-semibold"
+                    className="bg-teal-600 hover:bg-teal-700 text-white text-xs h-8 px-4 gap-1.5 font-semibold"
                   >
                     <CheckCircle2 className="h-3.5 w-3.5" />
                     <span>{savingStatus ? 'Menyimpan...' : 'Simpan Status'}</span>
@@ -474,7 +488,7 @@ export const AdminStudentsPage: React.FC = () => {
                     <div className="space-y-2 text-slate-300">
                       <div className="flex items-center justify-between">
                         <span className="text-slate-400">Pilihan 1:</span>
-                        <Badge className="bg-blue-950 text-blue-400 border-blue-800">
+                        <Badge className="bg-teal-950 text-teal-400 border-teal-800">
                           {selectedStudent.major_choices?.find((c) => c.choice_order === 1)?.major?.name || '-'}
                         </Badge>
                       </div>
@@ -513,7 +527,7 @@ export const AdminStudentsPage: React.FC = () => {
                           href={doc.file_url}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-blue-400 hover:text-blue-300 hover:bg-slate-800 transition-colors"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-teal-400 hover:text-teal-300 hover:bg-slate-800 transition-colors"
                         >
                           <FileText className="h-3.5 w-3.5" />
                           <span className="capitalize">{doc.document_type.replace('_', ' ')}</span>

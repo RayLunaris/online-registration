@@ -154,11 +154,11 @@ export const RegistrationCardPDF: React.FC<Props> = ({
       {/* 1. KOP RESMI SEKOLAH */}
       <div className="flex items-center justify-between border-b-2 border-slate-900 pb-4 mb-5 gap-4">
         <div className="flex items-center gap-4">
-          <div className="h-16 w-16 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shrink-0 shadow-sm">
+          <div className="h-16 w-16 rounded-xl bg-teal-700 text-white flex items-center justify-center font-bold shrink-0 shadow-sm">
             <GraduationCap className="h-10 w-10" />
           </div>
           <div>
-            <span className="text-[11px] font-bold tracking-wider uppercase text-blue-700 block">
+            <span className="text-[11px] font-bold tracking-wider uppercase text-teal-800 block">
               PANITIA PENERIMAAN MURID BARU (SPMB)
             </span>
             <h2 className="text-xl sm:text-2xl font-black text-slate-900 uppercase tracking-tight leading-tight">
@@ -191,7 +191,7 @@ export const RegistrationCardPDF: React.FC<Props> = ({
           <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold block">
             Nomor Registrasi Calon Siswa
           </span>
-          <span className="text-xl font-black font-mono tracking-wider text-blue-700 block">
+          <span className="text-xl font-black font-mono tracking-wider text-teal-800 block">
             {registrationNumber}
           </span>
         </div>
@@ -285,7 +285,7 @@ export const RegistrationCardPDF: React.FC<Props> = ({
             </h4>
             <div className="grid grid-cols-2 gap-3 text-xs">
               <div className="p-2.5 rounded border border-slate-300 bg-slate-50">
-                <span className="text-[10px] text-blue-700 font-bold block uppercase">Pilihan 1 (Utama)</span>
+                <span className="text-[10px] text-teal-700 font-bold block uppercase">Pilihan 1 (Utama)</span>
                 <span className="font-bold text-slate-900 block mt-0.5">
                   {choice1Name} {choice1Code ? `(${choice1Code})` : ''}
                 </span>
@@ -307,9 +307,9 @@ export const RegistrationCardPDF: React.FC<Props> = ({
                 <span className="text-[9px] text-slate-500 block">Poin Prestasi (30%)</span>
                 <span className="font-bold font-mono text-slate-900">{formatScore(achPoints)}</span>
               </div>
-              <div className="p-1.5 bg-blue-50 rounded border border-blue-200">
-                <span className="text-[9px] text-blue-700 font-bold block">Total Skor Seleksi</span>
-                <span className="font-black font-mono text-blue-900">{formatScore(totalScore)}</span>
+              <div className="p-1.5 bg-teal-50 rounded border border-teal-200">
+                <span className="text-[9px] text-teal-700 font-bold block">Total Skor Seleksi</span>
+                <span className="font-black font-mono text-teal-900">{formatScore(totalScore)}</span>
               </div>
             </div>
           </div>

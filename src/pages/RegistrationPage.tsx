@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import { 
   ArrowLeft, 
   ArrowRight, 
@@ -213,6 +214,15 @@ export const RegistrationPage: React.FC = () => {
         });
         setErrors(errorMap);
 
+        // Tampilkan Popup SweetAlert untuk user anak/ortu
+        Swal.fire({
+          icon: 'warning',
+          title: 'Oops! Ada yang terlewat',
+          text: 'Mohon periksa kembali form pengisian. Ada kolom yang masih kosong atau formatnya belum tepat (ditandai dengan warna merah).',
+          confirmButtonText: 'Baik, saya periksa',
+          confirmButtonColor: '#2563eb',
+        });
+
         // Smoothly scroll to the error notification banner
         setTimeout(() => {
           const errorBanner = document.getElementById('step-validation-alert');
@@ -221,7 +231,7 @@ export const RegistrationPage: React.FC = () => {
           } else {
             window.scrollTo({ top: 160, behavior: 'smooth' });
           }
-        }, 60);
+        }, 300); // Beri sedikit jeda agar SweetAlert muncul lebih dulu
       }
       return false;
     }
@@ -286,6 +296,12 @@ export const RegistrationPage: React.FC = () => {
     type: 'photo' | 'diploma' | 'family_card' | 'achievement',
     achievementIndex?: number
   ) => {
+    const maxSize = type === 'photo' ? 2 * 1024 * 1024 : 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      alert(`Ukuran file terlalu besar! Maksimal ${type === 'photo' ? '2MB' : '5MB'}.`);
+      return;
+    }
+
     setUploadingFile(type);
     const ext = file.name.split('.').pop();
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${ext}`;
@@ -366,7 +382,7 @@ export const RegistrationPage: React.FC = () => {
         <div className="mb-6">
           <Link
             to="/"
-            className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-blue-600 gap-1.5 transition-colors"
+            className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-teal-600 gap-1.5 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Kembali ke Beranda
@@ -375,7 +391,7 @@ export const RegistrationPage: React.FC = () => {
 
         {/* Page Title */}
         <div className="text-center max-w-2xl mx-auto mb-8 space-y-2">
-          <Badge variant="secondary" className="text-blue-700 bg-blue-100 gap-1.5">
+          <Badge variant="secondary" className="text-teal-700 bg-teal-100/80 gap-1.5">
             <Sparkles className="h-3.5 w-3.5" />
             Pendaftaran Online SPMB 2026/2027
           </Badge>
@@ -403,7 +419,7 @@ export const RegistrationPage: React.FC = () => {
                   disabled={step.id > currentStep}
                   className={`flex flex-col items-center text-center p-2 rounded-xl transition-all ${
                     isCurrent
-                      ? 'bg-blue-50 text-blue-600 font-bold ring-2 ring-blue-600/30'
+                      ? 'bg-teal-50 text-teal-700 font-bold ring-2 ring-teal-600/30'
                       : isCompleted
                       ? 'text-emerald-700 hover:bg-slate-50 cursor-pointer'
                       : 'text-slate-400 opacity-60 cursor-not-allowed'
@@ -412,7 +428,7 @@ export const RegistrationPage: React.FC = () => {
                   <div
                     className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold mb-1.5 ${
                       isCurrent
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-teal-600 text-white'
                         : isCompleted
                         ? 'bg-emerald-600 text-white'
                         : 'bg-slate-100 text-slate-500'
@@ -433,7 +449,7 @@ export const RegistrationPage: React.FC = () => {
           <CardHeader className="bg-slate-50/80 border-b border-slate-100 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-blue-600 block">
+                <span className="text-xs font-bold uppercase tracking-wider text-teal-600 block">
                   Langkah {currentStep} dari 6
                 </span>
                 <CardTitle className="text-xl font-bold text-slate-900 mt-0.5">
@@ -491,11 +507,14 @@ export const RegistrationPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Nama Lengkap */}
                   <div className="sm:col-span-2 space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                    <label htmlFor="reg_full_name" className="text-xs font-bold text-slate-700 flex items-center justify-between cursor-pointer">
                       <span>Nama Lengkap Calon Siswa <span className="text-red-500">*</span></span>
                       <span className="text-[10px] text-slate-400 font-normal">Sesuai Ijazah / Akta Kelahiran</span>
                     </label>
                     <Input
+                      id="reg_full_name"
+                      name="full_name"
+                      autoComplete="name"
                       placeholder="Contoh: Muhammad Rizky Pratama"
                       value={formData.full_name}
                       onChange={(e) => handleFieldChange('full_name', e.target.value)}
@@ -513,11 +532,13 @@ export const RegistrationPage: React.FC = () => {
 
                   {/* NISN */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                    <label htmlFor="reg_nisn" className="text-xs font-bold text-slate-700 flex items-center justify-between cursor-pointer">
                       <span>NISN (10 Digit Angka)</span>
                       <span className="text-[10px] text-slate-400 font-normal">Opsional</span>
                     </label>
                     <Input
+                      id="reg_nisn"
+                      name="nisn"
                       placeholder="Contoh: 0071234567"
                       maxLength={10}
                       value={formData.nisn || ''}
@@ -536,11 +557,13 @@ export const RegistrationPage: React.FC = () => {
 
                   {/* NIK */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                    <label htmlFor="reg_nik" className="text-xs font-bold text-slate-700 flex items-center justify-between cursor-pointer">
                       <span>NIK Calon Siswa (16 Digit)</span>
                       <span className="text-[10px] text-slate-400 font-normal">Opsional</span>
                     </label>
                     <Input
+                      id="reg_nik"
+                      name="nik"
                       placeholder="Contoh: 3201234567890001"
                       maxLength={16}
                       value={formData.nik || ''}
@@ -559,10 +582,13 @@ export const RegistrationPage: React.FC = () => {
 
                   {/* Tempat Lahir */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700">
+                    <label htmlFor="reg_birth_place" className="text-xs font-bold text-slate-700 cursor-pointer">
                       Tempat Lahir <span className="text-red-500">*</span>
                     </label>
                     <Input
+                      id="reg_birth_place"
+                      name="birth_place"
+                      autoComplete="address-level2"
                       placeholder="Contoh: Surabaya / Sidoarjo"
                       value={formData.birth_place}
                       onChange={(e) => handleFieldChange('birth_place', e.target.value)}
@@ -580,11 +606,14 @@ export const RegistrationPage: React.FC = () => {
 
                   {/* Tanggal Lahir */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700">
+                    <label htmlFor="reg_birth_date" className="text-xs font-bold text-slate-700 cursor-pointer">
                       Tanggal Lahir <span className="text-red-500">*</span>
                     </label>
                     <Input
+                      id="reg_birth_date"
+                      name="birth_date"
                       type="date"
+                      autoComplete="bday"
                       value={formData.birth_date}
                       onChange={(e) => handleFieldChange('birth_date', e.target.value)}
                       className={errors['birth_date'] ? 'border-red-500 bg-red-50/20' : ''}
@@ -601,13 +630,15 @@ export const RegistrationPage: React.FC = () => {
 
                   {/* Jenis Kelamin */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700">
+                    <label htmlFor="reg_gender" className="text-xs font-bold text-slate-700 cursor-pointer">
                       Jenis Kelamin <span className="text-red-500">*</span>
                     </label>
                     <select
+                      id="reg_gender"
+                      name="gender"
                       value={formData.gender}
                       onChange={(e) => handleFieldChange('gender', e.target.value as any)}
-                      className="w-full h-10 px-3 text-xs bg-background border rounded-md border-input focus:ring-2 focus:ring-blue-500"
+                      className="w-full h-10 px-3 text-xs bg-background border rounded-md border-input focus:ring-2 focus:ring-teal-500"
                     >
                       <option value="Laki-laki">Laki-laki</option>
                       <option value="Perempuan">Perempuan</option>
@@ -616,13 +647,15 @@ export const RegistrationPage: React.FC = () => {
 
                   {/* Agama */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700">
+                    <label htmlFor="reg_religion" className="text-xs font-bold text-slate-700 cursor-pointer">
                       Agama <span className="text-red-500">*</span>
                     </label>
                     <select
+                      id="reg_religion"
+                      name="religion"
                       value={formData.religion}
                       onChange={(e) => handleFieldChange('religion', e.target.value)}
-                      className="w-full h-10 px-3 text-xs bg-background border rounded-md border-input focus:ring-2 focus:ring-blue-500"
+                      className="w-full h-10 px-3 text-xs bg-background border rounded-md border-input focus:ring-2 focus:ring-teal-500"
                     >
                       <option value="Islam">Islam</option>
                       <option value="Kristen Protestan">Kristen Protestan</option>
@@ -635,11 +668,15 @@ export const RegistrationPage: React.FC = () => {
 
                   {/* No HP / WA */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                    <label htmlFor="reg_phone" className="text-xs font-bold text-slate-700 flex items-center justify-between cursor-pointer">
                       <span>No. WhatsApp / HP Siswa <span className="text-red-500">*</span></span>
                       <span className="text-[10px] text-slate-400 font-normal">Min. 10 Digit</span>
                     </label>
                     <Input
+                      id="reg_phone"
+                      name="phone"
+                      type="tel"
+                      autoComplete="tel"
                       placeholder="Contoh: 081234567890"
                       value={formData.phone}
                       onChange={(e) => handleFieldChange('phone', e.target.value)}
@@ -657,12 +694,15 @@ export const RegistrationPage: React.FC = () => {
 
                   {/* Email */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                    <label htmlFor="reg_email" className="text-xs font-bold text-slate-700 flex items-center justify-between cursor-pointer">
                       <span>Alamat Email Aktif <span className="text-red-500">*</span></span>
                       <span className="text-[10px] text-slate-400 font-normal">Harus format email</span>
                     </label>
                     <Input
+                      id="reg_email"
+                      name="email"
                       type="email"
+                      autoComplete="email"
                       placeholder="Contoh: siswa@gmail.com"
                       value={formData.email}
                       onChange={(e) => handleFieldChange('email', e.target.value)}
@@ -680,15 +720,18 @@ export const RegistrationPage: React.FC = () => {
 
                   {/* Alamat Lengkap */}
                   <div className="sm:col-span-2 space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700">
+                    <label htmlFor="reg_address" className="text-xs font-bold text-slate-700 cursor-pointer">
                       Alamat Tempat Tinggal / Domisili Lengkap <span className="text-red-500">*</span>
                     </label>
                     <textarea
+                      id="reg_address"
+                      name="address"
+                      autoComplete="street-address"
                       rows={2}
                       placeholder="Contoh: Jl. Ahmad Yani No. 45, RT 03/RW 02, Kel. Wonokromo, Kec. Wonokromo, Kota Surabaya"
                       value={formData.address}
                       onChange={(e) => handleFieldChange('address', e.target.value)}
-                      className={`w-full p-3 text-xs bg-background border rounded-md border-input focus:ring-2 focus:ring-blue-500 ${
+                      className={`w-full p-3 text-xs bg-background border rounded-md border-input focus:ring-2 focus:ring-teal-500 ${
                         errors['address'] ? 'border-red-500 bg-red-50/20' : ''
                       }`}
                     />
@@ -706,17 +749,19 @@ export const RegistrationPage: React.FC = () => {
                 {/* Sub-Section: Asal Sekolah */}
                 <div className="pt-6 border-t border-slate-100 space-y-4">
                   <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                    <GraduationCap className="h-4 w-4 text-blue-600" />
+                    <GraduationCap className="h-4 w-4 text-teal-600" />
                     Data Asal Sekolah (SMP / MTs)
                   </h3>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {/* Pilih Master Asal Sekolah */}
                     <div className="sm:col-span-2 space-y-1.5">
-                      <label className="text-xs font-bold text-slate-700">
+                      <label htmlFor="reg_source_school_name" className="text-xs font-bold text-slate-700 cursor-pointer">
                         Nama SMP / MTs Asal <span className="text-red-500">*</span>
                       </label>
                       <Input
+                        id="reg_source_school_name"
+                        name="source_school_name"
                         list="source-schools-list"
                         placeholder="Ketik atau pilih nama SMP/MTs asal Anda"
                         value={formData.source_school_name}
@@ -757,13 +802,15 @@ export const RegistrationPage: React.FC = () => {
 
                     {/* Tahun Lulus */}
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-slate-700">
+                      <label htmlFor="reg_graduation_year" className="text-xs font-bold text-slate-700 cursor-pointer">
                         Tahun Lulus SMP <span className="text-red-500">*</span>
                       </label>
                       <select
+                        id="reg_graduation_year"
+                        name="graduation_year"
                         value={formData.graduation_year}
                         onChange={(e) => handleFieldChange('graduation_year', Number(e.target.value))}
-                        className="w-full h-10 px-3 text-xs bg-background border rounded-md border-input focus:ring-2 focus:ring-blue-500"
+                        className="w-full h-10 px-3 text-xs bg-background border rounded-md border-input focus:ring-2 focus:ring-teal-500"
                       >
                         <option value={2026}>2026 (Tahun Ini)</option>
                         <option value={2025}>2025</option>
@@ -781,10 +828,12 @@ export const RegistrationPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Nama Ayah */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700">
+                    <label htmlFor="reg_father_name" className="text-xs font-bold text-slate-700 cursor-pointer">
                       Nama Lengkap Ayah Kandung / Wali <span className="text-red-500">*</span>
                     </label>
                     <Input
+                      id="reg_father_name"
+                      name="father_name"
                       placeholder="Contoh: Ahmad Hidayat"
                       value={formData.father_name}
                       onChange={(e) => handleFieldChange('father_name', e.target.value)}
@@ -802,10 +851,12 @@ export const RegistrationPage: React.FC = () => {
 
                   {/* Nama Ibu */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700">
+                    <label htmlFor="reg_mother_name" className="text-xs font-bold text-slate-700 cursor-pointer">
                       Nama Lengkap Ibu Kandung <span className="text-red-500">*</span>
                     </label>
                     <Input
+                      id="reg_mother_name"
+                      name="mother_name"
                       placeholder="Contoh: Siti Aminah"
                       value={formData.mother_name}
                       onChange={(e) => handleFieldChange('mother_name', e.target.value)}
@@ -823,11 +874,13 @@ export const RegistrationPage: React.FC = () => {
 
                   {/* Pekerjaan Orang Tua */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                    <label htmlFor="reg_parent_job" className="text-xs font-bold text-slate-700 flex items-center justify-between cursor-pointer">
                       <span>Pekerjaan Orang Tua / Wali</span>
                       <span className="text-[10px] text-slate-400 font-normal">Opsional</span>
                     </label>
                     <Input
+                      id="reg_parent_job"
+                      name="parent_job"
                       placeholder="Contoh: Karyawan Swasta / Wiraswasta / PNS / Petani"
                       value={formData.parent_job || ''}
                       onChange={(e) => handleFieldChange('parent_job', e.target.value)}
@@ -836,11 +889,15 @@ export const RegistrationPage: React.FC = () => {
 
                   {/* No HP Orang Tua */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                    <label htmlFor="reg_parent_phone" className="text-xs font-bold text-slate-700 flex items-center justify-between cursor-pointer">
                       <span>No. WhatsApp / HP Orang Tua <span className="text-red-500">*</span></span>
                       <span className="text-[10px] text-slate-400 font-normal">Min. 10 Digit</span>
                     </label>
                     <Input
+                      id="reg_parent_phone"
+                      name="parent_phone"
+                      type="tel"
+                      autoComplete="tel"
                       placeholder="Contoh: 081298765432"
                       value={formData.parent_phone}
                       onChange={(e) => handleFieldChange('parent_phone', e.target.value)}
@@ -859,23 +916,25 @@ export const RegistrationPage: React.FC = () => {
                   {/* Alamat Orang Tua */}
                   <div className="sm:col-span-2 space-y-1.5">
                     <div className="flex items-center justify-between mb-1">
-                      <label className="text-xs font-bold text-slate-700">
+                      <label htmlFor="reg_parent_address" className="text-xs font-bold text-slate-700 cursor-pointer">
                         Alamat Orang Tua / Wali
                       </label>
                       <button
                         type="button"
                         onClick={() => handleFieldChange('parent_address', formData.address)}
-                        className="text-[11px] text-blue-600 hover:underline font-semibold"
+                        className="text-[11px] text-teal-600 hover:underline font-semibold"
                       >
                         Sama dengan alamat siswa
                       </button>
                     </div>
                     <textarea
+                      id="reg_parent_address"
+                      name="parent_address"
                       rows={2}
                       placeholder="Alamat tempat tinggal orang tua (boleh dikosongkan jika sama)"
                       value={formData.parent_address || ''}
                       onChange={(e) => handleFieldChange('parent_address', e.target.value)}
-                      className="w-full p-3 text-xs bg-background border rounded-md border-input focus:ring-2 focus:ring-blue-500"
+                      className="w-full p-3 text-xs bg-background border rounded-md border-input focus:ring-2 focus:ring-teal-500"
                     />
                   </div>
                 </div>
@@ -885,8 +944,8 @@ export const RegistrationPage: React.FC = () => {
             {/* STEP 3: PILIHAN JURUSAN */}
             {currentStep === 3 && (
               <div className="space-y-6">
-                <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-900 flex items-start gap-2.5">
-                  <Info className="h-4 w-4 text-blue-600 shrink-0 mt-0.5" />
+                <div className="p-4 rounded-xl bg-teal-50 border border-teal-200 text-xs text-teal-900 flex items-start gap-2.5">
+                  <Info className="h-4 w-4 text-teal-600 shrink-0 mt-0.5" />
                   <span>
                     Pilihlah <strong>Pilihan 1</strong> sebagai jurusan prioritas utama Anda. Anda juga dapat memilih <strong>Pilihan 2</strong> sebagai opsi alternatif apabila kuota pilihan utama telah penuh.
                   </span>
@@ -896,7 +955,7 @@ export const RegistrationPage: React.FC = () => {
                   {/* Pilihan 1 */}
                   <div className="space-y-2">
                     <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                      <span className="h-5 w-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px]">1</span>
+                      <span className="h-5 w-5 rounded-full bg-teal-600 text-white flex items-center justify-center text-[10px]">1</span>
                       <span>Pilihan Jurusan 1 (Prioritas Utama) <span className="text-red-500">*</span></span>
                     </label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -906,7 +965,7 @@ export const RegistrationPage: React.FC = () => {
                           onClick={() => handleFieldChange('choice_1_major_id', major.id)}
                           className={`p-4 rounded-xl border cursor-pointer transition-all ${
                             formData.choice_1_major_id === major.id
-                              ? 'border-blue-600 bg-blue-50/70 ring-2 ring-blue-600/20 shadow-sm'
+                              ? 'border-teal-600 bg-teal-50/70 ring-2 ring-teal-600/20 shadow-sm'
                               : 'border-slate-200 hover:bg-slate-50'
                           }`}
                         >
@@ -917,7 +976,7 @@ export const RegistrationPage: React.FC = () => {
                             </Badge>
                           </div>
                           <p className="text-xs text-slate-500 line-clamp-2">{major.description}</p>
-                          <div className="mt-2 text-[11px] font-semibold text-blue-600">
+                          <div className="mt-2 text-[11px] font-semibold text-teal-600">
                             Kuota: {major.quota} Siswa
                           </div>
                         </div>
@@ -954,7 +1013,7 @@ export const RegistrationPage: React.FC = () => {
                               isSelected1
                                 ? 'border-slate-200 bg-slate-100 opacity-50 cursor-not-allowed'
                                 : isSelected2
-                                ? 'border-purple-600 bg-purple-50/70 ring-2 ring-purple-600/20 shadow-sm cursor-pointer'
+                                ? 'border-teal-600 bg-teal-50/70 ring-2 ring-teal-600/20 shadow-sm cursor-pointer'
                                 : 'border-slate-200 hover:bg-slate-50 cursor-pointer'
                             }`}
                           >
@@ -989,9 +1048,9 @@ export const RegistrationPage: React.FC = () => {
             {currentStep === 4 && (
               <div className="space-y-6">
                 {/* Live Average Score Banner */}
-                <div className="p-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md">
+                <div className="p-4 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md">
                   <div>
-                    <span className="text-xs text-blue-100 block">Kalkulator Nilai Otomatis (Bobot 70%)</span>
+                    <span className="text-xs text-teal-100 block">Kalkulator Nilai Otomatis (Bobot 70%)</span>
                     <h4 className="text-lg font-bold">Rata-rata Nilai Rapor Semester 1 - 5</h4>
                   </div>
                   <div className="text-3xl font-extrabold font-mono bg-white/10 px-4 py-1.5 rounded-lg backdrop-blur-sm">
@@ -1012,7 +1071,7 @@ export const RegistrationPage: React.FC = () => {
                           <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
                             Semester {semester}
                           </h4>
-                          <span className="text-xs font-semibold text-blue-600">
+                          <span className="text-xs font-semibold text-teal-600">
                             Rata-rata: {formatScore(semAvg)}
                           </span>
                         </div>
@@ -1023,13 +1082,16 @@ export const RegistrationPage: React.FC = () => {
                               (s) => s.semester === semester && s.subject === subject
                             );
                             const val = scObj?.score ?? 80;
+                            const fieldId = `rapor_sem${semester}_${subject.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
 
                             return (
                               <div key={subject} className="space-y-1">
-                                <label className="text-[11px] font-medium text-slate-600 truncate block">
+                                <label htmlFor={fieldId} className="text-[11px] font-medium text-slate-600 truncate block cursor-pointer">
                                   {subject}
                                 </label>
                                 <Input
+                                  id={fieldId}
+                                  name={fieldId}
                                   type="number"
                                   min={0}
                                   max={100}
@@ -1054,7 +1116,7 @@ export const RegistrationPage: React.FC = () => {
                 {/* Upload Dokumen Wajib */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                    <FileText className="h-4 w-4 text-blue-600" />
+                    <FileText className="h-4 w-4 text-teal-600" />
                     Upload Dokumen Persyaratan
                   </h3>
 
@@ -1073,7 +1135,7 @@ export const RegistrationPage: React.FC = () => {
                           <ImageIcon className="h-8 w-8" />
                         </div>
                       )}
-                      <label className="cursor-pointer inline-block">
+                      <label htmlFor="reg_file_photo" className="cursor-pointer inline-block">
                         <Button
                           type="button"
                           variant="outline"
@@ -1085,8 +1147,10 @@ export const RegistrationPage: React.FC = () => {
                           {uploadingFile === 'photo' ? 'Mengunggah...' : 'Pilih Foto (JPG/PNG)'}
                         </Button>
                         <input
+                          id="reg_file_photo"
+                          name="photo"
                           type="file"
-                          accept="image/*"
+                          accept="image/png,image/jpeg,image/jpg"
                           className="hidden"
                           onChange={(e) => {
                             const file = e.target.files?.[0];
@@ -1112,7 +1176,7 @@ export const RegistrationPage: React.FC = () => {
                           <span className="text-[11px] text-slate-400">Belum diunggah</span>
                         )}
                       </div>
-                      <label className="cursor-pointer inline-block">
+                      <label htmlFor="reg_file_diploma" className="cursor-pointer inline-block">
                         <Button
                           type="button"
                           variant="outline"
@@ -1124,8 +1188,10 @@ export const RegistrationPage: React.FC = () => {
                           {uploadingFile === 'diploma' ? 'Mengunggah...' : 'Pilih File (PDF/JPG)'}
                         </Button>
                         <input
+                          id="reg_file_diploma"
+                          name="diploma"
                           type="file"
-                          accept=".pdf,image/*"
+                          accept="application/pdf,image/png,image/jpeg,image/jpg"
                           className="hidden"
                           onChange={(e) => {
                             const file = e.target.files?.[0];
@@ -1151,7 +1217,7 @@ export const RegistrationPage: React.FC = () => {
                           <span className="text-[11px] text-slate-400">Belum diunggah</span>
                         )}
                       </div>
-                      <label className="cursor-pointer inline-block">
+                      <label htmlFor="reg_file_family_card" className="cursor-pointer inline-block">
                         <Button
                           type="button"
                           variant="outline"
@@ -1163,8 +1229,10 @@ export const RegistrationPage: React.FC = () => {
                           {uploadingFile === 'family_card' ? 'Mengunggah...' : 'Pilih File (PDF/JPG)'}
                         </Button>
                         <input
+                          id="reg_file_family_card"
+                          name="family_card"
                           type="file"
-                          accept=".pdf,image/*"
+                          accept="application/pdf,image/png,image/jpeg,image/jpg"
                           className="hidden"
                           onChange={(e) => {
                             const file = e.target.files?.[0];
@@ -1223,8 +1291,10 @@ export const RegistrationPage: React.FC = () => {
 
                           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <div className="space-y-1">
-                              <label className="text-[11px] font-medium text-slate-700">Tingkat Kejuaraan</label>
+                              <label htmlFor={`ach_level_${idx}`} className="text-[11px] font-medium text-slate-700 cursor-pointer">Tingkat Kejuaraan</label>
                               <select
+                                id={`ach_level_${idx}`}
+                                name={`ach_level_${idx}`}
                                 value={ach.level}
                                 onChange={(e) => updateAchievement(idx, 'level', e.target.value as AchievementLevel)}
                                 className="w-full h-9 px-2 text-xs bg-white border rounded-md border-input"
@@ -1238,8 +1308,10 @@ export const RegistrationPage: React.FC = () => {
                             </div>
 
                             <div className="sm:col-span-2 space-y-1">
-                              <label className="text-[11px] font-medium text-slate-700">Nama Kejuaraan / Lomba</label>
+                              <label htmlFor={`ach_title_${idx}`} className="text-[11px] font-medium text-slate-700 cursor-pointer">Nama Kejuaraan / Lomba</label>
                               <Input
+                                id={`ach_title_${idx}`}
+                                name={`ach_title_${idx}`}
                                 placeholder="Contoh: Juara 1 Olimpiade Sains Nasional"
                                 value={ach.title}
                                 onChange={(e) => updateAchievement(idx, 'title', e.target.value)}
@@ -1262,8 +1334,8 @@ export const RegistrationPage: React.FC = () => {
             {/* STEP 6: REVIEW & KONFIRMASI */}
             {currentStep === 6 && (
               <div className="space-y-6">
-                <div className="p-4 bg-blue-50/70 border border-blue-100 rounded-xl space-y-3">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-blue-900">
+                <div className="p-4 bg-teal-50/70 border border-teal-100 rounded-xl space-y-3">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-teal-900">
                     Ringkasan Pendaftaran
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
@@ -1277,7 +1349,7 @@ export const RegistrationPage: React.FC = () => {
                     </div>
                     <div>
                       <span className="text-slate-500 block">Pilihan Jurusan 1:</span>
-                      <strong className="text-blue-600 font-bold">
+                      <strong className="text-teal-700 font-bold">
                         {majors.find((m) => m.id === formData.choice_1_major_id)?.name || '-'}
                       </strong>
                     </div>
@@ -1300,8 +1372,10 @@ export const RegistrationPage: React.FC = () => {
 
                 {/* Agreement Checkbox */}
                 <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
-                  <label className="flex items-start gap-3 cursor-pointer">
+                  <label htmlFor="reg_agreement_checkbox" className="flex items-start gap-3 cursor-pointer">
                     <input
+                      id="reg_agreement_checkbox"
+                      name="agreement"
                       type="checkbox"
                       checked={agreementChecked}
                       onChange={(e) => {
@@ -1314,7 +1388,7 @@ export const RegistrationPage: React.FC = () => {
                           });
                         }
                       }}
-                      className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 mt-0.5"
+                      className="h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500 mt-0.5"
                     />
                     <span className="text-xs text-slate-700 leading-relaxed">
                       Saya menyatakan dengan sesungguhnya bahwa seluruh data dan berkas yang saya isikan pada formulir pendaftaran ini adalah <strong>benar, sah, dan dapat dipertanggungjawabkan</strong>. Apabila di kemudian hari ditemukan ketidaksesuaian data, saya bersedia menerima sanksi pembatalan status pendaftaran sesuai ketentuan panitia SPMB.
@@ -1369,7 +1443,7 @@ export const RegistrationPage: React.FC = () => {
                   <Button
                     type="button"
                     onClick={handleNextStep}
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold h-10 gap-1.5 px-6 shadow-sm"
+                    className="bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold h-10 gap-1.5 px-6 shadow-xs"
                   >
                     Langkah Selanjutnya
                     <ArrowRight className="h-4 w-4" />

@@ -142,7 +142,7 @@ export const AdminSourceSchoolsPage: React.FC = () => {
           <Button
             size="sm"
             onClick={handleOpenAdd}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-xs gap-1.5 font-semibold"
+            className="bg-teal-600 hover:bg-teal-700 text-white text-xs gap-1.5 font-semibold"
           >
             <Plus className="h-4 w-4" />
             <span>Tambah Sekolah</span>
@@ -154,12 +154,16 @@ export const AdminSourceSchoolsPage: React.FC = () => {
       <Card className="bg-slate-950 border-slate-800 text-slate-100 shadow-md">
         <CardContent className="p-4">
           <div className="relative max-w-md">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-500" />
+            <label htmlFor="school-search-input" className="sr-only">Cari Nama SMP / NPSN / Kota</label>
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-500 pointer-events-none" />
             <Input
+              id="school-search-input"
+              name="schoolSearch"
               placeholder="Cari Nama SMP / NPSN / Kota..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 h-9 text-xs bg-slate-900 border-slate-800 text-white placeholder:text-slate-500 focus-visible:ring-blue-500"
+              aria-label="Cari Nama SMP, NPSN, atau Kota"
+              className="pl-9 h-9 text-xs bg-slate-900 border-slate-800 text-white placeholder:text-slate-500 focus-visible:ring-teal-500"
             />
           </div>
         </CardContent>
@@ -175,7 +179,7 @@ export const AdminSourceSchoolsPage: React.FC = () => {
         <CardContent className="p-0">
           {loading ? (
             <div className="py-16 text-center space-y-2">
-              <div className="h-6 w-6 animate-spin rounded-full border-2 border-blue-500 border-t-transparent mx-auto" />
+              <div className="h-6 w-6 animate-spin rounded-full border-2 border-teal-500 border-t-transparent mx-auto" />
               <p className="text-xs text-slate-500">Memuat data sekolah asal...</p>
             </div>
           ) : filteredSchools.length > 0 ? (
@@ -194,7 +198,7 @@ export const AdminSourceSchoolsPage: React.FC = () => {
                   {filteredSchools.map((school) => (
                     <tr key={school.id} className="hover:bg-slate-900/50 transition-colors">
                       <td className="py-3 px-4 font-bold text-white flex items-center gap-2">
-                        <SchoolIcon className="h-4 w-4 text-blue-400 shrink-0" />
+                        <SchoolIcon className="h-4 w-4 text-teal-400 shrink-0" />
                         <span>{school.name}</span>
                       </td>
                       <td className="py-3 px-4 font-mono text-slate-400">{school.npsn || '-'}</td>
@@ -253,8 +257,10 @@ export const AdminSourceSchoolsPage: React.FC = () => {
 
               <form onSubmit={handleSave} className="space-y-3 text-xs">
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-semibold">Nama Lengkap SMP/MTs *</label>
+                  <label htmlFor="source_school_name" className="text-slate-300 font-semibold cursor-pointer">Nama Lengkap SMP/MTs *</label>
                   <Input
+                    id="source_school_name"
+                    name="name"
                     placeholder="Contoh: SMP Negeri 1 Jakarta"
                     value={editingSchool.name || ''}
                     onChange={(e) => setEditingSchool({ ...editingSchool, name: e.target.value })}
@@ -264,8 +270,10 @@ export const AdminSourceSchoolsPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-semibold">NPSN (Nomor Pokok Sekolah)</label>
+                  <label htmlFor="source_school_npsn" className="text-slate-300 font-semibold cursor-pointer">NPSN (Nomor Pokok Sekolah)</label>
                   <Input
+                    id="source_school_npsn"
+                    name="npsn"
                     placeholder="Contoh: 20101001"
                     value={editingSchool.npsn || ''}
                     onChange={(e) => setEditingSchool({ ...editingSchool, npsn: e.target.value })}
@@ -275,8 +283,10 @@ export const AdminSourceSchoolsPage: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="text-slate-300 font-semibold">Kota / Kabupaten *</label>
+                    <label htmlFor="source_school_city" className="text-slate-300 font-semibold cursor-pointer">Kota / Kabupaten *</label>
                     <Input
+                      id="source_school_city"
+                      name="city"
                       placeholder="Jakarta Selatan"
                       value={editingSchool.city || ''}
                       onChange={(e) => setEditingSchool({ ...editingSchool, city: e.target.value })}
@@ -285,8 +295,10 @@ export const AdminSourceSchoolsPage: React.FC = () => {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-slate-300 font-semibold">Provinsi *</label>
+                    <label htmlFor="source_school_province" className="text-slate-300 font-semibold cursor-pointer">Provinsi *</label>
                     <Input
+                      id="source_school_province"
+                      name="province"
                       placeholder="DKI Jakarta"
                       value={editingSchool.province || ''}
                       onChange={(e) => setEditingSchool({ ...editingSchool, province: e.target.value })}
@@ -308,7 +320,7 @@ export const AdminSourceSchoolsPage: React.FC = () => {
                   <Button
                     type="submit"
                     disabled={saving}
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold"
+                    className="bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold"
                   >
                     {saving ? 'Menyimpan...' : 'Simpan Sekolah'}
                   </Button>

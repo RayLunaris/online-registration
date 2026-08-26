@@ -23,7 +23,7 @@ export const Toast: React.FC<ToastProps> = ({
       case 'destructive':
         return <AlertCircle className="h-5 w-5 text-red-500 shrink-0" />;
       case 'info':
-        return <Info className="h-5 w-5 text-blue-500 shrink-0" />;
+        return <Info className="h-5 w-5 text-teal-500 shrink-0" />;
       default:
         return null;
     }
@@ -35,7 +35,7 @@ export const Toast: React.FC<ToastProps> = ({
         'pointer-events-auto flex w-full max-w-md items-start gap-3 rounded-xl border p-4 shadow-lg transition-all animate-in slide-in-from-top-2',
         variant === 'success' && 'bg-emerald-950/90 border-emerald-800 text-emerald-100',
         variant === 'destructive' && 'bg-red-950/90 border-red-800 text-red-100',
-        variant === 'info' && 'bg-blue-950/90 border-blue-800 text-blue-100',
+        variant === 'info' && 'bg-teal-950/90 border-teal-800 text-teal-100',
         variant === 'default' && 'bg-slate-900 border-slate-800 text-white'
       )}
     >

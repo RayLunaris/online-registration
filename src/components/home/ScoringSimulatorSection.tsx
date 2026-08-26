@@ -10,8 +10,8 @@ export const ScoringSimulatorSection: React.FC = () => {
   const calculatedTotal = (calcRapor * 0.7) + (calcPrestasi * 0.3);
 
   return (
-    <section className="py-16 sm:py-20 bg-white border-b border-slate-200/80 relative">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl space-y-10">
+    <section className="py-16 sm:py-20 bg-white border-b border-slate-200/70 relative">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1440px] space-y-10">
         
         {/* Header */}
         <div className="max-w-3xl space-y-2">
@@ -90,16 +90,19 @@ export const ScoringSimulatorSection: React.FC = () => {
             {/* Slider Rapor */}
             <div className="space-y-2">
               <div className="flex justify-between text-xs">
-                <span className="text-slate-300 font-medium">Rata-rata Nilai Rapor:</span>
+                <label htmlFor="simulator-rapor-range" className="text-slate-300 font-medium cursor-pointer">Rata-rata Nilai Rapor:</label>
                 <span className="font-mono font-bold text-[#0D9488] text-sm">{calcRapor.toFixed(1)}</span>
               </div>
               <input 
+                id="simulator-rapor-range"
+                name="calcRapor"
                 type="range" 
                 min="60" 
                 max="100" 
                 step="0.5"
                 value={calcRapor}
                 onChange={(e) => setCalcRapor(parseFloat(e.target.value))}
+                aria-label="Rata-rata Nilai Rapor"
                 className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#0D9488]"
               />
               <div className="flex justify-between text-[10px] text-slate-500 font-mono">
@@ -111,10 +114,13 @@ export const ScoringSimulatorSection: React.FC = () => {
 
             {/* Select Prestasi */}
             <div className="space-y-1.5">
-              <label className="text-xs text-slate-300 font-medium block">Tingkat Prestasi Tertinggi:</label>
+              <label htmlFor="simulator-prestasi-select" className="text-xs text-slate-300 font-medium block cursor-pointer">Tingkat Prestasi Tertinggi:</label>
               <select 
+                id="simulator-prestasi-select"
+                name="calcPrestasi"
                 value={calcPrestasi}
                 onChange={(e) => setCalcPrestasi(parseInt(e.target.value))}
+                aria-label="Tingkat Prestasi Tertinggi"
                 className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#0D9488] font-mono"
               >
                 <option value={0}>Tidak Ada Piagam (0 Poin)</option>

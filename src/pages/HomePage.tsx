@@ -45,7 +45,7 @@ export const HomePage: React.FC = () => {
       
       {/* 1. TOP NOTICE STRIP */}
       <div className="bg-[#111827] text-slate-300 border-b border-slate-800 text-xs py-2 px-4">
-        <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 max-w-7xl">
+        <div className="mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 max-w-[1440px] px-4 sm:px-8 lg:px-12">
           <div className="flex items-center gap-2 font-medium">
             <span className="inline-block h-2 w-2 rounded-full bg-[#0D9488] animate-pulse" />
             <span className="text-white font-semibold">Penerimaan Peserta Didik Baru (SPMB) T.A. 2026/2027</span>

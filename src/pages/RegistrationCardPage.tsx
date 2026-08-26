@@ -75,7 +75,7 @@ export const RegistrationCardPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-slate-50 py-16 flex items-center justify-center">
         <div className="text-center space-y-3">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent mx-auto" />
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-teal-600 border-t-transparent mx-auto" />
           <p className="text-sm text-slate-600 font-medium">Memuat kartu pendaftaran...</p>
         </div>
       </div>
@@ -99,7 +99,7 @@ export const RegistrationCardPage: React.FC = () => {
               </Button>
             </Link>
             <Link to="/">
-              <Button size="sm" className="text-xs bg-blue-600 hover:bg-blue-700 text-white">
+              <Button size="sm" className="text-xs bg-teal-600 hover:bg-teal-700 text-white">
                 Beranda
               </Button>
             </Link>
@@ -116,7 +116,7 @@ export const RegistrationCardPage: React.FC = () => {
         <div className="flex flex-wrap items-center justify-between gap-4 print:hidden">
           <Link
             to={`/cek-status?reg=${student.registration_number}`}
-            className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-blue-600 gap-1.5 transition-colors"
+            className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-teal-600 gap-1.5 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Kembali ke Status Pendaftaran
@@ -159,7 +159,7 @@ export const RegistrationCardPage: React.FC = () => {
               size="sm"
               disabled={exporting}
               onClick={handleDownloadPDF}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs h-9 gap-1.5 font-semibold shadow-sm"
+              className="bg-teal-600 hover:bg-teal-700 text-white text-xs h-9 gap-1.5 font-semibold shadow-xs"
             >
               {exporting ? (
                 <>

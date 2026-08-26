@@ -113,11 +113,11 @@ export const AdminMajorsPage: React.FC = () => {
 
   const getMajorIcon = (iconName: string | null) => {
     switch (iconName) {
-      case 'Code': return <Code className="h-5 w-5 text-blue-400" />;
+      case 'Code': return <Code className="h-5 w-5 text-teal-400" />;
       case 'Network': return <Network className="h-5 w-5 text-indigo-400" />;
       case 'Palette': return <Palette className="h-5 w-5 text-purple-400" />;
       case 'Calculator': return <Calculator className="h-5 w-5 text-emerald-400" />;
-      default: return <Code className="h-5 w-5 text-blue-400" />;
+      default: return <Code className="h-5 w-5 text-teal-400" />;
     }
   };
 
@@ -146,7 +146,7 @@ export const AdminMajorsPage: React.FC = () => {
           <Button
             size="sm"
             onClick={handleOpenAdd}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-xs gap-1.5 font-semibold"
+            className="bg-teal-600 hover:bg-teal-700 text-white text-xs gap-1.5 font-semibold"
           >
             <Plus className="h-4 w-4" />
             <span>Tambah Jurusan</span>
@@ -157,7 +157,7 @@ export const AdminMajorsPage: React.FC = () => {
       {/* MAJORS GRID */}
       {loading ? (
         <div className="py-16 text-center space-y-2">
-          <div className="h-6 w-6 animate-spin rounded-full border-2 border-blue-500 border-t-transparent mx-auto" />
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-teal-500 border-t-transparent mx-auto" />
           <p className="text-xs text-slate-500">Memuat data jurusan...</p>
         </div>
       ) : majors.length > 0 ? (
@@ -170,7 +170,7 @@ export const AdminMajorsPage: React.FC = () => {
                     {getMajorIcon(major.icon)}
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <Badge className="bg-blue-950 text-blue-400 border border-blue-800 font-mono text-xs font-bold">
+                    <Badge className="bg-teal-950 text-teal-400 border border-teal-800 font-mono text-xs font-bold">
                       {major.code}
                     </Badge>
                     {major.is_active ? (
@@ -246,8 +246,10 @@ export const AdminMajorsPage: React.FC = () => {
               <form onSubmit={handleSave} className="space-y-3 text-xs">
                 <div className="grid grid-cols-3 gap-3">
                   <div className="space-y-1">
-                    <label className="text-slate-300 font-semibold">Kode Jurusan *</label>
+                    <label htmlFor="major_code" className="text-slate-300 font-semibold cursor-pointer">Kode Jurusan *</label>
                     <Input
+                      id="major_code"
+                      name="code"
                       placeholder="Contoh: RPL"
                       value={editingMajor.code || ''}
                       onChange={(e) => setEditingMajor({ ...editingMajor, code: e.target.value.toUpperCase() })}
@@ -256,8 +258,10 @@ export const AdminMajorsPage: React.FC = () => {
                     />
                   </div>
                   <div className="col-span-2 space-y-1">
-                    <label className="text-slate-300 font-semibold">Nama Lengkap Jurusan *</label>
+                    <label htmlFor="major_name" className="text-slate-300 font-semibold cursor-pointer">Nama Lengkap Jurusan *</label>
                     <Input
+                      id="major_name"
+                      name="name"
                       placeholder="Contoh: Rekayasa Perangkat Lunak"
                       value={editingMajor.name || ''}
                       onChange={(e) => setEditingMajor({ ...editingMajor, name: e.target.value })}
@@ -269,8 +273,10 @@ export const AdminMajorsPage: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="text-slate-300 font-semibold">Batas Kuota Penerimaan</label>
+                    <label htmlFor="major_quota" className="text-slate-300 font-semibold cursor-pointer">Batas Kuota Penerimaan</label>
                     <Input
+                      id="major_quota"
+                      name="quota"
                       type="number"
                       min={0}
                       value={editingMajor.quota || 100}
@@ -280,8 +286,10 @@ export const AdminMajorsPage: React.FC = () => {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-slate-300 font-semibold">Ikon Kejuruan</label>
+                    <label htmlFor="major_icon" className="text-slate-300 font-semibold cursor-pointer">Ikon Kejuruan</label>
                     <select
+                      id="major_icon"
+                      name="icon"
                       value={editingMajor.icon || 'Code'}
                       onChange={(e) => setEditingMajor({ ...editingMajor, icon: e.target.value })}
                       className="w-full h-10 px-3 text-xs bg-slate-900 border border-slate-800 rounded-md text-white"
@@ -295,8 +303,10 @@ export const AdminMajorsPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-slate-300 font-semibold">Deskripsi Program Keahlian</label>
+                  <label htmlFor="major_description" className="text-slate-300 font-semibold cursor-pointer">Deskripsi Program Keahlian</label>
                   <textarea
+                    id="major_description"
+                    name="description"
                     rows={3}
                     placeholder="Ringkasan kompetensi keahlian dan materi yang dipelajari"
                     value={editingMajor.description || ''}
@@ -309,9 +319,10 @@ export const AdminMajorsPage: React.FC = () => {
                   <input
                     type="checkbox"
                     id="is_active"
+                    name="is_active"
                     checked={editingMajor.is_active ?? true}
                     onChange={(e) => setEditingMajor({ ...editingMajor, is_active: e.target.checked })}
-                    className="rounded bg-slate-900 border-slate-800 text-blue-600 focus:ring-blue-500"
+                    className="rounded bg-slate-900 border-slate-800 text-teal-600 focus:ring-teal-500"
                   />
                   <label htmlFor="is_active" className="text-slate-300 font-medium cursor-pointer">
                     Jurusan Aktif (Dapat dipilih calon siswa di formulir pendaftaran)
@@ -330,7 +341,7 @@ export const AdminMajorsPage: React.FC = () => {
                   <Button
                     type="submit"
                     disabled={saving}
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold"
+                    className="bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold"
                   >
                     {saving ? 'Menyimpan...' : 'Simpan Jurusan'}
                   </Button>

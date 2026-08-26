@@ -41,7 +41,7 @@ export const AdminDashboardPage: React.FC = () => {
   if (loading || !stats) {
     return (
       <div className="py-16 text-center space-y-3">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent mx-auto" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-teal-500 border-t-transparent mx-auto" />
         <p className="text-xs text-slate-400 font-medium">Memuat analitik dashboard...</p>
       </div>
     );
@@ -74,7 +74,7 @@ export const AdminDashboardPage: React.FC = () => {
             <span>Perbarui Data</span>
           </Button>
           <Link to="/admin/pendaftar">
-            <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white text-xs gap-1.5 font-semibold">
+            <Button size="sm" className="bg-teal-600 hover:bg-teal-700 text-white text-xs gap-1.5 font-semibold">
               <Users className="h-3.5 w-3.5" />
               <span>Kelola Pendaftar</span>
             </Button>
@@ -89,7 +89,7 @@ export const AdminDashboardPage: React.FC = () => {
           <CardHeader className="p-5 pb-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-slate-400">Total Pendaftar</span>
-              <div className="p-2 rounded-lg bg-blue-950/80 text-blue-400">
+              <div className="p-2 rounded-lg bg-teal-950/80 text-teal-400">
                 <Users className="h-4 w-4" />
               </div>
             </div>
@@ -100,11 +100,11 @@ export const AdminDashboardPage: React.FC = () => {
           <CardContent className="p-5 pt-0">
             <div className="text-[11px] text-slate-400 flex items-center justify-between mt-2">
               <span>Target: {stats.targetStudents} Siswa</span>
-              <span className="text-blue-400 font-bold">{quotaFilledPercentage}% Terisi</span>
+              <span className="text-teal-400 font-bold">{quotaFilledPercentage}% Terisi</span>
             </div>
             <div className="w-full bg-slate-800 h-1.5 rounded-full mt-1.5 overflow-hidden">
               <div
-                className="bg-blue-500 h-full rounded-full transition-all"
+                className="bg-teal-500 h-full rounded-full transition-all"
                 style={{ width: `${quotaFilledPercentage}%` }}
               />
             </div>
@@ -181,14 +181,14 @@ export const AdminDashboardPage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-base font-bold text-white flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-blue-400" />
+                  <TrendingUp className="h-4 w-4 text-teal-400" />
                   <span>Tren Pendaftaran Harian</span>
                 </CardTitle>
                 <CardDescription className="text-xs text-slate-400 mt-0.5">
                   Aktivitas masuknya formulir pendaftaran 7 hari terakhir
                 </CardDescription>
               </div>
-              <Badge className="bg-blue-950 text-blue-300 border-blue-800 text-[10px]">
+              <Badge className="bg-teal-950 text-teal-300 border-teal-800 text-[10px]">
                 Live Realtime
               </Badge>
             </div>
@@ -202,12 +202,12 @@ export const AdminDashboardPage: React.FC = () => {
 
                 return (
                   <div key={day} className="flex-1 flex flex-col items-center gap-2 group">
-                    <span className="text-[10px] font-mono text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="text-[10px] font-mono text-teal-400 opacity-0 group-hover:opacity-100 transition-opacity">
                       {countVal}
                     </span>
                     <div className="w-full bg-slate-900 rounded-t-md h-32 flex items-end overflow-hidden p-0.5">
                       <div
-                        className="w-full bg-gradient-to-t from-blue-600 to-cyan-400 rounded-t transition-all duration-500 group-hover:brightness-125"
+                        className="w-full bg-gradient-to-t from-teal-600 to-teal-400 rounded-t transition-all duration-500 group-hover:brightness-125"
                         style={{ height: `${heightVal}%` }}
                       />
                     </div>
@@ -218,7 +218,7 @@ export const AdminDashboardPage: React.FC = () => {
             </div>
             <div className="flex items-center justify-between text-[11px] text-slate-400 pt-3">
               <span className="flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full bg-blue-500" />
+                <span className="h-2 w-2 rounded-full bg-teal-500" />
                 <span>Volume Masuk per Hari</span>
               </span>
               <span className="text-slate-300 font-mono font-semibold">
@@ -234,52 +234,50 @@ export const AdminDashboardPage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-base font-bold text-white flex items-center gap-2">
-                  <Layers className="h-4 w-4 text-purple-400" />
+                  <Layers className="h-4 w-4 text-teal-400" />
                   <span>Distribusi Peminat Jurusan</span>
                 </CardTitle>
                 <CardDescription className="text-xs text-slate-400 mt-0.5">
-                  Perbandingan pendaftar Pilihan 1 vs Kapasitas Kuota
+                  Perbandingan pendaftar terhadap kapasitas kuota
                 </CardDescription>
               </div>
               <Link to="/admin/jurusan">
-                <Button size="sm" variant="ghost" className="text-xs text-purple-400 hover:text-purple-300 gap-1 p-0">
-                  <span>Atur</span>
+                <Button size="sm" variant="ghost" className="text-xs text-teal-400 hover:text-teal-300 gap-1 p-0">
+                  <span>Kelola Jurusan</span>
                   <ArrowRight className="h-3 w-3" />
                 </Button>
               </Link>
             </div>
           </CardHeader>
-          <CardContent className="p-6">
-            <div className="space-y-4">
-              {stats.majorStats.map((major) => {
-                const pct = major.quota > 0 ? Math.min(100, Math.round((major.count / major.quota) * 100)) : 0;
-                return (
-                  <div key={major.id} className="space-y-1.5">
-                    <div className="flex items-center justify-between text-xs">
-                      <div className="flex items-center gap-2">
-                        <Badge className="bg-slate-900 text-purple-300 border-slate-700 text-[10px] font-mono font-bold">
-                          {major.code}
-                        </Badge>
-                        <span className="font-semibold text-slate-200">{major.name}</span>
-                      </div>
-                      <div className="text-right font-mono">
-                        <span className="font-bold text-white">{major.count}</span>
-                        <span className="text-slate-500"> / {major.quota}</span>
-                        <span className="text-purple-400 font-bold ml-1.5">({pct}%)</span>
-                      </div>
+          <CardContent className="p-6 space-y-4">
+            {stats.majorStats.map((major) => {
+              const pct = major.quota > 0 ? Math.min(100, Math.round((major.count / major.quota) * 100)) : 0;
+              return (
+                <div key={major.id} className="space-y-1.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-2">
+                      <Badge className="bg-slate-900 text-teal-300 border-slate-700 text-[10px] font-mono font-bold">
+                        {major.code}
+                      </Badge>
+                      <span className="font-semibold text-slate-200">{major.name}</span>
                     </div>
-                    <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden flex">
-                      <div
-                        className={`h-full rounded-full transition-all duration-500 ${
-                          pct >= 100 ? 'bg-amber-500' : 'bg-gradient-to-r from-purple-600 to-pink-500'
-                        }`}
-                        style={{ width: `${pct}%` }}
-                      />
+                    <div className="text-right font-mono">
+                      <span className="font-bold text-white">{major.count}</span>
+                      <span className="text-slate-500"> / {major.quota}</span>
+                      <span className="text-teal-400 font-bold ml-1.5">({pct}%)</span>
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                  <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden flex">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        pct >= 100 ? 'bg-amber-500' : 'bg-teal-500'
+                      }`}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
           </CardContent>
         </Card>
       </div>
@@ -299,7 +297,7 @@ export const AdminDashboardPage: React.FC = () => {
                 </CardDescription>
               </div>
               <Link to="/admin/jurusan">
-                <Button size="sm" variant="ghost" className="text-xs text-blue-400 hover:text-blue-300 gap-1 p-0">
+                <Button size="sm" variant="ghost" className="text-xs text-teal-400 hover:text-teal-300 gap-1 p-0">
                   <span>Kelola Jurusan</span>
                   <ArrowRight className="h-3 w-3" />
                 </Button>
@@ -313,7 +311,7 @@ export const AdminDashboardPage: React.FC = () => {
                 <div key={major.id} className="space-y-1.5 p-3 rounded-xl bg-slate-900/60 border border-slate-800">
                   <div className="flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2">
-                      <Badge className="bg-slate-800 text-blue-400 border-slate-700 text-[10px] font-mono font-bold">
+                      <Badge className="bg-slate-800 text-teal-400 border-slate-700 text-[10px] font-mono font-bold">
                         {major.code}
                       </Badge>
                       <span className="font-semibold text-white">{major.name}</span>
@@ -321,13 +319,13 @@ export const AdminDashboardPage: React.FC = () => {
                     <div className="text-right">
                       <span className="font-bold text-white font-mono">{major.count}</span>
                       <span className="text-slate-400"> / {major.quota} Kursi</span>
-                      <span className="text-blue-400 font-bold ml-2">({pct}%)</span>
+                      <span className="text-teal-400 font-bold ml-2">({pct}%)</span>
                     </div>
                   </div>
                   <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all ${
-                        pct >= 100 ? 'bg-amber-500' : 'bg-blue-500'
+                        pct >= 100 ? 'bg-amber-500' : 'bg-teal-500'
                       }`}
                       style={{ width: `${pct}%` }}
                     />
@@ -351,7 +349,7 @@ export const AdminDashboardPage: React.FC = () => {
           <CardContent className="p-6 space-y-3">
             <Link to="/admin/pendaftar" className="block">
               <Button variant="outline" className="w-full justify-start text-xs bg-slate-900 border-slate-800 hover:bg-slate-800 text-slate-200 gap-2.5 h-10">
-                <Users className="h-4 w-4 text-blue-400" />
+                <Users className="h-4 w-4 text-teal-400" />
                 <span>Lihat & Verifikasi Berkas Siswa</span>
               </Button>
             </Link>
@@ -363,13 +361,13 @@ export const AdminDashboardPage: React.FC = () => {
             </Link>
             <Link to="/admin/pengumuman" className="block">
               <Button variant="outline" className="w-full justify-start text-xs bg-slate-900 border-slate-800 hover:bg-slate-800 text-slate-200 gap-2.5 h-10">
-                <FileText className="h-4 w-4 text-purple-400" />
+                <FileText className="h-4 w-4 text-teal-400" />
                 <span>Buat Berita / Pengumuman Baru</span>
               </Button>
             </Link>
             <Link to="/admin/jurusan" className="block">
               <Button variant="outline" className="w-full justify-start text-xs bg-slate-900 border-slate-800 hover:bg-slate-800 text-slate-200 gap-2.5 h-10">
-                <GraduationCap className="h-4 w-4 text-blue-400" />
+                <GraduationCap className="h-4 w-4 text-teal-400" />
                 <span>Atur Kuota & Program Keahlian</span>
               </Button>
             </Link>
@@ -395,7 +393,7 @@ export const AdminDashboardPage: React.FC = () => {
             </CardDescription>
           </div>
           <Link to="/admin/pendaftar">
-            <Button size="sm" variant="ghost" className="text-xs text-blue-400 hover:text-blue-300 gap-1">
+            <Button size="sm" variant="ghost" className="text-xs text-teal-400 hover:text-teal-300 gap-1">
               <span>Lihat Semua Pendaftar</span>
               <ArrowRight className="h-3 w-3" />
             </Button>
@@ -418,7 +416,7 @@ export const AdminDashboardPage: React.FC = () => {
                 <tbody className="divide-y divide-slate-800/60 font-medium">
                   {stats.recentStudents.map((st) => (
                     <tr key={st.id} className="hover:bg-slate-900/50 transition-colors">
-                      <td className="py-3 px-4 font-mono text-blue-400 font-bold">
+                      <td className="py-3 px-4 font-mono text-teal-400 font-bold">
                         {st.registration_number}
                       </td>
                       <td className="py-3 px-4 text-white font-semibold">{st.full_name}</td>
@@ -434,7 +432,7 @@ export const AdminDashboardPage: React.FC = () => {
                             st.status === 'Diterima'
                               ? 'bg-emerald-950 text-emerald-400 border border-emerald-800'
                               : st.status === 'Terverifikasi'
-                              ? 'bg-blue-950 text-blue-400 border border-blue-800'
+                              ? 'bg-teal-950 text-teal-400 border border-teal-800'
                               : 'bg-amber-950 text-amber-400 border border-amber-800'
                           }`}
                         >

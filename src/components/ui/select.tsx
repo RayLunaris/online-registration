@@ -12,7 +12,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="w-full space-y-1">
         {label && (
-          <label className="text-sm font-medium text-foreground">
+          <label htmlFor={props.id} className="text-sm font-medium text-foreground">
             {label}
           </label>
         )}

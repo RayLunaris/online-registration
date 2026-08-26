@@ -92,7 +92,7 @@ export const StatusCheckPage: React.FC = () => {
         );
       case 'Terverifikasi':
         return (
-          <Badge className="bg-blue-600 hover:bg-blue-700 text-white gap-1.5 py-1.5 px-4 text-sm font-semibold shadow-sm">
+          <Badge className="bg-teal-600 hover:bg-teal-700 text-white gap-1.5 py-1.5 px-4 text-sm font-semibold shadow-sm">
             <CheckCircle2 className="h-4 w-4" /> Berkas Terverifikasi
           </Badge>
         );
@@ -125,7 +125,7 @@ export const StatusCheckPage: React.FC = () => {
         <div className="mb-6 print:hidden">
           <Link
             to="/"
-            className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-blue-600 gap-1.5 transition-colors"
+            className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-teal-600 gap-1.5 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Kembali ke Beranda
@@ -136,7 +136,7 @@ export const StatusCheckPage: React.FC = () => {
         <Card className="border-slate-200 shadow-sm mb-8 print:hidden">
           <CardHeader>
             <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600">
+              <div className="p-2.5 rounded-xl bg-teal-50 text-teal-600">
                 <Search className="h-6 w-6" />
               </div>
               <div>
@@ -157,16 +157,21 @@ export const StatusCheckPage: React.FC = () => {
               }}
               className="flex flex-col sm:flex-row gap-3"
             >
+              <label htmlFor="status-check-reg-input" className="sr-only">Nomor Pendaftaran</label>
               <Input
+                id="status-check-reg-input"
+                name="regNumber"
                 placeholder="Nomor Pendaftaran (misal: REG-2026-00001)"
                 value={regNumber}
                 onChange={(e) => setRegNumber(e.target.value)}
-                className="h-11 text-base uppercase font-mono tracking-wider"
+                aria-label="Nomor Pendaftaran"
+                autoComplete="off"
+                className="h-11 text-base uppercase font-mono tracking-wider focus-visible:ring-teal-600"
               />
               <Button
                 type="submit"
                 disabled={loading}
-                className="h-11 px-7 bg-blue-600 hover:bg-blue-700 text-white font-semibold shrink-0 gap-2"
+                className="h-11 px-7 bg-teal-600 hover:bg-teal-700 text-white font-semibold shrink-0 gap-2 shadow-xs"
               >
                 {loading ? (
                   <>
@@ -199,12 +204,12 @@ export const StatusCheckPage: React.FC = () => {
             <Card className="border-slate-200 overflow-hidden shadow-md">
               <div className="bg-slate-900 p-6 sm:p-8 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                  <span className="text-xs text-blue-400 font-mono tracking-wider block mb-1">
+                  <span className="text-xs text-teal-400 font-mono tracking-wider block mb-1">
                     NOMOR PENDAFTARAN: {student.registration_number}
                   </span>
                   <h2 className="text-2xl sm:text-3xl font-extrabold text-white">{student.full_name}</h2>
                   <p className="text-xs sm:text-sm text-slate-300 mt-1 flex items-center gap-2">
-                    <SchoolIcon className="h-4 w-4 text-blue-400" />
+                    <SchoolIcon className="h-4 w-4 text-teal-400" />
                     <span>Asal Sekolah: {student.source_school_name} (Lulus {student.graduation_year})</span>
                   </p>
                 </div>
@@ -288,7 +293,7 @@ export const StatusCheckPage: React.FC = () => {
                             isDone
                               ? 'bg-emerald-500 text-white'
                               : isCurrent
-                              ? 'bg-blue-500 text-white ring-4 ring-blue-500/20'
+                              ? 'bg-teal-500 text-white ring-4 ring-teal-500/20'
                               : 'bg-slate-700 text-slate-400'
                           }`}
                         >
@@ -319,15 +324,15 @@ export const StatusCheckPage: React.FC = () => {
                     Rincian Penilaian Seleksi
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="p-4 rounded-xl bg-blue-50/80 border border-blue-100">
-                      <div className="flex items-center justify-between text-blue-700 text-xs font-semibold">
+                    <div className="p-4 rounded-xl bg-teal-50/80 border border-teal-100">
+                      <div className="flex items-center justify-between text-teal-700 text-xs font-semibold">
                         <span>Rata-rata Rapor (70%)</span>
                         <BookOpen className="h-4 w-4" />
                       </div>
-                      <div className="text-3xl font-extrabold text-blue-900 mt-2 font-mono">
+                      <div className="text-3xl font-extrabold text-teal-900 mt-2 font-mono">
                         {formatScore(student.average_report_score)}
                       </div>
-                      <div className="text-[11px] text-blue-600 mt-1">Bobot 70% dari nilai semester 1-5</div>
+                      <div className="text-[11px] text-teal-700 mt-1">Bobot 70% dari nilai semester 1-5</div>
                     </div>
 
                     <div className="p-4 rounded-xl bg-purple-50/80 border border-purple-100">
@@ -359,7 +364,7 @@ export const StatusCheckPage: React.FC = () => {
                   {/* Biodata Lengkap */}
                   <div className="space-y-3">
                     <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                      <User className="h-4 w-4 text-blue-600" />
+                      <User className="h-4 w-4 text-teal-600" />
                       Biodata Pendaftar
                     </h3>
                     <dl className="grid grid-cols-3 gap-2.5 text-xs bg-slate-50 p-4 rounded-xl border border-slate-200/60">
@@ -424,7 +429,7 @@ export const StatusCheckPage: React.FC = () => {
                     <div className="pt-2 print:hidden flex flex-col sm:flex-row gap-2">
                       <Link to={`/kartu-peserta/${student.registration_number}`} className="flex-1">
                         <Button
-                          className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold h-10 gap-2 shadow-sm"
+                          className="w-full bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold h-10 gap-2 shadow-xs rounded-xl"
                         >
                           <Printer className="h-4 w-4" />
                           Kartu Peserta Resmi (PDF & QR)

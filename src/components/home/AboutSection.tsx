@@ -4,7 +4,8 @@ import {
   ArrowRight, 
   Award, 
   Sparkles, 
-  Building2 
+  Building2,
+  Users
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { School } from '@/types/spmb';
@@ -21,25 +22,33 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
   totalQuota = 400 
 }) => {
   return (
-    <section id="tentang" className="py-16 sm:py-20 lg:py-24 bg-white relative overflow-hidden border-b border-slate-200/80">
-      {/* Decorative Background Accents */}
-      <div className="absolute -top-10 -left-10 w-80 h-80 rounded-full bg-[#CCFBF1]/30 blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-10 right-0 w-80 h-80 rounded-full bg-slate-100 blur-2xl pointer-events-none" />
+    <section id="tentang" className="py-16 sm:py-20 lg:py-24 bg-white relative overflow-hidden border-b border-slate-200/70">
+      {/* Decorative Mint Background Blobs */}
+      <div className="absolute -top-10 -left-10 w-96 h-96 rounded-full bg-[#CCFBF1]/40 blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-10 right-0 w-96 h-96 rounded-full bg-teal-50/50 blur-2xl pointer-events-none" />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10">
+      {/* Decorative Wavy Dots (EducateX Style) */}
+      <div className="absolute top-12 right-12 hidden lg:block opacity-30 pointer-events-none">
+        <svg width="60" height="40" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 10C10 0 20 20 30 10C40 0 50 20 60 10" stroke="#0D9488" strokeWidth="2.5" strokeLinecap="round" />
+          <path d="M0 25C10 15 20 35 30 25C40 15 50 35 60 25" stroke="#14B8A6" strokeWidth="2.5" strokeLinecap="round" />
+        </svg>
+      </div>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1440px] relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* LEFT: Photo Stack & Decorative Badges (Mirroring "Who We Are" in EducateX) */}
+          {/* LEFT: Photo Stack & Decorative Badges (EducateX "Who We Are" style) */}
           <div className="lg:col-span-6 relative">
             
-            {/* Background Blob & Dots */}
-            <div className="absolute -inset-4 bg-gradient-to-tr from-teal-50 via-teal-100/40 to-transparent rounded-[3rem] -rotate-1 scale-95 pointer-events-none" />
+            {/* Background Arch Shadow Backdrop */}
+            <div className="absolute -inset-4 bg-gradient-to-tr from-teal-50 via-teal-100/40 to-transparent rounded-[3.25rem] -rotate-1 scale-95 pointer-events-none" />
             
-            <div className="relative rounded-[2.5rem] overflow-hidden border-4 border-white shadow-xl bg-slate-100">
+            <div className="relative rounded-[2.75rem] overflow-hidden border-4 border-white shadow-2xl bg-slate-100">
               <img
                 src="/images/about-students.jpg"
                 alt="Siswa-siswi SMK Negeri 1 Digital Teknologi"
-                className="w-full h-[380px] sm:h-[460px] object-cover object-center hover:scale-105 transition-transform duration-700 ease-out"
+                className="w-full h-[380px] sm:h-[470px] object-cover object-center hover:scale-105 transition-transform duration-700 ease-out"
                 loading="lazy"
               />
               
@@ -53,19 +62,19 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
                     <Building2 className="h-4 w-4" />
                   </div>
                   <div>
-                    <span className="text-xs font-bold text-slate-900 block">Teaching Factory</span>
-                    <span className="text-[11px] text-slate-500 font-medium">Lab Standar Industri 4.0</span>
+                    <span className="text-xs font-bold text-slate-900 block">Teaching Factory Unggulan</span>
+                    <span className="text-[11px] text-slate-500 font-medium">Lab Berstandar Industri 4.0</span>
                   </div>
                 </div>
                 <span className="text-xs font-bold text-[#0D9488] bg-teal-50 px-2.5 py-1 rounded-full border border-teal-200/60">
-                  Resmi
+                  Resmi BNSP
                 </span>
               </div>
             </div>
 
             {/* Overlapping Floating Circular Badge (EducateX style) */}
-            <div className="absolute -top-4 -right-2 sm:-right-4 bg-white rounded-2xl p-3 sm:p-4 shadow-xl border border-teal-100 flex items-center gap-3 animate-bounce [animation-duration:5s]">
-              <div className="h-11 w-11 rounded-full bg-[#0D9488] text-white flex items-center justify-center shadow-sm shrink-0">
+            <div className="absolute -top-4 -right-2 sm:-right-4 bg-white rounded-2xl p-3 sm:p-4 shadow-xl border border-teal-100 flex items-center gap-3">
+              <div className="h-11 w-11 rounded-full bg-[#0D9488] text-white flex items-center justify-center shadow-xs shrink-0">
                 <Award className="h-6 w-6 text-amber-300" />
               </div>
               <div>
@@ -74,8 +83,19 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
               </div>
             </div>
 
+            {/* Floating Mini Badge: Teachers / Instructors (EducateX style) */}
+            <div className="absolute -bottom-4 -left-2 sm:-left-4 bg-white rounded-2xl p-3 shadow-lg border border-teal-100 flex items-center gap-2.5">
+              <div className="h-9 w-9 rounded-xl bg-teal-50 text-[#0D9488] flex items-center justify-center">
+                <Users className="h-4 w-4" />
+              </div>
+              <div>
+                <span className="text-xs font-bold text-slate-900 block">30+ Guru Ahli</span>
+                <span className="text-[10px] text-slate-500 font-medium">Praktisi & Asesor BNSP</span>
+              </div>
+            </div>
+
             {/* Dot Grid Pattern Decor */}
-            <div className="absolute -bottom-6 -left-4 w-20 h-20 grid grid-cols-4 gap-2 opacity-30 pointer-events-none">
+            <div className="absolute -bottom-6 -right-4 w-20 h-20 grid grid-cols-4 gap-2 opacity-25 pointer-events-none">
               {[...Array(16)].map((_, i) => (
                 <span key={i} className="h-1.5 w-1.5 rounded-full bg-[#0D9488]" />
               ))}
@@ -89,64 +109,63 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
             {/* Section Tag */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-50 border border-teal-200/80 text-[#0D9488] text-xs font-bold uppercase tracking-wider">
               <Sparkles className="h-3.5 w-3.5 text-[#0D9488]" />
-              <span>Tentang Sekolah</span>
+              <span>Tentang Sekolah Kami</span>
             </div>
 
             {/* Main Title */}
             <div className="space-y-3">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                Mengapa Memilih{' '}
-                <span className="text-[#0D9488]">{school?.name || 'SMK Negeri 1 Digital'}</span>?
+                Mencetak Tenaga Ahli Vokasi yang Kompeten, Adaptif & Siap Kerja
               </h2>
-              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-                Kami berkomitmen mencetak tenaga ahli vokasi yang tangguh, adaptif, dan siap langsung terjun ke dunia kerja maupun melanjutkan ke perguruan tinggi. Pembelajaran berfokus pada <em>Project-Based Learning</em>, penguasaan teknologi mutakhir, dan sertifikasi profesi resmi.
+              <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
+                <strong className="text-slate-900 font-semibold">{school?.name || 'SMK Negeri 1 Digital Teknologi'}</strong> berfokus pada <em>Project-Based Learning</em>, penguasaan teknologi mutakhir, dan sertifikasi profesi resmi untuk memastikan setiap lulusan memiliki daya saing tinggi di pasar kerja global.
               </p>
             </div>
 
-            {/* Feature Checkpoints */}
+            {/* Feature Checkpoints (EducateX style) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-              <div className="flex items-center gap-2.5 p-3 rounded-xl bg-[#FAFAF9] border border-slate-200/80 text-xs font-bold text-slate-800">
+              <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-[#FAFAF9] border border-slate-200/80 text-xs font-bold text-slate-800">
                 <CheckCircle2 className="h-4 w-4 text-[#0D9488] shrink-0" />
-                <span>Kurikulum Standar Industri</span>
+                <span>Kurikulum Standar Industri 4.0</span>
               </div>
-              <div className="flex items-center gap-2.5 p-3 rounded-xl bg-[#FAFAF9] border border-slate-200/80 text-xs font-bold text-slate-800">
+              <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-[#FAFAF9] border border-slate-200/80 text-xs font-bold text-slate-800">
                 <CheckCircle2 className="h-4 w-4 text-[#0D9488] shrink-0" />
-                <span>Sertifikasi BNSP & Global</span>
+                <span>Sertifikasi BNSP & Lisensi Global</span>
               </div>
-              <div className="flex items-center gap-2.5 p-3 rounded-xl bg-[#FAFAF9] border border-slate-200/80 text-xs font-bold text-slate-800">
+              <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-[#FAFAF9] border border-slate-200/80 text-xs font-bold text-slate-800">
                 <CheckCircle2 className="h-4 w-4 text-[#0D9488] shrink-0" />
-                <span>Penyaluran PKL 30+ Mitra</span>
+                <span>Penyaluran PKL di 30+ Mitra DUDI</span>
               </div>
-              <div className="flex items-center gap-2.5 p-3 rounded-xl bg-[#FAFAF9] border border-slate-200/80 text-xs font-bold text-slate-800">
+              <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-[#FAFAF9] border border-slate-200/80 text-xs font-bold text-slate-800">
                 <CheckCircle2 className="h-4 w-4 text-[#0D9488] shrink-0" />
-                <span>Teaching Factory & Startup</span>
+                <span>Teaching Factory & Inkubator Startup</span>
               </div>
             </div>
 
             {/* Big Statistics Counter Block (EducateX Style) */}
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-100">
-              <div className="p-4 rounded-2xl bg-teal-50/70 border border-teal-100 space-y-1">
+              <div className="p-4.5 rounded-2xl bg-teal-50/70 border border-teal-100 space-y-1">
                 <span className="text-3xl sm:text-4xl font-extrabold text-[#0D9488] font-mono block">
                   {majorsCount}+
                 </span>
-                <span className="text-xs font-bold text-slate-800 block">Jurusan Tersedia</span>
-                <span className="text-[11px] text-slate-500">Pilihan kompetensi keahlian unggulan</span>
+                <span className="text-xs font-bold text-slate-800 block">Jurusan Pilihan</span>
+                <span className="text-[11px] text-slate-500">Kompetensi keahlian favorit</span>
               </div>
 
-              <div className="p-4 rounded-2xl bg-orange-50/70 border border-orange-100 space-y-1">
-                <span className="text-3xl sm:text-4xl font-extrabold text-orange-600 font-mono block">
+              <div className="p-4.5 rounded-2xl bg-teal-50/70 border border-teal-100 space-y-1">
+                <span className="text-3xl sm:text-4xl font-extrabold text-teal-700 font-mono block">
                   {totalQuota}+
                 </span>
-                <span className="text-xs font-bold text-slate-800 block">Total Kuota Tersedia</span>
-                <span className="text-[11px] text-slate-500">Daya tampung siswa baru 2026/2027</span>
+                <span className="text-xs font-bold text-slate-800 block">Total Daya Tampung</span>
+                <span className="text-[11px] text-slate-500">Kuota calon siswa 2026/2027</span>
               </div>
             </div>
 
             {/* CTA Button */}
-            <div className="pt-2">
+            <div className="pt-1">
               <a href="#jurusan">
-                <Button className="h-11 px-7 bg-[#0D9488] hover:bg-teal-700 text-white font-bold text-xs rounded-full shadow-sm gap-2">
-                  <span>Lihat Seluruh Jurusan</span>
+                <Button className="h-11 px-7 bg-[#0D9488] hover:bg-teal-700 text-white font-bold text-xs rounded-full shadow-xs gap-2">
+                  <span>Lihat Seluruh Program Keahlian</span>
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </a>
@@ -159,3 +178,4 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
     </section>
   );
 };
+

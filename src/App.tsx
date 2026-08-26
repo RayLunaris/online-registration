@@ -1,75 +1,128 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from '@/context/AuthContext';
 import { LanguageProvider } from '@/context/LanguageContext';
 import { PublicLayout } from '@/components/common/PublicLayout';
-import { HomePage } from '@/pages/HomePage';
-import { RegistrationPage } from '@/pages/RegistrationPage';
-import { RegistrationCardPage } from '@/pages/RegistrationCardPage';
-import { StatusCheckPage } from '@/pages/StatusCheckPage';
-import { AnnouncementListPage } from '@/pages/AnnouncementListPage';
-import { AnnouncementDetailPage } from '@/pages/AnnouncementDetailPage';
-import { LoginPage } from '@/pages/admin/LoginPage';
 import { ProtectedRoute } from '@/components/admin/ProtectedRoute';
 import { AdminLayout } from '@/components/admin/AdminLayout';
-import { AdminDashboardPage } from '@/pages/admin/AdminDashboardPage';
-import { AdminStudentsPage } from '@/pages/admin/AdminStudentsPage';
-import { AdminSelectionPage } from '@/pages/admin/AdminSelectionPage';
-import { AdminMajorsPage } from '@/pages/admin/AdminMajorsPage';
-import { AdminSourceSchoolsPage } from '@/pages/admin/AdminSourceSchoolsPage';
-import { AdminAnnouncementsPage } from '@/pages/admin/AdminAnnouncementsPage';
-import { AdminSettingsPage } from '@/pages/admin/AdminSettingsPage';
+import { ErrorBoundary } from '@/components/common/ErrorBoundary';
+
+// Helper to retry dynamic chunk import in case of transient network/HMR hiccups
+function lazyRetry<T extends React.ComponentType<any>>(
+  factory: () => Promise<{ default: T }>,
+  retriesLeft = 2,
+  interval = 400
+): React.LazyExoticComponent<T> {
+  return React.lazy(
+    () =>
+      new Promise<{ default: T }>((resolve, reject) => {
+        factory()
+          .then(resolve)
+          .catch((error) => {
+            if (retriesLeft === 0) {
+              reject(error);
+              return;
+            }
+            setTimeout(() => {
+              factory()
+                .then(resolve)
+                .catch((retryErr) => {
+                  if (retriesLeft <= 1) {
+                    reject(retryErr);
+                  } else {
+                    setTimeout(() => {
+                      factory().then(resolve).catch(reject);
+                    }, interval);
+                  }
+                });
+            }, interval);
+          });
+      })
+  );
+}
+
+// Route-level code splitting with auto-retry
+const HomePage = lazyRetry(() => import('@/pages/HomePage').then(m => ({ default: m.HomePage })));
+const RegistrationPage = lazyRetry(() => import('@/pages/RegistrationPage').then(m => ({ default: m.RegistrationPage })));
+const RegistrationCardPage = lazyRetry(() => import('@/pages/RegistrationCardPage').then(m => ({ default: m.RegistrationCardPage })));
+const StatusCheckPage = lazyRetry(() => import('@/pages/StatusCheckPage').then(m => ({ default: m.StatusCheckPage })));
+const AnnouncementListPage = lazyRetry(() => import('@/pages/AnnouncementListPage').then(m => ({ default: m.AnnouncementListPage })));
+const AnnouncementDetailPage = lazyRetry(() => import('@/pages/AnnouncementDetailPage').then(m => ({ default: m.AnnouncementDetailPage })));
+const LoginPage = lazyRetry(() => import('@/pages/admin/LoginPage').then(m => ({ default: m.LoginPage })));
+const AdminDashboardPage = lazyRetry(() => import('@/pages/admin/AdminDashboardPage').then(m => ({ default: m.AdminDashboardPage })));
+const AdminStudentsPage = lazyRetry(() => import('@/pages/admin/AdminStudentsPage').then(m => ({ default: m.AdminStudentsPage })));
+const AdminSelectionPage = lazyRetry(() => import('@/pages/admin/AdminSelectionPage').then(m => ({ default: m.AdminSelectionPage })));
+const AdminMajorsPage = lazyRetry(() => import('@/pages/admin/AdminMajorsPage').then(m => ({ default: m.AdminMajorsPage })));
+const AdminSourceSchoolsPage = lazyRetry(() => import('@/pages/admin/AdminSourceSchoolsPage').then(m => ({ default: m.AdminSourceSchoolsPage })));
+const AdminAnnouncementsPage = lazyRetry(() => import('@/pages/admin/AdminAnnouncementsPage').then(m => ({ default: m.AdminAnnouncementsPage })));
+const AdminSettingsPage = lazyRetry(() => import('@/pages/admin/AdminSettingsPage').then(m => ({ default: m.AdminSettingsPage })));
+
+const PageLoader: React.FC = () => (
+  <div className="min-h-[50vh] flex flex-col items-center justify-center p-8 gap-3">
+    <div className="h-9 w-9 animate-spin rounded-full border-4 border-teal-600 border-t-transparent" />
+    <span className="text-xs text-slate-500 font-medium">Memuat halaman...</span>
+  </div>
+);
 
 export const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <LanguageProvider>
-        <BrowserRouter>
-          <Routes>
-            {/* 1. PUBLIC ROUTES WITH PUBLIC LAYOUT */}
-            <Route element={<PublicLayout />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/daftar" element={<RegistrationPage />} />
-              
-              {/* Cek Status (both /status and /cek-status) */}
-              <Route path="/status" element={<StatusCheckPage />} />
-              <Route path="/cek-status" element={<StatusCheckPage />} />
-              
-              {/* Kartu Peserta */}
-              <Route path="/kartu-peserta/:regNumber" element={<RegistrationCardPage />} />
+    <ErrorBoundary>
+      <AuthProvider>
+        <LanguageProvider>
+          <BrowserRouter
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true,
+            }}
+          >
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                {/* 1. PUBLIC ROUTES WITH PUBLIC LAYOUT */}
+                <Route element={<PublicLayout />}>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/daftar" element={<RegistrationPage />} />
+                  
+                  {/* Cek Status (both /status and /cek-status) */}
+                  <Route path="/status" element={<StatusCheckPage />} />
+                  <Route path="/cek-status" element={<StatusCheckPage />} />
+                  
+                  {/* Kartu Peserta */}
+                  <Route path="/kartu-peserta/:regNumber" element={<RegistrationCardPage />} />
 
-              {/* Pengumuman List & Detail (both :slug and :id) */}
-              <Route path="/pengumuman" element={<AnnouncementListPage />} />
-              <Route path="/pengumuman/:slug" element={<AnnouncementDetailPage />} />
-            </Route>
+                  {/* Pengumuman List & Detail (both :slug and :id) */}
+                  <Route path="/pengumuman" element={<AnnouncementListPage />} />
+                  <Route path="/pengumuman/:slug" element={<AnnouncementDetailPage />} />
+                </Route>
 
-            {/* 2. ADMIN AUTH ROUTE */}
-            <Route path="/admin/login" element={<LoginPage />} />
+                {/* 2. ADMIN AUTH ROUTE */}
+                <Route path="/admin/login" element={<LoginPage />} />
 
-            {/* 3. PROTECTED ADMIN ROUTES WITH ADMIN LAYOUT */}
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute>
-                  <AdminLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<AdminDashboardPage />} />
-              <Route path="pendaftar" element={<AdminStudentsPage />} />
-              <Route path="seleksi" element={<AdminSelectionPage />} />
-              <Route path="jurusan" element={<AdminMajorsPage />} />
-              <Route path="sekolah-asal" element={<AdminSourceSchoolsPage />} />
-              <Route path="pengumuman" element={<AdminAnnouncementsPage />} />
-              <Route path="pengaturan" element={<AdminSettingsPage />} />
-            </Route>
+                {/* 3. PROTECTED ADMIN ROUTES WITH ADMIN LAYOUT */}
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute>
+                      <AdminLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route index element={<AdminDashboardPage />} />
+                  <Route path="pendaftar" element={<AdminStudentsPage />} />
+                  <Route path="seleksi" element={<AdminSelectionPage />} />
+                  <Route path="jurusan" element={<AdminMajorsPage />} />
+                  <Route path="sekolah-asal" element={<AdminSourceSchoolsPage />} />
+                  <Route path="pengumuman" element={<AdminAnnouncementsPage />} />
+                  <Route path="pengaturan" element={<AdminSettingsPage />} />
+                </Route>
 
-            {/* 4. FALLBACK */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </BrowserRouter>
-      </LanguageProvider>
-    </AuthProvider>
+                {/* 4. FALLBACK */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Suspense>
+          </BrowserRouter>
+        </LanguageProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 };
 
