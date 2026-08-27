@@ -5,7 +5,8 @@ import {
   RefreshCw, 
   CheckCircle2, 
   AlertCircle,
-  Sparkles 
+  Sparkles,
+  Image as ImageIcon 
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -208,6 +209,45 @@ export const AdminSettingsPage: React.FC = () => {
                   onChange={(e) => setSettings({ ...settings, email: e.target.value })}
                   className="bg-slate-900 border-slate-800 text-white"
                 />
+              </div>
+            </div>
+
+            <div className="space-y-2 pt-2 border-t border-slate-800/80">
+              <label htmlFor="school_logo_url" className="text-slate-300 font-semibold flex items-center gap-1.5 cursor-pointer">
+                <ImageIcon className="h-3.5 w-3.5 text-teal-400" />
+                <span>URL / Path Logo Sekolah & SPMB</span>
+              </label>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <div className="flex-1 w-full space-y-1">
+                  <Input
+                    id="school_logo_url"
+                    name="logo_url"
+                    value={settings.logo_url || ''}
+                    onChange={(e) => setSettings({ ...settings, logo_url: e.target.value })}
+                    className="bg-slate-900 border-slate-800 text-white font-mono text-xs"
+                    placeholder="/images/logo.png"
+                  />
+                  <p className="text-[11px] text-slate-500">
+                    Gunakan path lokal seperti <code className="text-teal-400">/images/logo.png</code> atau link URL gambar resmi.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2.5 p-2 rounded-xl bg-slate-900 border border-slate-800 shrink-0">
+                  <div className="h-12 w-12 rounded-lg bg-white p-1 flex items-center justify-center overflow-hidden border border-slate-700">
+                    <img 
+                      src={settings.logo_url || '/images/logo-icon.png'} 
+                      alt="Preview Logo" 
+                      className="h-full w-full object-contain"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/images/logo-icon.png';
+                      }}
+                    />
+                  </div>
+                  <div className="text-[11px] text-slate-400 pr-2">
+                    <span className="font-semibold text-slate-200 block">Preview Logo</span>
+                    <span className="text-[10px] text-slate-500">Kop & Header</span>
+                  </div>
+                </div>
               </div>
             </div>
           </CardContent>

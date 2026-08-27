@@ -1,5 +1,5 @@
 import React from 'react';
-import { GraduationCap, MapPin, Phone, Mail, Award, CheckCircle, ArrowUpRight, ShieldCheck } from 'lucide-react';
+import { MapPin, Phone, Mail, Award, CheckCircle, ArrowUpRight, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const Footer: React.FC = () => {
@@ -11,8 +11,8 @@ export const Footer: React.FC = () => {
           {/* Col 1: School Identity & Accreditation */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#0D9488] text-white shadow-sm">
-                <GraduationCap className="h-6 w-6" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-md shadow-black/20 p-1.5 overflow-hidden border border-slate-700/60 shrink-0">
+                <img src="/images/logo-icon.png" alt="Logo SPMB" className="h-full w-full object-contain" />
               </div>
               <div>
                 <h3 className="text-white font-extrabold text-base leading-tight">SMK Negeri 1 Digital</h3>

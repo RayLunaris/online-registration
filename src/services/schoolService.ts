@@ -10,7 +10,7 @@ export const DEFAULT_SCHOOL: School = {
   phone: '(021) 7890-1234',
   email: 'spmb@smkn1digital.sch.id',
   academic_year: '2026/2027',
-  logo_url: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=150&auto=format&fit=crop&q=80',
+  logo_url: '/images/logo.png',
   target_students: 400,
   hero_tagline: 'Membangun Generasi Vokasi Berkarakter, Cerdas, dan Siap Kerja Global',
   hero_description: 'Penerimaan Peserta Didik Baru (PPDB/SPMB) Tahun Pelajaran 2026/2027 telah dibuka secara daring. Fasilitas modern dan kurikulum industri.',

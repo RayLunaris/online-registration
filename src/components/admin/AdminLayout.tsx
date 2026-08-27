@@ -51,8 +51,8 @@ export const AdminLayout: React.FC = () => {
         <div className="space-y-6">
           {/* Logo & Brand */}
           <Link to="/admin" className="flex items-center gap-3 group">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-600 text-white shadow-md shadow-teal-600/30">
-              <GraduationCap className="h-6 w-6" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-md shadow-black/30 p-1 overflow-hidden border border-slate-700/60 shrink-0">
+              <img src="/images/logo-icon.png" alt="Logo SPMB" className="h-full w-full object-contain" />
             </div>
             <div>
               <span className="font-extrabold text-white text-base tracking-tight block leading-tight">
@@ -138,8 +138,8 @@ export const AdminLayout: React.FC = () => {
       {/* 2. MOBILE HEADER & NAVIGATION */}
       <div className="md:hidden bg-slate-950 border-b border-slate-800 p-4 flex items-center justify-between">
         <Link to="/admin" className="flex items-center gap-2.5">
-          <div className="h-8 w-8 rounded-lg bg-teal-600 text-white flex items-center justify-center">
-            <GraduationCap className="h-5 w-5" />
+          <div className="h-8 w-8 rounded-lg bg-white p-0.5 overflow-hidden border border-slate-700/60 flex items-center justify-center shrink-0">
+            <img src="/images/logo-icon.png" alt="Logo SPMB" className="h-full w-full object-contain" />
           </div>
           <span className="font-bold text-white text-sm">SPMB Admin</span>
         </Link>

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import JsBarcode from 'jsbarcode';
-import { GraduationCap, User, QrCode as QrIcon } from 'lucide-react';
+import { User, QrCode as QrIcon } from 'lucide-react';
 import { StudentCompleteDetail, RegistrationFormData, School, Major } from '@/types/spmb';
 import { formatDate, formatScore } from '@/lib/utils';
 
@@ -154,8 +154,13 @@ export const RegistrationCardPDF: React.FC<Props> = ({
       {/* 1. KOP RESMI SEKOLAH */}
       <div className="flex items-center justify-between border-b-2 border-slate-900 pb-4 mb-5 gap-4">
         <div className="flex items-center gap-4">
-          <div className="h-16 w-16 rounded-xl bg-teal-700 text-white flex items-center justify-center font-bold shrink-0 shadow-sm">
-            <GraduationCap className="h-10 w-10" />
+          <div className="h-16 w-16 rounded-xl bg-white border border-slate-300 flex items-center justify-center overflow-hidden shrink-0 p-1">
+            <img 
+              src={school?.logo_url || '/images/logo-icon.png'} 
+              alt="Logo Sekolah" 
+              className="h-full w-full object-contain"
+              crossOrigin="anonymous"
+            />
           </div>
           <div>
             <span className="text-[11px] font-bold tracking-wider uppercase text-teal-800 block">

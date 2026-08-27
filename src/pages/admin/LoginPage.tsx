@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { GraduationCap, Lock, Mail, AlertCircle, ArrowLeft, ShieldCheck } from 'lucide-react';
+import { Lock, Mail, AlertCircle, ArrowLeft, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -48,9 +48,9 @@ export const LoginPage: React.FC = () => {
           </Link>
         </div>
 
-        <div className="flex items-center justify-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-600 text-white shadow-lg shadow-teal-500/20">
-            <GraduationCap className="h-7 w-7" />
+        <div className="flex items-center justify-center gap-3.5">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-xl shadow-black/40 p-1.5 overflow-hidden border border-slate-700/80">
+            <img src="/images/logo-icon.png" alt="Logo SPMB" className="h-full w-full object-contain" />
           </div>
           <div className="text-left">
             <h1 className="text-2xl font-black tracking-tight text-white">SPMB Admin</h1>

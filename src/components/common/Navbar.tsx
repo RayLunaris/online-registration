@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
-  GraduationCap, 
   Menu, 
   X, 
   ShieldCheck, 
@@ -80,9 +79,9 @@ export const Navbar: React.FC = () => {
       <div className="w-full max-w-[1440px] mx-auto flex h-16 items-center justify-between px-4 sm:px-8 lg:px-12">
         
         {/* 1. BRAND LOGO (Left) */}
-        <Link to="/" className="flex items-center gap-2.5 group shrink-0">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-600 text-white shadow-xs group-hover:bg-teal-700 transition-colors">
-            <GraduationCap className="h-5 w-5" />
+        <Link to="/" className="flex items-center gap-3 group shrink-0">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-slate-200/90 shadow-xs group-hover:border-teal-400 group-hover:shadow-sm transition-all overflow-hidden p-1">
+            <img src="/images/logo-icon.png" alt="Logo SPMB" className="h-full w-full object-contain" />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
