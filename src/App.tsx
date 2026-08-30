@@ -1,11 +1,12 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from '@/context/AuthContext';
 import { LanguageProvider } from '@/context/LanguageContext';
 import { PublicLayout } from '@/components/common/PublicLayout';
 import { ProtectedRoute } from '@/components/admin/ProtectedRoute';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
+import { ADMIN_AUTH_CONFIG } from '@/config/authConfig';
 
 // Helper to retry dynamic chunk import in case of transient network/HMR hiccups
 function lazyRetry<T extends React.ComponentType<any>>(
@@ -56,6 +57,7 @@ const AdminMajorsPage = lazyRetry(() => import('@/pages/admin/AdminMajorsPage').
 const AdminSourceSchoolsPage = lazyRetry(() => import('@/pages/admin/AdminSourceSchoolsPage').then(m => ({ default: m.AdminSourceSchoolsPage })));
 const AdminAnnouncementsPage = lazyRetry(() => import('@/pages/admin/AdminAnnouncementsPage').then(m => ({ default: m.AdminAnnouncementsPage })));
 const AdminSettingsPage = lazyRetry(() => import('@/pages/admin/AdminSettingsPage').then(m => ({ default: m.AdminSettingsPage })));
+import { NotFoundPage } from '@/pages/NotFoundPage';
 
 const PageLoader: React.FC = () => (
   <div className="min-h-[50vh] flex flex-col items-center justify-center p-8 gap-3">
@@ -92,10 +94,14 @@ export const App: React.FC = () => {
                   {/* Pengumuman List & Detail (both :slug and :id) */}
                   <Route path="/pengumuman" element={<AnnouncementListPage />} />
                   <Route path="/pengumuman/:slug" element={<AnnouncementDetailPage />} />
+
+                  {/* True 404 Cloaking for obsolete /admin/login or guessed admin paths */}
+                  <Route path="/admin/login" element={<NotFoundPage />} />
+                  <Route path="*" element={<NotFoundPage />} />
                 </Route>
 
-                {/* 2. ADMIN AUTH ROUTE */}
-                <Route path="/admin/login" element={<LoginPage />} />
+                {/* 2. ADMIN AUTH ROUTE (Dynamic Secret Path) */}
+                <Route path={ADMIN_AUTH_CONFIG.getLoginPath()} element={<LoginPage />} />
 
                 {/* 3. PROTECTED ADMIN ROUTES WITH ADMIN LAYOUT */}
                 <Route
@@ -114,9 +120,6 @@ export const App: React.FC = () => {
                   <Route path="pengumuman" element={<AdminAnnouncementsPage />} />
                   <Route path="pengaturan" element={<AdminSettingsPage />} />
                 </Route>
-
-                {/* 4. FALLBACK */}
-                <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Suspense>
           </BrowserRouter>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Phone, Mail, Award, CheckCircle, ArrowUpRight, ShieldCheck } from 'lucide-react';
+import { MapPin, Phone, Mail, Award, CheckCircle, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const Footer: React.FC = () => {
@@ -80,12 +80,6 @@ export const Footer: React.FC = () => {
                 <a href="/#syarat" className="hover:text-[#0D9488] transition-colors">
                   Persyaratan Dokumen
                 </a>
-              </li>
-              <li className="pt-1">
-                <Link to="/admin/login" className="hover:text-[#0D9488] transition-colors inline-flex items-center gap-1 text-slate-500">
-                  <ShieldCheck className="h-3.5 w-3.5" />
-                  <span>Portal Panitia / Admin</span>
-                </Link>
               </li>
             </ul>
           </div>

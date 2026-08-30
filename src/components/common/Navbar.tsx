@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Menu, 
   X, 
-  ShieldCheck, 
   UserCheck,
   ArrowRight
 } from 'lucide-react';
@@ -136,18 +135,12 @@ export const Navbar: React.FC = () => {
             {language === 'id' ? 'ID' : 'EN'}
           </button>
 
-          {/* Admin Icon Link */}
-          {user ? (
+          {/* Admin Icon Link (Only visible if authenticated) */}
+          {user && (
             <Link to="/admin">
               <Button size="sm" variant="outline" className="h-8 px-3 text-xs border-teal-200 bg-teal-50/70 text-teal-700 font-semibold rounded-lg gap-1.5">
                 <UserCheck className="h-3.5 w-3.5" />
                 <span>Admin</span>
-              </Button>
-            </Link>
-          ) : (
-            <Link to="/admin/login" title="Portal Panitia SPMB">
-              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
-                <ShieldCheck className="h-4 w-4" />
               </Button>
             </Link>
           )}
@@ -217,7 +210,7 @@ export const Navbar: React.FC = () => {
               </Button>
             </Link>
 
-            {user ? (
+            {user && (
               <div className="flex gap-2">
                 <Link to="/admin" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
                   <Button variant="outline" className="w-full text-xs font-semibold h-9 rounded-lg">
@@ -235,13 +228,6 @@ export const Navbar: React.FC = () => {
                   Keluar
                 </Button>
               </div>
-            ) : (
-              <Link to="/admin/login" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="ghost" className="w-full text-xs text-slate-500 h-9 rounded-lg gap-1.5">
-                  <ShieldCheck className="h-4 w-4" />
-                  <span>Portal Panitia / Admin</span>
-                </Button>
-              </Link>
             )}
           </div>
         </div>
