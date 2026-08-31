@@ -3,7 +3,7 @@ import { RegistrationFormData, StudentCompleteDetail, ACHIEVEMENT_POINTS } from 
 import { Database } from '@/types/database';
 
 // In-memory store fallback for demo mode
-const mockStudentStore: StudentCompleteDetail[] = [];
+export const mockStudentStore: StudentCompleteDetail[] = [];
 
 type StudentInsert = Database['public']['Tables']['students']['Insert'];
 type ParentInsert = Database['public']['Tables']['parent_data']['Insert'];

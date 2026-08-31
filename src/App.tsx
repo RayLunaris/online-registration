@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from '@/context/AuthContext';
 import { LanguageProvider } from '@/context/LanguageContext';
+import { ThemeProvider } from '@/context/ThemeContext';
 import { PublicLayout } from '@/components/common/PublicLayout';
 import { ProtectedRoute } from '@/components/admin/ProtectedRoute';
 import { AdminLayout } from '@/components/admin/AdminLayout';
@@ -69,62 +70,64 @@ const PageLoader: React.FC = () => (
 export const App: React.FC = () => {
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <LanguageProvider>
-          <BrowserRouter
-            future={{
-              v7_startTransition: true,
-              v7_relativeSplatPath: true,
-            }}
-          >
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
-                {/* 1. PUBLIC ROUTES WITH PUBLIC LAYOUT */}
-                <Route element={<PublicLayout />}>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/daftar" element={<RegistrationPage />} />
-                  
-                  {/* Cek Status (both /status and /cek-status) */}
-                  <Route path="/status" element={<StatusCheckPage />} />
-                  <Route path="/cek-status" element={<StatusCheckPage />} />
-                  
-                  {/* Kartu Peserta */}
-                  <Route path="/kartu-peserta/:regNumber" element={<RegistrationCardPage />} />
+      <ThemeProvider>
+        <AuthProvider>
+          <LanguageProvider>
+            <BrowserRouter
+              future={{
+                v7_startTransition: true,
+                v7_relativeSplatPath: true,
+              }}
+            >
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  {/* 1. PUBLIC ROUTES WITH PUBLIC LAYOUT */}
+                  <Route element={<PublicLayout />}>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/daftar" element={<RegistrationPage />} />
+                    
+                    {/* Cek Status (both /status and /cek-status) */}
+                    <Route path="/status" element={<StatusCheckPage />} />
+                    <Route path="/cek-status" element={<StatusCheckPage />} />
+                    
+                    {/* Kartu Peserta */}
+                    <Route path="/kartu-peserta/:regNumber" element={<RegistrationCardPage />} />
 
-                  {/* Pengumuman List & Detail (both :slug and :id) */}
-                  <Route path="/pengumuman" element={<AnnouncementListPage />} />
-                  <Route path="/pengumuman/:slug" element={<AnnouncementDetailPage />} />
+                    {/* Pengumuman List & Detail (both :slug and :id) */}
+                    <Route path="/pengumuman" element={<AnnouncementListPage />} />
+                    <Route path="/pengumuman/:slug" element={<AnnouncementDetailPage />} />
 
-                  {/* True 404 Cloaking for obsolete /admin/login or guessed admin paths */}
-                  <Route path="/admin/login" element={<NotFoundPage />} />
-                  <Route path="*" element={<NotFoundPage />} />
-                </Route>
+                    {/* True 404 Cloaking for obsolete /admin/login or guessed admin paths */}
+                    <Route path="/admin/login" element={<NotFoundPage />} />
+                    <Route path="*" element={<NotFoundPage />} />
+                  </Route>
 
-                {/* 2. ADMIN AUTH ROUTE (Dynamic Secret Path) */}
-                <Route path={ADMIN_AUTH_CONFIG.getLoginPath()} element={<LoginPage />} />
+                  {/* 2. ADMIN AUTH ROUTE (Dynamic Secret Path) */}
+                  <Route path={ADMIN_AUTH_CONFIG.getLoginPath()} element={<LoginPage />} />
 
-                {/* 3. PROTECTED ADMIN ROUTES WITH ADMIN LAYOUT */}
-                <Route
-                  path="/admin"
-                  element={
-                    <ProtectedRoute>
-                      <AdminLayout />
-                    </ProtectedRoute>
-                  }
-                >
-                  <Route index element={<AdminDashboardPage />} />
-                  <Route path="pendaftar" element={<AdminStudentsPage />} />
-                  <Route path="seleksi" element={<AdminSelectionPage />} />
-                  <Route path="jurusan" element={<AdminMajorsPage />} />
-                  <Route path="sekolah-asal" element={<AdminSourceSchoolsPage />} />
-                  <Route path="pengumuman" element={<AdminAnnouncementsPage />} />
-                  <Route path="pengaturan" element={<AdminSettingsPage />} />
-                </Route>
-              </Routes>
-            </Suspense>
-          </BrowserRouter>
-        </LanguageProvider>
-      </AuthProvider>
+                  {/* 3. PROTECTED ADMIN ROUTES WITH ADMIN LAYOUT */}
+                  <Route
+                    path="/admin"
+                    element={
+                      <ProtectedRoute>
+                        <AdminLayout />
+                      </ProtectedRoute>
+                    }
+                  >
+                    <Route index element={<AdminDashboardPage />} />
+                    <Route path="pendaftar" element={<AdminStudentsPage />} />
+                    <Route path="seleksi" element={<AdminSelectionPage />} />
+                    <Route path="jurusan" element={<AdminMajorsPage />} />
+                    <Route path="sekolah-asal" element={<AdminSourceSchoolsPage />} />
+                    <Route path="pengumuman" element={<AdminAnnouncementsPage />} />
+                    <Route path="pengaturan" element={<AdminSettingsPage />} />
+                  </Route>
+                </Routes>
+              </Suspense>
+            </BrowserRouter>
+          </LanguageProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 };

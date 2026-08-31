@@ -112,10 +112,10 @@ export const AdminSelectionPage: React.FC = () => {
       {/* Header & Controls */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Scoring Engine & Seleksi Otomatis
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Perankingan otomatis berbasis pembobotan <strong>70% Rata-rata Rapor</strong> + <strong>30% Piagam Prestasi</strong> terhadap kuota jurusan.
           </p>
         </div>
@@ -125,7 +125,7 @@ export const AdminSelectionPage: React.FC = () => {
             variant="outline"
             disabled={runningSim}
             onClick={runSimulation}
-            className="text-xs bg-slate-950 border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 gap-1.5"
+            className="text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 gap-1.5 shadow-2xs"
           >
             <RefreshCw className={`h-3.5 w-3.5 ${runningSim ? 'animate-spin' : ''}`} />
             <span>Hitung Ulang Ranking</span>
@@ -135,7 +135,7 @@ export const AdminSelectionPage: React.FC = () => {
             size="sm"
             variant="outline"
             onClick={handleExportRecap}
-            className="text-xs bg-slate-950 border-slate-800 text-emerald-400 hover:bg-slate-800 gap-1.5 font-semibold"
+            className="text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 gap-1.5 font-semibold shadow-2xs"
           >
             <FileSpreadsheet className="h-3.5 w-3.5" />
             <span>Ekspor Rekap Excel</span>
@@ -154,8 +154,8 @@ export const AdminSelectionPage: React.FC = () => {
       </div>
 
       {publishSuccess && (
-        <Alert className="bg-emerald-950/90 border-emerald-800 text-emerald-200">
-          <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+        <Alert className="bg-emerald-50 dark:bg-emerald-950/90 border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200">
+          <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
           <AlertTitle className="font-bold">Hasil Seleksi Telah Dipublikasikan!</AlertTitle>
           <AlertDescription className="text-xs">
             Seluruh calon siswa sekarang dapat melihat status kelulusan resmi mereka melalui menu <strong>Cek Status Pendaftaran</strong> di website publik.
@@ -172,23 +172,23 @@ export const AdminSelectionPage: React.FC = () => {
             <div
               key={grp.major.id}
               onClick={() => setSelectedMajorId(grp.major.id)}
-              className={`p-4 rounded-xl border cursor-pointer transition-all ${
+              className={`p-4 rounded-xl border cursor-pointer transition-all shadow-xs ${
                 isSelected
-                  ? 'bg-slate-900 border-teal-500 ring-2 ring-teal-500/20 text-white shadow-md'
-                  : 'bg-slate-950 border-slate-800 text-slate-300 hover:bg-slate-900/60'
+                  ? 'bg-white dark:bg-slate-900 border-teal-500 ring-2 ring-teal-500/20 text-slate-900 dark:text-white'
+                  : 'bg-white/80 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900/60'
               }`}
             >
               <div className="flex items-center justify-between mb-1.5">
-                <Badge className="bg-slate-800 text-teal-400 border-slate-700 text-[10px] font-mono font-bold">
+                <Badge className="bg-teal-50 text-teal-700 border-teal-200 dark:bg-slate-800 dark:text-teal-400 dark:border-slate-700 text-[10px] font-mono font-bold">
                   {grp.major.code}
                 </Badge>
-                <span className="text-[10px] text-slate-400">Kuota: {grp.quota}</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400">Kuota: {grp.quota}</span>
               </div>
-              <h4 className="font-bold text-xs truncate text-white">{grp.major.name}</h4>
+              <h4 className="font-bold text-xs truncate text-slate-900 dark:text-white">{grp.major.name}</h4>
 
-              <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
-                <span className="text-slate-400">Pendaftar: <strong>{grp.totalApplicants}</strong></span>
-                <span className="text-emerald-400 font-bold">Lulus: {grp.acceptedCount}</span>
+              <div className="mt-3 pt-2 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[11px]">
+                <span className="text-slate-500 dark:text-slate-400">Pendaftar: <strong>{grp.totalApplicants}</strong></span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-bold">Lulus: {grp.acceptedCount}</span>
               </div>
             </div>
           );
@@ -197,18 +197,18 @@ export const AdminSelectionPage: React.FC = () => {
 
       {/* CANDIDATES RANKING TABLE */}
       {activeGroup && (
-        <Card className="bg-slate-950 border-slate-800 text-slate-100 shadow-md">
-          <CardHeader className="p-5 border-b border-slate-800/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+        <Card className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xs">
+          <CardHeader className="p-5 border-b border-slate-100 dark:border-slate-800/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
             <div>
               <div className="flex items-center gap-2">
-                <Badge className="bg-teal-950 text-teal-400 border border-teal-800 text-xs font-mono font-bold">
+                <Badge className="bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950 dark:text-teal-400 dark:border-teal-800 text-xs font-mono font-bold">
                   {activeGroup.major.code}
                 </Badge>
-                <CardTitle className="text-base font-bold text-white">
+                <CardTitle className="text-base font-bold text-slate-900 dark:text-white">
                   Hasil Perankingan: {activeGroup.major.name}
                 </CardTitle>
               </div>
-              <CardDescription className="text-xs text-slate-400 mt-1">
+              <CardDescription className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                 Kuota: {activeGroup.quota} Kursi | Pendaftar: {activeGroup.totalApplicants} | Diterima: {activeGroup.acceptedCount} | Cadangan: {activeGroup.reserveCount}
               </CardDescription>
             </div>
@@ -216,7 +216,7 @@ export const AdminSelectionPage: React.FC = () => {
             {/* Live Filter Search */}
             <div className="relative w-full md:w-64">
               <label htmlFor="selection-candidate-search" className="sr-only">Cari nama calon siswa</label>
-              <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-500 pointer-events-none" />
+              <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-400 pointer-events-none" />
               <Input
                 id="selection-candidate-search"
                 name="candidateSearch"
@@ -224,7 +224,7 @@ export const AdminSelectionPage: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 aria-label="Cari nama calon siswa"
-                className="pl-8 h-8 text-xs bg-slate-900 border-slate-800 text-white placeholder:text-slate-500"
+                className="pl-8 h-8 text-xs bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400"
               />
             </div>
           </CardHeader>
@@ -237,8 +237,8 @@ export const AdminSelectionPage: React.FC = () => {
               </div>
             ) : filteredCandidates.length > 0 ? (
               <div className="overflow-x-auto">
-                <table className="w-full text-xs text-left text-slate-300">
-                  <thead className="bg-slate-900 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
+                <table className="w-full text-xs text-left text-slate-600 dark:text-slate-300">
+                  <thead className="bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-100 dark:border-slate-800">
                     <tr>
                       <th className="py-3 px-4 text-center w-14">Rank</th>
                       <th className="py-3 px-4">No. Registrasi</th>
@@ -251,7 +251,7 @@ export const AdminSelectionPage: React.FC = () => {
                       <th className="py-3 px-4 text-right">Aksi</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/60 font-medium">
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
                     {filteredCandidates.map((cand) => {
                       const candidateGlobalIndex = allCandidates.findIndex(
                         (c) => c.student.id === cand.student.id
@@ -260,39 +260,39 @@ export const AdminSelectionPage: React.FC = () => {
                       return (
                         <tr
                           key={cand.student.id}
-                          className={`hover:bg-slate-900/50 transition-colors ${
-                            cand.status === 'Diterima' ? 'bg-emerald-950/10' : ''
+                          className={`hover:bg-slate-50/80 dark:hover:bg-slate-900/50 transition-colors ${
+                            cand.status === 'Diterima' ? 'bg-emerald-50/40 dark:bg-emerald-950/10' : ''
                           }`}
                         >
                           <td className="py-3 px-4 text-center">
                             <span
                               className={`inline-flex items-center justify-center h-6 w-6 rounded-full font-bold text-xs font-mono ${
                                 cand.rank === 1
-                                  ? 'bg-yellow-500 text-slate-950 shadow-sm'
+                                  ? 'bg-amber-400 text-slate-900 shadow-xs'
                                   : cand.rank <= activeGroup.quota
-                                  ? 'bg-emerald-950 text-emerald-400 border border-emerald-800'
-                                  : 'bg-slate-800 text-slate-400'
+                                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-800'
+                                  : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
                               }`}
                             >
                               {cand.rank}
                             </span>
                           </td>
-                          <td className="py-3 px-4 font-mono font-bold text-teal-400">
+                          <td className="py-3 px-4 font-mono font-bold text-teal-600 dark:text-teal-400">
                             {cand.student.registration_number}
                           </td>
-                          <td className="py-3 px-4 font-semibold text-white">
+                          <td className="py-3 px-4 font-semibold text-slate-900 dark:text-white">
                             {cand.student.full_name}
                           </td>
-                          <td className="py-3 px-4 text-slate-400">
+                          <td className="py-3 px-4 text-slate-500 dark:text-slate-400">
                             {cand.student.source_school_name}
                           </td>
-                          <td className="py-3 px-4 text-center font-mono">
+                          <td className="py-3 px-4 text-center font-mono text-slate-700 dark:text-slate-300">
                             {formatScore(cand.reportScoreAvg)}
                           </td>
-                          <td className="py-3 px-4 text-center font-mono text-purple-400">
+                          <td className="py-3 px-4 text-center font-mono text-purple-600 dark:text-purple-400">
                             {formatScore(cand.achievementPoints)}
                           </td>
-                          <td className="py-3 px-4 text-center font-mono font-bold text-white text-[13px]">
+                          <td className="py-3 px-4 text-center font-mono font-bold text-slate-900 dark:text-white text-[13px]">
                             {formatScore(cand.score)}
                           </td>
                           <td className="py-3 px-4">
@@ -304,10 +304,10 @@ export const AdminSelectionPage: React.FC = () => {
                               }
                               className={`h-7 px-2 text-[10px] font-semibold rounded border ${
                                 cand.status === 'Diterima'
-                                  ? 'bg-emerald-950 text-emerald-400 border-emerald-800'
+                                  ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-800'
                                   : cand.status === 'Cadangan'
-                                  ? 'bg-purple-950 text-purple-400 border-purple-800'
-                                  : 'bg-red-950 text-red-400 border-red-800'
+                                  ? 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-400 dark:border-purple-800'
+                                  : 'bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-400 dark:border-red-800'
                               }`}
                             >
                               <option value="Diterima">Diterima</option>
@@ -321,7 +321,7 @@ export const AdminSelectionPage: React.FC = () => {
                             <Link
                               to={`/kartu-peserta/${cand.student.registration_number}`}
                               target="_blank"
-                              className="text-[11px] text-teal-400 hover:underline"
+                              className="text-[11px] text-teal-600 dark:text-teal-400 hover:underline font-medium"
                             >
                               Kartu PDF
                             </Link>
@@ -333,7 +333,7 @@ export const AdminSelectionPage: React.FC = () => {
                 </table>
               </div>
             ) : (
-              <div className="p-12 text-center text-xs text-slate-500">
+              <div className="p-12 text-center text-xs text-slate-400 dark:text-slate-500">
                 Belum ada pendaftar pada jurusan {activeGroup.major.name}.
               </div>
             )}
@@ -344,28 +344,28 @@ export const AdminSelectionPage: React.FC = () => {
       {/* CONFIRMATION PUBLISH DIALOG */}
       {isConfirmOpen && (
         <Dialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
-            <div className="relative z-50 w-full max-w-md rounded-2xl border border-emerald-800 bg-slate-950 p-6 text-slate-100 shadow-2xl space-y-4">
-              <div className="flex items-center gap-3 text-emerald-400">
-                <div className="h-10 w-10 rounded-full bg-emerald-950 border border-emerald-800 flex items-center justify-center">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+            <div className="relative z-50 w-full max-w-md rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-slate-950 p-6 text-slate-900 dark:text-slate-100 shadow-2xl space-y-4">
+              <div className="flex items-center gap-3 text-emerald-600 dark:text-emerald-400">
+                <div className="h-10 w-10 rounded-full bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center">
                   <Send className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-base">Publikasikan Hasil Seleksi?</h3>
-                  <span className="text-xs text-slate-400">Status kelulusan akan langsung aktif</span>
+                  <h3 className="font-bold text-slate-900 dark:text-white text-base">Publikasikan Hasil Seleksi?</h3>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">Status kelulusan akan langsung aktif</span>
                 </div>
               </div>
 
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                 Tindakan ini akan mengupdate status seluruh calon siswa di database Supabase sesuai hasil perankingan kuota terkini (Total {allCandidates.length} pendaftar). Calon siswa dapat melihat status mereka secara langsung melalui halaman <strong>Cek Status</strong>.
               </p>
 
-              <div className="flex justify-end gap-2 pt-2 border-t border-slate-800">
+              <div className="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() => setIsConfirmOpen(false)}
-                  className="text-xs bg-slate-900 border-slate-800 text-slate-300"
+                  className="text-xs bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 shadow-2xs"
                 >
                   Batal
                 </Button>

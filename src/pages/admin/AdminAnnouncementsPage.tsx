@@ -115,10 +115,10 @@ export const AdminAnnouncementsPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Manajemen Berita & Pengumuman
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Publikasikan jadwal SPMB, petunjuk teknis, panduan berkas, dan berita sekolah terbaru.
           </p>
         </div>
@@ -127,7 +127,7 @@ export const AdminAnnouncementsPage: React.FC = () => {
             size="sm"
             variant="outline"
             onClick={loadAnnouncements}
-            className="text-xs bg-slate-950 border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 gap-1.5"
+            className="text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 gap-1.5 shadow-2xs"
           >
             <RefreshCw className="h-3.5 w-3.5" />
             <span>Refresh</span>
@@ -135,7 +135,7 @@ export const AdminAnnouncementsPage: React.FC = () => {
           <Button
             size="sm"
             onClick={handleOpenAdd}
-            className="bg-teal-600 hover:bg-teal-700 text-white text-xs gap-1.5 font-semibold"
+            className="bg-teal-600 hover:bg-teal-700 text-white text-xs gap-1.5 font-semibold shadow-xs"
           >
             <Plus className="h-4 w-4" />
             <span>Buat Pengumuman</span>
@@ -144,9 +144,9 @@ export const AdminAnnouncementsPage: React.FC = () => {
       </div>
 
       {/* ANNOUNCEMENTS TABLE */}
-      <Card className="bg-slate-950 border-slate-800 text-slate-100 shadow-md">
-        <CardHeader className="p-4 sm:p-5 border-b border-slate-800/80">
-          <CardTitle className="text-sm sm:text-base font-bold text-white">
+      <Card className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xs">
+        <CardHeader className="p-4 sm:p-5 border-b border-slate-100 dark:border-slate-800/80">
+          <CardTitle className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
             Daftar Berita & Pengumuman ({announcements.length})
           </CardTitle>
         </CardHeader>
@@ -158,8 +158,8 @@ export const AdminAnnouncementsPage: React.FC = () => {
             </div>
           ) : announcements.length > 0 ? (
             <div className="overflow-x-auto">
-              <table className="w-full text-xs text-left text-slate-300">
-                <thead className="bg-slate-900 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
+              <table className="w-full text-xs text-left text-slate-600 dark:text-slate-300">
+                <thead className="bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-100 dark:border-slate-800">
                   <tr>
                     <th className="py-3 px-4">Judul Artikel / Pengumuman</th>
                     <th className="py-3 px-4">Kategori</th>
@@ -168,36 +168,36 @@ export const AdminAnnouncementsPage: React.FC = () => {
                     <th className="py-3 px-4 text-right">Aksi</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60 font-medium">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
                   {announcements.map((item) => (
-                    <tr key={item.id} className="hover:bg-slate-900/50 transition-colors">
+                    <tr key={item.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-900/50 transition-colors">
                       <td className="py-3 px-4 max-w-sm">
-                        <span className="font-bold text-white block truncate">{item.title}</span>
-                        <span className="text-[10px] font-mono text-slate-500 truncate block">
+                        <span className="font-bold text-slate-900 dark:text-white block truncate">{item.title}</span>
+                        <span className="text-[10px] font-mono text-slate-400 dark:text-slate-500 truncate block">
                           /pengumuman/{item.slug}
                         </span>
                       </td>
                       <td className="py-3 px-4">
-                        <Badge variant="outline" className="text-[10px] bg-slate-900 border-slate-700 text-slate-300">
+                        <Badge variant="outline" className="text-[10px] bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300">
                           {item.category}
                         </Badge>
                       </td>
                       <td className="py-3 px-4">
                         {item.status === 'Published' ? (
-                          <Badge className="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px]">
+                          <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-800 text-[10px]">
                             Published
                           </Badge>
                         ) : (
-                          <Badge className="bg-slate-800 text-slate-400 text-[10px]">Draft</Badge>
+                          <Badge className="bg-slate-100 text-slate-500 border-slate-200 dark:bg-slate-800 dark:text-slate-400 text-[10px]">Draft</Badge>
                         )}
                       </td>
-                      <td className="py-3 px-4 text-slate-400">{formatDate(item.published_at)}</td>
+                      <td className="py-3 px-4 text-slate-500 dark:text-slate-400">{formatDate(item.published_at)}</td>
                       <td className="py-3 px-4 text-right space-x-1">
                         <Link to={`/pengumuman/${item.slug}`} target="_blank">
                           <Button
                             size="sm"
                             variant="ghost"
-                            className="h-8 px-2 text-teal-400 hover:text-teal-300 hover:bg-teal-950/40"
+                            className="h-8 px-2 text-teal-600 hover:text-teal-700 hover:bg-teal-50 dark:text-teal-400 dark:hover:text-teal-300 dark:hover:bg-teal-950/40"
                           >
                             <ExternalLink className="h-3.5 w-3.5" />
                           </Button>
@@ -206,7 +206,7 @@ export const AdminAnnouncementsPage: React.FC = () => {
                           size="sm"
                           variant="ghost"
                           onClick={() => handleOpenEdit(item)}
-                          className="h-8 px-2 text-slate-300 hover:text-white hover:bg-slate-800"
+                          className="h-8 px-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800"
                         >
                           <Edit2 className="h-3.5 w-3.5" />
                         </Button>
@@ -214,7 +214,7 @@ export const AdminAnnouncementsPage: React.FC = () => {
                           size="sm"
                           variant="ghost"
                           onClick={() => setItemToDelete(item)}
-                          className="h-8 px-2 text-red-400 hover:text-red-300 hover:bg-red-950/40"
+                          className="h-8 px-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-950/40"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
                         </Button>
@@ -225,7 +225,7 @@ export const AdminAnnouncementsPage: React.FC = () => {
               </table>
             </div>
           ) : (
-            <div className="p-12 text-center text-xs text-slate-500">
+            <div className="p-12 text-center text-xs text-slate-400 dark:text-slate-500">
               Belum ada pengumuman yang dibuat.
             </div>
           )}
@@ -235,46 +235,46 @@ export const AdminAnnouncementsPage: React.FC = () => {
       {/* ADD / EDIT DIALOG */}
       {isDialogOpen && editingAnnouncement && (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm overflow-y-auto">
-            <div className="relative z-50 w-full max-w-2xl rounded-2xl border border-slate-800 bg-slate-950 p-6 sm:p-8 text-slate-100 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                <h3 className="font-bold text-white text-base">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs overflow-y-auto">
+            <div className="relative z-50 w-full max-w-2xl rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-6 sm:p-8 text-slate-900 dark:text-slate-100 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                <h3 className="font-bold text-slate-900 dark:text-white text-base">
                   {editingAnnouncement.id ? 'Edit Pengumuman' : 'Buat Pengumuman Baru'}
                 </h3>
-                <button onClick={() => setIsDialogOpen(false)} className="text-slate-400 hover:text-white">
+                <button onClick={() => setIsDialogOpen(false)} className="text-slate-400 hover:text-slate-700 dark:hover:text-white">
                   <X className="h-4 w-4" />
                 </button>
               </div>
 
               {errorMsg && (
-                <div className="p-2.5 rounded-lg bg-red-950/70 border border-red-800 text-xs text-red-300">
+                <div className="p-2.5 rounded-lg bg-red-50 dark:bg-red-950/70 border border-red-200 dark:border-red-800 text-xs text-red-700 dark:text-red-300">
                   {errorMsg}
                 </div>
               )}
 
               <form onSubmit={handleSave} className="space-y-4 text-xs">
                 <div className="space-y-1">
-                  <label htmlFor="ann_title" className="text-slate-300 font-semibold cursor-pointer">Judul Pengumuman / Berita *</label>
+                  <label htmlFor="ann_title" className="text-slate-700 dark:text-slate-300 font-semibold cursor-pointer">Judul Pengumuman / Berita *</label>
                   <Input
                     id="ann_title"
                     name="title"
                     placeholder="Contoh: Jadwal Pelaksanaan Seleksi Wawancara SPMB 2026"
                     value={editingAnnouncement.title || ''}
                     onChange={(e) => setEditingAnnouncement({ ...editingAnnouncement, title: e.target.value })}
-                    className="bg-slate-900 border-slate-800 text-white"
+                    className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white"
                     required
                   />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="space-y-1">
-                    <label htmlFor="ann_category" className="text-slate-300 font-semibold cursor-pointer">Kategori</label>
+                    <label htmlFor="ann_category" className="text-slate-700 dark:text-slate-300 font-semibold cursor-pointer">Kategori</label>
                     <select
                       id="ann_category"
                       name="category"
                       value={editingAnnouncement.category || 'Pengumuman'}
                       onChange={(e) => setEditingAnnouncement({ ...editingAnnouncement, category: e.target.value as any })}
-                      className="w-full h-10 px-3 text-xs bg-slate-900 border border-slate-800 rounded-md text-white"
+                      className="w-full h-10 px-3 text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md text-slate-900 dark:text-white"
                     >
                       <option value="Pengumuman">Pengumuman</option>
                       <option value="Panduan">Panduan</option>
@@ -283,13 +283,13 @@ export const AdminAnnouncementsPage: React.FC = () => {
                   </div>
 
                   <div className="space-y-1">
-                    <label htmlFor="ann_status" className="text-slate-300 font-semibold cursor-pointer">Status Publikasi</label>
+                    <label htmlFor="ann_status" className="text-slate-700 dark:text-slate-300 font-semibold cursor-pointer">Status Publikasi</label>
                     <select
                       id="ann_status"
                       name="status"
                       value={editingAnnouncement.status || 'Published'}
                       onChange={(e) => setEditingAnnouncement({ ...editingAnnouncement, status: e.target.value as any })}
-                      className="w-full h-10 px-3 text-xs bg-slate-900 border border-slate-800 rounded-md text-white"
+                      className="w-full h-10 px-3 text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md text-slate-900 dark:text-white"
                     >
                       <option value="Published">Published (Tayang di Web)</option>
                       <option value="Draft">Draft (Disimpan Saja)</option>
@@ -297,32 +297,32 @@ export const AdminAnnouncementsPage: React.FC = () => {
                   </div>
 
                   <div className="space-y-1">
-                    <label htmlFor="ann_slug" className="text-slate-300 font-semibold cursor-pointer">Custom Slug URL</label>
+                    <label htmlFor="ann_slug" className="text-slate-700 dark:text-slate-300 font-semibold cursor-pointer">Custom Slug URL</label>
                     <Input
                       id="ann_slug"
                       name="slug"
                       placeholder="jadwal-seleksi-2026"
                       value={editingAnnouncement.slug || ''}
                       onChange={(e) => setEditingAnnouncement({ ...editingAnnouncement, slug: e.target.value })}
-                      className="bg-slate-900 border-slate-800 text-white font-mono text-[11px]"
+                      className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white font-mono text-[11px]"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <label htmlFor="ann_thumbnail_url" className="text-slate-300 font-semibold cursor-pointer">URL Thumbnail Gambar (Opsional)</label>
+                  <label htmlFor="ann_thumbnail_url" className="text-slate-700 dark:text-slate-300 font-semibold cursor-pointer">URL Thumbnail Gambar (Opsional)</label>
                   <Input
                     id="ann_thumbnail_url"
                     name="thumbnail_url"
                     placeholder="https://images.unsplash.com/..."
                     value={editingAnnouncement.thumbnail_url || ''}
                     onChange={(e) => setEditingAnnouncement({ ...editingAnnouncement, thumbnail_url: e.target.value })}
-                    className="bg-slate-900 border-slate-800 text-white text-[11px]"
+                    className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-[11px]"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label htmlFor="ann_content" className="text-slate-300 font-semibold cursor-pointer">Isi Lengkap Konten Pengumuman *</label>
+                  <label htmlFor="ann_content" className="text-slate-700 dark:text-slate-300 font-semibold cursor-pointer">Isi Lengkap Konten Pengumuman *</label>
                   <textarea
                     id="ann_content"
                     name="content"
@@ -330,24 +330,24 @@ export const AdminAnnouncementsPage: React.FC = () => {
                     placeholder="Tuliskan isi pengumuman atau petunjuk teknis secara lengkap di sini..."
                     value={editingAnnouncement.content || ''}
                     onChange={(e) => setEditingAnnouncement({ ...editingAnnouncement, content: e.target.value })}
-                    className="w-full p-3 bg-slate-900 border border-slate-800 rounded-md text-white text-xs leading-relaxed"
+                    className="w-full p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md text-slate-900 dark:text-white text-xs leading-relaxed"
                     required
                   />
                 </div>
 
-                <div className="flex justify-end gap-2 pt-4 border-t border-slate-800">
+                <div className="flex justify-end gap-2 pt-4 border-t border-slate-100 dark:border-slate-800">
                   <Button
                     type="button"
                     variant="outline"
                     onClick={() => setIsDialogOpen(false)}
-                    className="text-xs bg-slate-900 border-slate-800 text-slate-300"
+                    className="text-xs bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 shadow-2xs"
                   >
                     Batal
                   </Button>
                   <Button
                     type="submit"
                     disabled={saving}
-                    className="bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold"
+                    className="bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold shadow-xs"
                   >
                     {saving ? 'Menyimpan...' : 'Simpan Pengumuman'}
                   </Button>
@@ -361,18 +361,18 @@ export const AdminAnnouncementsPage: React.FC = () => {
       {/* DELETE CONFIRMATION DIALOG */}
       {itemToDelete && (
         <Dialog open={Boolean(itemToDelete)} onOpenChange={(open) => !open && setItemToDelete(null)}>
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
-            <div className="relative z-50 w-full max-w-md rounded-2xl border border-red-900/50 bg-slate-950 p-6 text-slate-100 shadow-2xl space-y-4">
-              <h3 className="font-bold text-white text-base">Hapus Pengumuman?</h3>
-              <p className="text-xs text-slate-300">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+            <div className="relative z-50 w-full max-w-md rounded-2xl border border-red-200 dark:border-red-900/50 bg-white dark:bg-slate-950 p-6 text-slate-900 dark:text-slate-100 shadow-2xl space-y-4">
+              <h3 className="font-bold text-slate-900 dark:text-white text-base">Hapus Pengumuman?</h3>
+              <p className="text-xs text-slate-600 dark:text-slate-300">
                 Anda yakin ingin menghapus artikel <strong>{itemToDelete.title}</strong>?
               </p>
-              <div className="flex justify-end gap-2 pt-2 border-t border-slate-800">
+              <div className="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() => setItemToDelete(null)}
-                  className="text-xs bg-slate-900 border-slate-800 text-slate-300"
+                  className="text-xs bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 shadow-2xs"
                 >
                   Batal
                 </Button>
@@ -380,7 +380,7 @@ export const AdminAnnouncementsPage: React.FC = () => {
                   size="sm"
                   disabled={deleting}
                   onClick={handleDelete}
-                  className="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold"
+                  className="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shadow-xs"
                 >
                   {deleting ? 'Menghapus...' : 'Hapus Pengumuman'}
                 </Button>

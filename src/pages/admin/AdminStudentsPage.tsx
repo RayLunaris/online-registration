@@ -125,15 +125,15 @@ export const AdminStudentsPage: React.FC = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'Diterima':
-        return <Badge className="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px]">Diterima</Badge>;
+        return <Badge className="bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-800 text-[10px]">Diterima</Badge>;
       case 'Terverifikasi':
-        return <Badge className="bg-teal-950 text-teal-400 border border-teal-800 text-[10px]">Terverifikasi</Badge>;
+        return <Badge className="bg-teal-50 text-teal-700 border border-teal-200 dark:bg-teal-950 dark:text-teal-400 dark:border-teal-800 text-[10px]">Terverifikasi</Badge>;
       case 'Cadangan':
-        return <Badge className="bg-purple-950 text-purple-400 border border-purple-800 text-[10px]">Cadangan</Badge>;
+        return <Badge className="bg-purple-50 text-purple-700 border border-purple-200 dark:bg-purple-950 dark:text-purple-400 dark:border-purple-800 text-[10px]">Cadangan</Badge>;
       case 'Tidak Diterima':
-        return <Badge className="bg-red-950 text-red-400 border border-red-800 text-[10px]">Tidak Diterima</Badge>;
+        return <Badge className="bg-red-50 text-red-700 border border-red-200 dark:bg-red-950 dark:text-red-400 dark:border-red-800 text-[10px]">Tidak Diterima</Badge>;
       default:
-        return <Badge className="bg-amber-950 text-amber-400 border border-amber-800 text-[10px]">Menunggu Verifikasi</Badge>;
+        return <Badge className="bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950 dark:text-amber-400 dark:border-amber-800 text-[10px]">Menunggu Verifikasi</Badge>;
     }
   };
 
@@ -142,10 +142,10 @@ export const AdminStudentsPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Data Calon Siswa & Pendaftar
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Kelola verifikasi berkas nilai rapor, prestasi, dan status kelulusan seleksi siswa.
           </p>
         </div>
@@ -154,7 +154,7 @@ export const AdminStudentsPage: React.FC = () => {
             size="sm"
             variant="outline"
             onClick={() => exportStudentsToExcel(students)}
-            className="text-xs bg-slate-950 border-slate-800 text-emerald-400 hover:bg-slate-800 gap-1.5 font-semibold"
+            className="text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 gap-1.5 font-semibold shadow-2xs"
           >
             <FileSpreadsheet className="h-3.5 w-3.5" />
             <span>Ekspor Excel (.xlsx)</span>
@@ -163,7 +163,7 @@ export const AdminStudentsPage: React.FC = () => {
             size="sm"
             variant="outline"
             onClick={() => exportStudentsToCSV(students)}
-            className="text-xs bg-slate-950 border-slate-800 text-teal-400 hover:bg-slate-800 gap-1.5 font-semibold"
+            className="text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-slate-800 gap-1.5 font-semibold shadow-2xs"
           >
             <Download className="h-3.5 w-3.5" />
             <span>Ekspor CSV</span>
@@ -178,7 +178,7 @@ export const AdminStudentsPage: React.FC = () => {
             size="sm"
             variant="outline"
             onClick={loadData}
-            className="text-xs bg-slate-950 border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 gap-1.5"
+            className="text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 gap-1.5 shadow-2xs"
           >
             <RefreshCw className="h-3.5 w-3.5" />
             <span>Refresh</span>
@@ -187,12 +187,12 @@ export const AdminStudentsPage: React.FC = () => {
       </div>
 
       {/* FILTER & SEARCH CARD */}
-      <Card className="bg-slate-950 border-slate-800 text-slate-100 shadow-md">
+      <Card className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xs">
         <CardContent className="p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
           {/* Live Search Input */}
           <div className="relative flex-1">
             <label htmlFor="student-search-input" className="sr-only">Cari Nama, No. Reg, atau SMP</label>
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-500 pointer-events-none" />
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400 pointer-events-none" />
             <Input
               id="student-search-input"
               name="studentSearch"
@@ -200,7 +200,7 @@ export const AdminStudentsPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               aria-label="Cari Nama, Nomor Registrasi, atau SMP"
-              className="pl-9 h-9 text-xs bg-slate-900 border-slate-800 text-white placeholder:text-slate-500 focus-visible:ring-teal-500"
+              className="pl-9 h-9 text-xs bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 focus-visible:ring-teal-500"
             />
           </div>
 
@@ -214,7 +214,7 @@ export const AdminStudentsPage: React.FC = () => {
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
               aria-label="Filter Status Pendaftaran"
-              className="h-9 px-3 text-xs rounded-md bg-slate-900 border border-slate-800 text-slate-200 focus:ring-1 focus:ring-teal-500"
+              className="h-9 px-3 text-xs rounded-md bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 focus:ring-1 focus:ring-teal-500"
             >
               <option value="Semua">Semua Status</option>
               <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
@@ -232,7 +232,7 @@ export const AdminStudentsPage: React.FC = () => {
               value={selectedMajorId}
               onChange={(e) => setSelectedMajorId(e.target.value)}
               aria-label="Filter Pilihan Jurusan"
-              className="h-9 px-3 text-xs rounded-md bg-slate-900 border border-slate-800 text-slate-200 focus:ring-1 focus:ring-teal-500"
+              className="h-9 px-3 text-xs rounded-md bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 focus:ring-1 focus:ring-teal-500"
             >
               <option value="Semua">Semua Jurusan Pilihan 1</option>
               {majors.map((m) => (
@@ -246,10 +246,10 @@ export const AdminStudentsPage: React.FC = () => {
       </Card>
 
       {/* STUDENTS TABLE */}
-      <Card className="bg-slate-950 border-slate-800 text-slate-100 shadow-md">
-        <CardHeader className="p-4 sm:p-5 border-b border-slate-800/80 flex flex-row items-center justify-between">
+      <Card className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xs">
+        <CardHeader className="p-4 sm:p-5 border-b border-slate-100 dark:border-slate-800/80 flex flex-row items-center justify-between">
           <div>
-            <CardTitle className="text-sm sm:text-base font-bold text-white">
+            <CardTitle className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
               Daftar Calon Siswa Terdaftar ({students.length})
             </CardTitle>
           </div>
@@ -262,8 +262,8 @@ export const AdminStudentsPage: React.FC = () => {
             </div>
           ) : students.length > 0 ? (
             <div className="overflow-x-auto">
-              <table className="w-full text-xs text-left text-slate-300">
-                <thead className="bg-slate-900 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
+              <table className="w-full text-xs text-left text-slate-600 dark:text-slate-300">
+                <thead className="bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-100 dark:border-slate-800">
                   <tr>
                     <th className="py-3 px-4">No. Registrasi</th>
                     <th className="py-3 px-4">Nama Siswa</th>
@@ -275,35 +275,35 @@ export const AdminStudentsPage: React.FC = () => {
                     <th className="py-3 px-4 text-right">Aksi</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60 font-medium">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
                   {students.map((student) => {
                     const ch1 = student.major_choices?.find((c) => c.choice_order === 1)?.major;
                     const ch2 = student.major_choices?.find((c) => c.choice_order === 2)?.major;
 
                     return (
-                      <tr key={student.id} className="hover:bg-slate-900/50 transition-colors">
-                        <td className="py-3 px-4 font-mono font-bold text-teal-400">
+                      <tr key={student.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-900/50 transition-colors">
+                        <td className="py-3 px-4 font-mono font-bold text-teal-600 dark:text-teal-400">
                           {student.registration_number}
                         </td>
                         <td className="py-3 px-4">
-                          <span className="font-bold text-white block">{student.full_name}</span>
-                          <span className="text-[10px] text-slate-500">{student.phone}</span>
+                          <span className="font-bold text-slate-900 dark:text-white block">{student.full_name}</span>
+                          <span className="text-[10px] text-slate-400 dark:text-slate-500">{student.phone}</span>
                         </td>
-                        <td className="py-3 px-4 text-slate-400">{student.source_school_name}</td>
+                        <td className="py-3 px-4 text-slate-500 dark:text-slate-400">{student.source_school_name}</td>
                         <td className="py-3 px-4 space-x-1">
-                          <Badge variant="outline" className="text-[10px] bg-slate-900 border-slate-700 text-teal-400">
+                          <Badge variant="outline" className="text-[10px] bg-slate-50 text-teal-700 border-teal-200 dark:bg-slate-900 dark:border-slate-700 dark:text-teal-400">
                             1: {ch1?.code || '-'}
                           </Badge>
                           {ch2 && (
-                            <Badge variant="outline" className="text-[10px] bg-slate-900 border-slate-700 text-slate-400">
+                            <Badge variant="outline" className="text-[10px] bg-slate-50 text-slate-600 border-slate-200 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400">
                               2: {ch2?.code}
                             </Badge>
                           )}
                         </td>
-                        <td className="py-3 px-4 text-center font-mono font-semibold">
+                        <td className="py-3 px-4 text-center font-mono font-semibold text-slate-700 dark:text-slate-300">
                           {formatScore(student.average_report_score)}
                         </td>
-                        <td className="py-3 px-4 text-center font-mono font-bold text-emerald-400">
+                        <td className="py-3 px-4 text-center font-mono font-bold text-emerald-600 dark:text-emerald-400">
                           {formatScore(student.total_score)}
                         </td>
                         <td className="py-3 px-4">{getStatusBadge(student.status)}</td>
@@ -311,7 +311,7 @@ export const AdminStudentsPage: React.FC = () => {
                           <Button
                             size="sm"
                             onClick={() => handleOpenDetail(student)}
-                            className="h-8 px-2.5 bg-teal-600 hover:bg-teal-700 text-white text-[11px] gap-1"
+                            className="h-8 px-2.5 bg-teal-600 hover:bg-teal-700 text-white text-[11px] gap-1 shadow-xs"
                           >
                             <Eye className="h-3 w-3" />
                             <span>Detail</span>
@@ -320,7 +320,7 @@ export const AdminStudentsPage: React.FC = () => {
                             size="sm"
                             variant="ghost"
                             onClick={() => setStudentToDelete(student)}
-                            className="h-8 px-2 text-red-400 hover:text-red-300 hover:bg-red-950/40 text-[11px]"
+                            className="h-8 px-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-950/40 text-[11px]"
                           >
                             <Trash2 className="h-3.5 w-3.5" />
                           </Button>
@@ -332,7 +332,7 @@ export const AdminStudentsPage: React.FC = () => {
               </table>
             </div>
           ) : (
-            <div className="py-16 text-center text-slate-500 text-xs">
+            <div className="py-16 text-center text-slate-400 dark:text-slate-500 text-xs">
               Belum ada data pendaftar yang cocok dengan filter pencarian.
             </div>
           )}
@@ -342,16 +342,16 @@ export const AdminStudentsPage: React.FC = () => {
       {/* DETAIL / VERIFICATION MODAL DIALOG */}
       {selectedStudent && (
         <Dialog open={Boolean(selectedStudent)} onOpenChange={(open) => !open && setSelectedStudent(null)}>
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm overflow-y-auto">
-            <div className="relative z-50 w-full max-w-3xl rounded-2xl border border-slate-800 bg-slate-950 p-6 sm:p-8 text-slate-100 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs overflow-y-auto">
+            <div className="relative z-50 w-full max-w-3xl rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-6 sm:p-8 text-slate-900 dark:text-slate-100 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
               {/* Modal Header */}
-              <div className="flex items-start justify-between border-b border-slate-800 pb-4">
+              <div className="flex items-start justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
                 <div>
-                  <span className="text-xs font-mono font-bold text-teal-400 block mb-1">
+                  <span className="text-xs font-mono font-bold text-teal-600 dark:text-teal-400 block mb-1">
                     {selectedStudent.registration_number}
                   </span>
-                  <h2 className="text-xl font-bold text-white">{selectedStudent.full_name}</h2>
-                  <p className="text-xs text-slate-400 mt-0.5">
+                  <h2 className="text-xl font-bold text-slate-900 dark:text-white">{selectedStudent.full_name}</h2>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                     Asal: {selectedStudent.source_school_name} (Lulus {selectedStudent.graduation_year})
                   </p>
                 </div>
@@ -359,14 +359,14 @@ export const AdminStudentsPage: React.FC = () => {
                   <Link
                     to={`/kartu-peserta/${selectedStudent.registration_number}`}
                     target="_blank"
-                    className="text-xs text-teal-400 hover:underline flex items-center gap-1 bg-slate-900 px-2.5 py-1 rounded border border-slate-800"
+                    className="text-xs text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1 bg-slate-50 dark:bg-slate-900 px-2.5 py-1 rounded border border-slate-200 dark:border-slate-800"
                   >
                     <Printer className="h-3.5 w-3.5" />
                     <span>Buka Kartu PDF</span>
                   </Link>
                   <button
                     onClick={() => setSelectedStudent(null)}
-                    className="p-1 rounded text-slate-400 hover:text-white"
+                    className="p-1 rounded text-slate-400 hover:text-slate-700 dark:hover:text-white"
                   >
                     <X className="h-5 w-5" />
                   </button>
@@ -374,19 +374,19 @@ export const AdminStudentsPage: React.FC = () => {
               </div>
 
               {/* Status Update Form Bar */}
-              <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
-                <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider">
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3">
+                <h4 className="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">
                   Ubah Status & Catatan Verifikasi
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="space-y-1">
-                    <label htmlFor="student-status-select" className="text-[10px] text-slate-400 cursor-pointer">Status Seleksi</label>
+                    <label htmlFor="student-status-select" className="text-[10px] text-slate-500 dark:text-slate-400 cursor-pointer">Status Seleksi</label>
                     <select
                       id="student-status-select"
                       name="editingStatus"
                       value={editingStatus}
                       onChange={(e) => setEditingStatus(e.target.value as StudentStatus)}
-                      className="w-full h-9 px-2.5 text-xs rounded bg-slate-950 border border-slate-800 text-white"
+                      className="w-full h-9 px-2.5 text-xs rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white"
                     >
                       <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
                       <option value="Terverifikasi">Terverifikasi</option>
@@ -397,14 +397,14 @@ export const AdminStudentsPage: React.FC = () => {
                   </div>
 
                   <div className="sm:col-span-2 space-y-1">
-                    <label htmlFor="student-notes-input" className="text-[10px] text-slate-400 cursor-pointer">Catatan Panitia (Opsional)</label>
+                    <label htmlFor="student-notes-input" className="text-[10px] text-slate-500 dark:text-slate-400 cursor-pointer">Catatan Panitia (Opsional)</label>
                     <Input
                       id="student-notes-input"
                       name="editingNotes"
                       placeholder="Catatan verifikasi berkas atau instruksi daftar ulang"
                       value={editingNotes}
                       onChange={(e) => setEditingNotes(e.target.value)}
-                      className="h-9 text-xs bg-slate-950 border-slate-800 text-white"
+                      className="h-9 text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white"
                     />
                   </div>
                 </div>
@@ -425,34 +425,34 @@ export const AdminStudentsPage: React.FC = () => {
               {/* Details Tab Panels */}
               <div className="space-y-4 text-xs">
                 {/* Biodata Grid */}
-                <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
-                  <h4 className="font-bold text-white uppercase tracking-wider text-[11px] mb-2 border-b border-slate-800 pb-1">
+                <div className="p-4 rounded-xl bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-2">
+                  <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px] mb-2 border-b border-slate-200 dark:border-slate-800 pb-1">
                     Biodata & Kontak
                   </h4>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-slate-300">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-slate-700 dark:text-slate-300">
                     <div>
-                      <span className="text-slate-500 block text-[10px]">NISN / NIK:</span>
+                      <span className="text-slate-400 dark:text-slate-500 block text-[10px]">NISN / NIK:</span>
                       <span className="font-mono">{selectedStudent.nisn || '-'} / {selectedStudent.nik || '-'}</span>
                     </div>
                     <div>
-                      <span className="text-slate-500 block text-[10px]">TTL:</span>
+                      <span className="text-slate-400 dark:text-slate-500 block text-[10px]">TTL:</span>
                       <span>{selectedStudent.birth_place}, {formatDate(selectedStudent.birth_date)}</span>
                     </div>
                     <div>
-                      <span className="text-slate-500 block text-[10px]">Gender / Agama:</span>
+                      <span className="text-slate-400 dark:text-slate-500 block text-[10px]">Gender / Agama:</span>
                       <span>{selectedStudent.gender} / {selectedStudent.religion}</span>
                     </div>
                     <div>
-                      <span className="text-slate-500 block text-[10px]">WhatsApp:</span>
+                      <span className="text-slate-400 dark:text-slate-500 block text-[10px]">WhatsApp:</span>
                       <span>{selectedStudent.phone}</span>
                     </div>
                     <div className="col-span-2">
-                      <span className="text-slate-500 block text-[10px]">Email:</span>
+                      <span className="text-slate-400 dark:text-slate-500 block text-[10px]">Email:</span>
                       <span>{selectedStudent.email}</span>
                     </div>
                     <div className="col-span-2">
-                      <span className="text-slate-500 block text-[10px]">Alamat Lengkap:</span>
-                      <span className="text-slate-400">{selectedStudent.address}</span>
+                      <span className="text-slate-400 dark:text-slate-500 block text-[10px]">Alamat Lengkap:</span>
+                      <span className="text-slate-600 dark:text-slate-400">{selectedStudent.address}</span>
                     </div>
                   </div>
                 </div>
@@ -460,63 +460,63 @@ export const AdminStudentsPage: React.FC = () => {
                 {/* Orang Tua & Jurusan Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Orang Tua */}
-                  <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
-                    <h4 className="font-bold text-white uppercase tracking-wider text-[11px] mb-1">
+                  <div className="p-4 rounded-xl bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-2">
+                    <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px] mb-1">
                       Data Orang Tua / Wali
                     </h4>
-                    <div className="space-y-1.5 text-slate-300">
+                    <div className="space-y-1.5 text-slate-700 dark:text-slate-300">
                       <div>
-                        <span className="text-slate-500 text-[10px] block">Nama Ayah / Ibu:</span>
+                        <span className="text-slate-400 dark:text-slate-500 text-[10px] block">Nama Ayah / Ibu:</span>
                         <span>{selectedStudent.parent_data?.father_name || '-'} / {selectedStudent.parent_data?.mother_name || '-'}</span>
                       </div>
                       <div>
-                        <span className="text-slate-500 text-[10px] block">No. HP Orang Tua:</span>
+                        <span className="text-slate-400 dark:text-slate-500 text-[10px] block">No. HP Orang Tua:</span>
                         <span>{selectedStudent.parent_data?.parent_phone || '-'}</span>
                       </div>
                       <div>
-                        <span className="text-slate-500 text-[10px] block">Pekerjaan:</span>
+                        <span className="text-slate-400 dark:text-slate-500 text-[10px] block">Pekerjaan:</span>
                         <span>{selectedStudent.parent_data?.parent_job || '-'}</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Pilihan Jurusan & Skor */}
-                  <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
-                    <h4 className="font-bold text-white uppercase tracking-wider text-[11px] mb-1">
+                  <div className="p-4 rounded-xl bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-2">
+                    <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px] mb-1">
                       Pilihan Jurusan & Skor
                     </h4>
-                    <div className="space-y-2 text-slate-300">
+                    <div className="space-y-2 text-slate-700 dark:text-slate-300">
                       <div className="flex items-center justify-between">
-                        <span className="text-slate-400">Pilihan 1:</span>
-                        <Badge className="bg-teal-950 text-teal-400 border-teal-800">
+                        <span className="text-slate-500 dark:text-slate-400">Pilihan 1:</span>
+                        <Badge className="bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950 dark:text-teal-400 dark:border-teal-800">
                           {selectedStudent.major_choices?.find((c) => c.choice_order === 1)?.major?.name || '-'}
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-slate-400">Pilihan 2:</span>
-                        <Badge variant="outline" className="text-slate-400 border-slate-700">
+                        <span className="text-slate-500 dark:text-slate-400">Pilihan 2:</span>
+                        <Badge variant="outline" className="text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700">
                           {selectedStudent.major_choices?.find((c) => c.choice_order === 2)?.major?.name || 'Tidak Ada'}
                         </Badge>
                       </div>
-                      <div className="flex items-center justify-between pt-1 border-t border-slate-800 font-mono">
-                        <span className="text-slate-400">Rata Rapor (70%):</span>
-                        <span className="font-bold text-white">{formatScore(selectedStudent.average_report_score)}</span>
+                      <div className="flex items-center justify-between pt-1 border-t border-slate-200 dark:border-slate-800 font-mono">
+                        <span className="text-slate-500 dark:text-slate-400">Rata Rapor (70%):</span>
+                        <span className="font-bold text-slate-900 dark:text-white">{formatScore(selectedStudent.average_report_score)}</span>
                       </div>
                       <div className="flex items-center justify-between font-mono">
-                        <span className="text-slate-400">Poin Prestasi (30%):</span>
-                        <span className="font-bold text-purple-400">{formatScore(selectedStudent.achievement_score)}</span>
+                        <span className="text-slate-500 dark:text-slate-400">Poin Prestasi (30%):</span>
+                        <span className="font-bold text-purple-600 dark:text-purple-400">{formatScore(selectedStudent.achievement_score)}</span>
                       </div>
-                      <div className="flex items-center justify-between font-mono pt-1 border-t border-slate-800">
-                        <span className="text-emerald-400 font-bold">Total Skor Akhir:</span>
-                        <span className="font-black text-emerald-400 text-sm">{formatScore(selectedStudent.total_score)}</span>
+                      <div className="flex items-center justify-between font-mono pt-1 border-t border-slate-200 dark:border-slate-800">
+                        <span className="text-emerald-600 dark:text-emerald-400 font-bold">Total Skor Akhir:</span>
+                        <span className="font-black text-emerald-600 dark:text-emerald-400 text-sm">{formatScore(selectedStudent.total_score)}</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Dokumen & Berkas Terunggah */}
-                <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
-                  <h4 className="font-bold text-white uppercase tracking-wider text-[11px] mb-2">
+                <div className="p-4 rounded-xl bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-2">
+                  <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px] mb-2">
                     Berkas & Dokumen Terunggah
                   </h4>
                   {selectedStudent.documents && selectedStudent.documents.length > 0 ? (
@@ -527,7 +527,7 @@ export const AdminStudentsPage: React.FC = () => {
                           href={doc.file_url}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-teal-400 hover:text-teal-300 hover:bg-slate-800 transition-colors"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shadow-2xs"
                         >
                           <FileText className="h-3.5 w-3.5" />
                           <span className="capitalize">{doc.document_type.replace('_', ' ')}</span>
@@ -536,18 +536,18 @@ export const AdminStudentsPage: React.FC = () => {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-slate-500 italic text-[11px]">Tidak ada berkas fisik terlampir.</p>
+                    <p className="text-slate-400 dark:text-slate-500 italic text-[11px]">Tidak ada berkas fisik terlampir.</p>
                   )}
                 </div>
               </div>
 
               {/* Modal Footer */}
-              <div className="flex justify-end pt-2 border-t border-slate-800">
+              <div className="flex justify-end pt-2 border-t border-slate-100 dark:border-slate-800">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setSelectedStudent(null)}
-                  className="text-xs bg-slate-900 border-slate-800 text-slate-300"
+                  className="text-xs bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 shadow-2xs"
                 >
                   Tutup Detail
                 </Button>
@@ -560,28 +560,28 @@ export const AdminStudentsPage: React.FC = () => {
       {/* DELETE CONFIRMATION DIALOG */}
       {studentToDelete && (
         <Dialog open={Boolean(studentToDelete)} onOpenChange={(open) => !open && setStudentToDelete(null)}>
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
-            <div className="relative z-50 w-full max-w-md rounded-2xl border border-red-900/50 bg-slate-950 p-6 text-slate-100 shadow-2xl space-y-4">
-              <div className="flex items-center gap-3 text-red-400">
-                <div className="h-10 w-10 rounded-full bg-red-950 border border-red-800 flex items-center justify-center">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+            <div className="relative z-50 w-full max-w-md rounded-2xl border border-red-200 dark:border-red-900/50 bg-white dark:bg-slate-950 p-6 text-slate-900 dark:text-slate-100 shadow-2xl space-y-4">
+              <div className="flex items-center gap-3 text-red-600 dark:text-red-400">
+                <div className="h-10 w-10 rounded-full bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 flex items-center justify-center">
                   <Trash2 className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-base">Hapus Data Pendaftar?</h3>
-                  <span className="text-xs text-slate-400">Tindakan ini tidak dapat dibatalkan.</span>
+                  <h3 className="font-bold text-slate-900 dark:text-white text-base">Hapus Data Pendaftar?</h3>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">Tindakan ini tidak dapat dibatalkan.</span>
                 </div>
               </div>
 
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                 Anda yakin ingin menghapus data calon siswa <strong>{studentToDelete.full_name}</strong> (No. Reg: {studentToDelete.registration_number})? Seluruh nilai rapor, prestasi, dan berkas terkait akan terhapus dari sistem.
               </p>
 
-              <div className="flex justify-end gap-2 pt-2 border-t border-slate-800">
+              <div className="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() => setStudentToDelete(null)}
-                  className="text-xs bg-slate-900 border-slate-800 text-slate-300"
+                  className="text-xs bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 shadow-2xs"
                 >
                   Batal
                 </Button>
@@ -589,7 +589,7 @@ export const AdminStudentsPage: React.FC = () => {
                   size="sm"
                   disabled={deleting}
                   onClick={handleDeleteStudent}
-                  className="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold"
+                  className="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shadow-xs"
                 >
                   {deleting ? 'Menghapus...' : 'Ya, Hapus Data'}
                 </Button>

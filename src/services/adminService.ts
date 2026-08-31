@@ -9,6 +9,16 @@ import {
 } from '@/types/spmb';
 import { DEFAULT_SCHOOL, DEFAULT_MAJORS, DEFAULT_SOURCE_SCHOOLS } from './schoolService';
 import { DEFAULT_ANNOUNCEMENTS } from './announcementService';
+import { mockStudentStore } from './studentService';
+
+export interface DailyRegistrationTrend {
+  date: string;
+  dayName: string;
+  fullDayName: string;
+  formattedDate: string;
+  count: number;
+  isToday: boolean;
+}
 
 export interface DashboardStats {
   totalStudents: number;
@@ -28,6 +38,51 @@ export interface DashboardStats {
     count: number;
   }[];
   recentStudents: StudentCompleteDetail[];
+  dailyTrend: DailyRegistrationTrend[];
+}
+
+const INDONESIAN_DAY_NAMES = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+const INDONESIAN_FULL_DAY_NAMES = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+
+/**
+ * Calculates the exact daily registration volume for the last 7 days ending on today
+ */
+export function calculateDailyTrend(students: Array<{ created_at?: string }>): DailyRegistrationTrend[] {
+  const trend: DailyRegistrationTrend[] = [];
+  const now = new Date();
+
+  // 7 days ending with today (i = 6 down to 0)
+  for (let i = 6; i >= 0; i--) {
+    const targetDate = new Date(now);
+    targetDate.setDate(now.getDate() - i);
+
+    const year = targetDate.getFullYear();
+    const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+    const day = String(targetDate.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
+    const dayOfWeek = targetDate.getDay();
+
+    // Filter students registered on this local date
+    const count = students.filter((s) => {
+      if (!s.created_at) return false;
+      const sDate = new Date(s.created_at);
+      const sYear = sDate.getFullYear();
+      const sMonth = String(sDate.getMonth() + 1).padStart(2, '0');
+      const sDay = String(sDate.getDate()).padStart(2, '0');
+      return `${sYear}-${sMonth}-${sDay}` === dateStr;
+    }).length;
+
+    trend.push({
+      date: dateStr,
+      formattedDate: `${day}/${month}`,
+      dayName: INDONESIAN_DAY_NAMES[dayOfWeek],
+      fullDayName: INDONESIAN_FULL_DAY_NAMES[dayOfWeek],
+      count,
+      isToday: i === 0,
+    });
+  }
+
+  return trend;
 }
 
 export const adminService = {
@@ -36,24 +91,39 @@ export const adminService = {
    */
   async getDashboardStats(): Promise<DashboardStats> {
     if (!isSupabaseConfigured()) {
-      return {
-        totalStudents: 12,
-        targetStudents: 400,
-        statusCounts: {
-          waiting: 5,
-          verified: 4,
-          accepted: 2,
-          rejected: 1,
-          reserve: 0,
-        },
-        majorStats: DEFAULT_MAJORS.map((m) => ({
+      const students = mockStudentStore;
+      const targetStudents = 400;
+
+      const statusCounts = {
+        waiting: students.filter((s) => s.status === 'Menunggu Verifikasi' || s.status === 'Draft').length,
+        verified: students.filter((s) => s.status === 'Terverifikasi').length,
+        accepted: students.filter((s) => s.status === 'Diterima').length,
+        rejected: students.filter((s) => s.status === 'Tidak Diterima').length,
+        reserve: students.filter((s) => s.status === 'Cadangan').length,
+      };
+
+      const majorStats = DEFAULT_MAJORS.map((m) => {
+        const count = students.filter((s) => {
+          const ch1 = s.major_choices?.find((c) => c.choice_order === 1);
+          return ch1?.major_id === m.id;
+        }).length;
+
+        return {
           id: m.id,
           code: m.code,
           name: m.name,
           quota: m.quota,
-          count: Math.floor(Math.random() * 20) + 2,
-        })),
-        recentStudents: [],
+          count,
+        };
+      });
+
+      return {
+        totalStudents: students.length,
+        targetStudents,
+        statusCounts,
+        majorStats,
+        recentStudents: students.slice(0, 5),
+        dailyTrend: calculateDailyTrend(students),
       };
     }
 
@@ -118,6 +188,7 @@ export const adminService = {
         statusCounts,
         majorStats,
         recentStudents: students.slice(0, 5),
+        dailyTrend: calculateDailyTrend(students),
       };
     } catch (err) {
       console.error('Error fetching dashboard stats:', err);
@@ -127,6 +198,7 @@ export const adminService = {
         statusCounts: { waiting: 0, verified: 0, accepted: 0, rejected: 0, reserve: 0 },
         majorStats: [],
         recentStudents: [],
+        dailyTrend: calculateDailyTrend([]),
       };
     }
   },
@@ -135,7 +207,27 @@ export const adminService = {
    * STUDENT MANAGEMENT
    */
   async getAllStudents(filter?: { status?: string; majorId?: string; search?: string }): Promise<StudentCompleteDetail[]> {
-    if (!isSupabaseConfigured()) return [];
+    if (!isSupabaseConfigured()) {
+      let results = [...mockStudentStore];
+      if (filter?.status && filter.status !== 'Semua') {
+        results = results.filter((s) => s.status === filter.status);
+      }
+      if (filter?.search && filter.search.trim()) {
+        const q = filter.search.trim().toLowerCase();
+        results = results.filter((s) =>
+          s.full_name.toLowerCase().includes(q) ||
+          s.registration_number.toLowerCase().includes(q) ||
+          s.source_school_name.toLowerCase().includes(q)
+        );
+      }
+      if (filter?.majorId && filter.majorId !== 'Semua') {
+        results = results.filter((s) => {
+          const ch1 = s.major_choices?.find((c) => c.choice_order === 1);
+          return ch1?.major_id === filter.majorId;
+        });
+      }
+      return results;
+    }
 
     try {
       let query = supabase
