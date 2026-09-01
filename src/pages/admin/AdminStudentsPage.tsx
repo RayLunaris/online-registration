@@ -4,7 +4,6 @@ import {
   Search, 
   CheckCircle2, 
   FileText, 
-  Eye, 
   Trash2, 
   ExternalLink, 
   Printer, 
@@ -15,7 +14,6 @@ import {
   Download 
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog } from '@/components/ui/dialog';
@@ -24,6 +22,8 @@ import { schoolService } from '@/services/schoolService';
 import { StudentCompleteDetail, Major, StudentStatus } from '@/types/spmb';
 import { formatDate, formatScore } from '@/lib/utils';
 import { exportStudentsToExcel, exportStudentsToCSV } from '@/lib/exportUtils';
+import { StudentTable } from '@/components/admin/StudentTable';
+import { MajorChoicesTab } from '@/components/admin/StudentDetail/MajorChoicesTab';
 
 export const AdminStudentsPage: React.FC = () => {
   const [students, setStudents] = useState<StudentCompleteDetail[]>([]);
@@ -122,21 +122,6 @@ export const AdminStudentsPage: React.FC = () => {
     }
   };
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'Diterima':
-        return <Badge className="bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-800 text-[10px]">Diterima</Badge>;
-      case 'Terverifikasi':
-        return <Badge className="bg-teal-50 text-teal-700 border border-teal-200 dark:bg-teal-950 dark:text-teal-400 dark:border-teal-800 text-[10px]">Terverifikasi</Badge>;
-      case 'Cadangan':
-        return <Badge className="bg-purple-50 text-purple-700 border border-purple-200 dark:bg-purple-950 dark:text-purple-400 dark:border-purple-800 text-[10px]">Cadangan</Badge>;
-      case 'Tidak Diterima':
-        return <Badge className="bg-red-50 text-red-700 border border-red-200 dark:bg-red-950 dark:text-red-400 dark:border-red-800 text-[10px]">Tidak Diterima</Badge>;
-      default:
-        return <Badge className="bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950 dark:text-amber-400 dark:border-amber-800 text-[10px]">Menunggu Verifikasi</Badge>;
-    }
-  };
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -146,7 +131,7 @@ export const AdminStudentsPage: React.FC = () => {
             Data Calon Siswa & Pendaftar
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            Kelola verifikasi berkas nilai rapor, prestasi, dan status kelulusan seleksi siswa.
+            Kelola verifikasi berkas nilai rapor, prestasi, dan status kelulusan seleksi siswa (Pilihan 1 & Pilihan 2).
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -220,7 +205,6 @@ export const AdminStudentsPage: React.FC = () => {
               <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
               <option value="Terverifikasi">Terverifikasi</option>
               <option value="Diterima">Diterima</option>
-              <option value="Cadangan">Cadangan</option>
               <option value="Tidak Diterima">Tidak Diterima</option>
             </select>
 
@@ -261,76 +245,12 @@ export const AdminStudentsPage: React.FC = () => {
               <p className="text-xs text-slate-500">Memuat data pendaftar...</p>
             </div>
           ) : students.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs text-left text-slate-600 dark:text-slate-300">
-                <thead className="bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-100 dark:border-slate-800">
-                  <tr>
-                    <th className="py-3 px-4">No. Registrasi</th>
-                    <th className="py-3 px-4">Nama Siswa</th>
-                    <th className="py-3 px-4">Asal Sekolah</th>
-                    <th className="py-3 px-4">Jurusan 1 & 2</th>
-                    <th className="py-3 px-4 text-center">Skor Rapor</th>
-                    <th className="py-3 px-4 text-center">Total Skor</th>
-                    <th className="py-3 px-4">Status</th>
-                    <th className="py-3 px-4 text-right">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
-                  {students.map((student) => {
-                    const ch1 = student.major_choices?.find((c) => c.choice_order === 1)?.major;
-                    const ch2 = student.major_choices?.find((c) => c.choice_order === 2)?.major;
-
-                    return (
-                      <tr key={student.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-900/50 transition-colors">
-                        <td className="py-3 px-4 font-mono font-bold text-teal-600 dark:text-teal-400">
-                          {student.registration_number}
-                        </td>
-                        <td className="py-3 px-4">
-                          <span className="font-bold text-slate-900 dark:text-white block">{student.full_name}</span>
-                          <span className="text-[10px] text-slate-400 dark:text-slate-500">{student.phone}</span>
-                        </td>
-                        <td className="py-3 px-4 text-slate-500 dark:text-slate-400">{student.source_school_name}</td>
-                        <td className="py-3 px-4 space-x-1">
-                          <Badge variant="outline" className="text-[10px] bg-slate-50 text-teal-700 border-teal-200 dark:bg-slate-900 dark:border-slate-700 dark:text-teal-400">
-                            1: {ch1?.code || '-'}
-                          </Badge>
-                          {ch2 && (
-                            <Badge variant="outline" className="text-[10px] bg-slate-50 text-slate-600 border-slate-200 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400">
-                              2: {ch2?.code}
-                            </Badge>
-                          )}
-                        </td>
-                        <td className="py-3 px-4 text-center font-mono font-semibold text-slate-700 dark:text-slate-300">
-                          {formatScore(student.average_report_score)}
-                        </td>
-                        <td className="py-3 px-4 text-center font-mono font-bold text-emerald-600 dark:text-emerald-400">
-                          {formatScore(student.total_score)}
-                        </td>
-                        <td className="py-3 px-4">{getStatusBadge(student.status)}</td>
-                        <td className="py-3 px-4 text-right space-x-1">
-                          <Button
-                            size="sm"
-                            onClick={() => handleOpenDetail(student)}
-                            className="h-8 px-2.5 bg-teal-600 hover:bg-teal-700 text-white text-[11px] gap-1 shadow-xs"
-                          >
-                            <Eye className="h-3 w-3" />
-                            <span>Detail</span>
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => setStudentToDelete(student)}
-                            className="h-8 px-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-950/40 text-[11px]"
-                          >
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </Button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+            <StudentTable
+              students={students}
+              majors={majors}
+              onOpenDetail={handleOpenDetail}
+              onDeleteStudent={setStudentToDelete}
+            />
           ) : (
             <div className="py-16 text-center text-slate-400 dark:text-slate-500 text-xs">
               Belum ada data pendaftar yang cocok dengan filter pencarian.
@@ -343,7 +263,7 @@ export const AdminStudentsPage: React.FC = () => {
       {selectedStudent && (
         <Dialog open={Boolean(selectedStudent)} onOpenChange={(open) => !open && setSelectedStudent(null)}>
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs overflow-y-auto">
-            <div className="relative z-50 w-full max-w-3xl rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-6 sm:p-8 text-slate-900 dark:text-slate-100 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <div className="relative z-50 w-full max-w-4xl rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-6 sm:p-8 text-slate-900 dark:text-slate-100 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
               {/* Modal Header */}
               <div className="flex items-start justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
                 <div>
@@ -356,6 +276,12 @@ export const AdminStudentsPage: React.FC = () => {
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
+                  <Link
+                    to={`/admin/siswa/${selectedStudent.id}`}
+                    className="text-xs text-slate-600 dark:text-slate-300 hover:text-teal-600 flex items-center gap-1 bg-slate-50 dark:bg-slate-900 px-2.5 py-1 rounded border border-slate-200 dark:border-slate-800"
+                  >
+                    <span>Halaman Penuh</span>
+                  </Link>
                   <Link
                     to={`/kartu-peserta/${selectedStudent.registration_number}`}
                     target="_blank"
@@ -391,7 +317,6 @@ export const AdminStudentsPage: React.FC = () => {
                       <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
                       <option value="Terverifikasi">Terverifikasi</option>
                       <option value="Diterima">Diterima (Lulus)</option>
-                      <option value="Cadangan">Cadangan</option>
                       <option value="Tidak Diterima">Tidak Diterima</option>
                     </select>
                   </div>
@@ -422,8 +347,13 @@ export const AdminStudentsPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Details Tab Panels */}
-              <div className="space-y-4 text-xs">
+              {/* 2 CARDS BERDAMPINGAN: EVALUASI PILIHAN 1 & PILIHAN 2 */}
+              <div>
+                <MajorChoicesTab student={selectedStudent} majors={majors} />
+              </div>
+
+              {/* Details Biodata & Berkas */}
+              <div className="space-y-4 text-xs pt-2 border-t border-slate-100 dark:border-slate-800">
                 {/* Biodata Grid */}
                 <div className="p-4 rounded-xl bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-2">
                   <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px] mb-2 border-b border-slate-200 dark:border-slate-800 pb-1">
@@ -457,7 +387,7 @@ export const AdminStudentsPage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Orang Tua & Jurusan Grid */}
+                {/* Orang Tua & Skor Rapor Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Orang Tua */}
                   <div className="p-4 rounded-xl bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-2">
@@ -480,25 +410,13 @@ export const AdminStudentsPage: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Pilihan Jurusan & Skor */}
+                  {/* Skor Rapor & Prestasi */}
                   <div className="p-4 rounded-xl bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-2">
                     <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px] mb-1">
-                      Pilihan Jurusan & Skor
+                      Rincian Nilai & Poin
                     </h4>
                     <div className="space-y-2 text-slate-700 dark:text-slate-300">
-                      <div className="flex items-center justify-between">
-                        <span className="text-slate-500 dark:text-slate-400">Pilihan 1:</span>
-                        <Badge className="bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950 dark:text-teal-400 dark:border-teal-800">
-                          {selectedStudent.major_choices?.find((c) => c.choice_order === 1)?.major?.name || '-'}
-                        </Badge>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-slate-500 dark:text-slate-400">Pilihan 2:</span>
-                        <Badge variant="outline" className="text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700">
-                          {selectedStudent.major_choices?.find((c) => c.choice_order === 2)?.major?.name || 'Tidak Ada'}
-                        </Badge>
-                      </div>
-                      <div className="flex items-center justify-between pt-1 border-t border-slate-200 dark:border-slate-800 font-mono">
+                      <div className="flex items-center justify-between font-mono">
                         <span className="text-slate-500 dark:text-slate-400">Rata Rapor (70%):</span>
                         <span className="font-bold text-slate-900 dark:text-white">{formatScore(selectedStudent.average_report_score)}</span>
                       </div>
@@ -507,14 +425,14 @@ export const AdminStudentsPage: React.FC = () => {
                         <span className="font-bold text-purple-600 dark:text-purple-400">{formatScore(selectedStudent.achievement_score)}</span>
                       </div>
                       <div className="flex items-center justify-between font-mono pt-1 border-t border-slate-200 dark:border-slate-800">
-                        <span className="text-emerald-600 dark:text-emerald-400 font-bold">Total Skor Akhir:</span>
+                        <span className="text-emerald-600 dark:text-emerald-400 font-bold">Total Skor Terhitung:</span>
                         <span className="font-black text-emerald-600 dark:text-emerald-400 text-sm">{formatScore(selectedStudent.total_score)}</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Dokumen & Berkas Terunggah */}
+                {/* Dokumen Terunggah */}
                 <div className="p-4 rounded-xl bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-2">
                   <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px] mb-2">
                     Berkas & Dokumen Terunggah
@@ -601,3 +519,4 @@ export const AdminStudentsPage: React.FC = () => {
     </div>
   );
 };
+

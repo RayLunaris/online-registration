@@ -1,12 +1,10 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Navigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { NotFoundPage } from '@/pages/NotFoundPage';
-import { Navbar } from '@/components/common/Navbar';
-import { Footer } from '@/components/common/Footer';
 
 export const ProtectedRoute: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const { user, isLoading } = useAuth();
+  const location = useLocation();
 
   if (isLoading) {
     return (
@@ -20,16 +18,8 @@ export const ProtectedRoute: React.FC<{ children?: React.ReactNode }> = ({ child
   }
 
   if (!user) {
-    // True 404 Cloaking: unauthorized visitors see a standard 404 page
-    return (
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-grow">
-          <NotFoundPage />
-        </main>
-        <Footer />
-      </div>
-    );
+    // Redirect unauthorized visitors to /admin/login
+    return <Navigate to="/admin/login" state={{ from: location }} replace />;
   }
 
   return children ? <>{children}</> : <Outlet />;

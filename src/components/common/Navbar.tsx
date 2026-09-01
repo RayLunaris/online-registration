@@ -3,18 +3,15 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Menu, 
   X, 
-  UserCheck,
   ArrowRight
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/context/LanguageContext';
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
   const { language, setLanguage, t } = useLanguage();
 
   // Handle hash scrolling
@@ -135,16 +132,6 @@ export const Navbar: React.FC = () => {
             {language === 'id' ? 'ID' : 'EN'}
           </button>
 
-          {/* Admin Icon Link (Only visible if authenticated) */}
-          {user && (
-            <Link to="/admin">
-              <Button size="sm" variant="outline" className="h-8 px-3 text-xs border-teal-200 bg-teal-50/70 text-teal-700 font-semibold rounded-lg gap-1.5">
-                <UserCheck className="h-3.5 w-3.5" />
-                <span>Admin</span>
-              </Button>
-            </Link>
-          )}
-
           {/* Primary Teal CTA */}
           <Link to="/daftar">
             <Button size="sm" className="h-9 px-4.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold rounded-lg shadow-xs gap-1.5 group">
@@ -209,26 +196,6 @@ export const Navbar: React.FC = () => {
                 {t('nav.register')}
               </Button>
             </Link>
-
-            {user && (
-              <div className="flex gap-2">
-                <Link to="/admin" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
-                  <Button variant="outline" className="w-full text-xs font-semibold h-9 rounded-lg">
-                    Dashboard Admin
-                  </Button>
-                </Link>
-                <Button 
-                  variant="ghost" 
-                  onClick={() => {
-                    signOut();
-                    setMobileMenuOpen(false);
-                  }} 
-                  className="text-xs text-red-600 h-9 px-3 rounded-lg"
-                >
-                  Keluar
-                </Button>
-              </div>
-            )}
           </div>
         </div>
       )}

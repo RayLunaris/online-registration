@@ -53,6 +53,7 @@ const AnnouncementDetailPage = lazyRetry(() => import('@/pages/AnnouncementDetai
 const LoginPage = lazyRetry(() => import('@/pages/admin/LoginPage').then(m => ({ default: m.LoginPage })));
 const AdminDashboardPage = lazyRetry(() => import('@/pages/admin/AdminDashboardPage').then(m => ({ default: m.AdminDashboardPage })));
 const AdminStudentsPage = lazyRetry(() => import('@/pages/admin/AdminStudentsPage').then(m => ({ default: m.AdminStudentsPage })));
+const AdminStudentDetailPage = lazyRetry(() => import('@/pages/admin/AdminStudentDetailPage').then(m => ({ default: m.AdminStudentDetailPage })));
 const AdminSelectionPage = lazyRetry(() => import('@/pages/admin/AdminSelectionPage').then(m => ({ default: m.AdminSelectionPage })));
 const AdminMajorsPage = lazyRetry(() => import('@/pages/admin/AdminMajorsPage').then(m => ({ default: m.AdminMajorsPage })));
 const AdminSourceSchoolsPage = lazyRetry(() => import('@/pages/admin/AdminSourceSchoolsPage').then(m => ({ default: m.AdminSourceSchoolsPage })));
@@ -97,13 +98,15 @@ export const App: React.FC = () => {
                     <Route path="/pengumuman" element={<AnnouncementListPage />} />
                     <Route path="/pengumuman/:slug" element={<AnnouncementDetailPage />} />
 
-                    {/* True 404 Cloaking for obsolete /admin/login or guessed admin paths */}
-                    <Route path="/admin/login" element={<NotFoundPage />} />
+                    {/* Catch all unmatched public routes */}
                     <Route path="*" element={<NotFoundPage />} />
                   </Route>
 
-                  {/* 2. ADMIN AUTH ROUTE (Dynamic Secret Path) */}
-                  <Route path={ADMIN_AUTH_CONFIG.getLoginPath()} element={<LoginPage />} />
+                  {/* 2. ADMIN AUTH ROUTE (/admin/login) */}
+                  <Route path="/admin/login" element={<LoginPage />} />
+                  {ADMIN_AUTH_CONFIG.getLoginPath() !== '/admin/login' && (
+                    <Route path={ADMIN_AUTH_CONFIG.getLoginPath()} element={<LoginPage />} />
+                  )}
 
                   {/* 3. PROTECTED ADMIN ROUTES WITH ADMIN LAYOUT */}
                   <Route
@@ -115,7 +118,11 @@ export const App: React.FC = () => {
                     }
                   >
                     <Route index element={<AdminDashboardPage />} />
+                    <Route path="dashboard" element={<AdminDashboardPage />} />
                     <Route path="pendaftar" element={<AdminStudentsPage />} />
+                    <Route path="pendaftar/:id" element={<AdminStudentDetailPage />} />
+                    <Route path="siswa" element={<AdminStudentsPage />} />
+                    <Route path="siswa/:id" element={<AdminStudentDetailPage />} />
                     <Route path="seleksi" element={<AdminSelectionPage />} />
                     <Route path="jurusan" element={<AdminMajorsPage />} />
                     <Route path="sekolah-asal" element={<AdminSourceSchoolsPage />} />

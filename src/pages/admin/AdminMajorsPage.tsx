@@ -8,7 +8,10 @@ import {
   Palette, 
   Calculator, 
   RefreshCw,
-  X 
+  X,
+  GraduationCap,
+  Users,
+  FileText
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -20,6 +23,8 @@ import { Major } from '@/types/spmb';
 
 export const AdminMajorsPage: React.FC = () => {
   const [majors, setMajors] = useState<Major[]>([]);
+  const [majorCounts, setMajorCounts] = useState<Record<string, number>>({});
+  const [totalApplicants, setTotalApplicants] = useState<number>(0);
   const [loading, setLoading] = useState(true);
 
   // Form State for Add / Edit
@@ -35,8 +40,18 @@ export const AdminMajorsPage: React.FC = () => {
   const loadMajors = async () => {
     setLoading(true);
     try {
-      const data = await adminService.getAllMajors();
-      setMajors(data);
+      const [majorsData, statsData] = await Promise.all([
+        adminService.getAllMajors(),
+        adminService.getDashboardStats(),
+      ]);
+      setMajors(majorsData);
+
+      const countsMap: Record<string, number> = {};
+      statsData.majorStats.forEach((ms) => {
+        countsMap[ms.id] = ms.count;
+      });
+      setMajorCounts(countsMap);
+      setTotalApplicants(statsData.totalStudents);
     } catch (err) {
       console.error('Error loading majors:', err);
     } finally {
@@ -111,15 +126,45 @@ export const AdminMajorsPage: React.FC = () => {
     }
   };
 
-  const getMajorIcon = (iconName: string | null) => {
-    switch (iconName) {
-      case 'Code': return <Code className="h-5 w-5 text-teal-400" />;
-      case 'Network': return <Network className="h-5 w-5 text-indigo-400" />;
-      case 'Palette': return <Palette className="h-5 w-5 text-purple-400" />;
-      case 'Calculator': return <Calculator className="h-5 w-5 text-emerald-400" />;
-      default: return <Code className="h-5 w-5 text-teal-400" />;
+  const getMajorTheme = (code: string, iconName: string | null) => {
+    const c = code.toUpperCase();
+    if (c.includes('AKL') || iconName === 'Calculator') {
+      return {
+        icon: <Calculator className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />,
+        badgeBg: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-800',
+        progressBg: 'bg-emerald-500',
+        cardGlow: 'hover:border-emerald-300 dark:hover:border-emerald-700',
+        iconBox: 'bg-emerald-50 dark:bg-emerald-950/80 border-emerald-200 dark:border-emerald-800',
+      };
     }
+    if (c.includes('DKV') || iconName === 'Palette') {
+      return {
+        icon: <Palette className="h-5 w-5 text-purple-600 dark:text-purple-400" />,
+        badgeBg: 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-400 dark:border-purple-800',
+        progressBg: 'bg-purple-500',
+        cardGlow: 'hover:border-purple-300 dark:hover:border-purple-700',
+        iconBox: 'bg-purple-50 dark:bg-purple-950/80 border-purple-200 dark:border-purple-800',
+      };
+    }
+    if (c.includes('TKJ') || iconName === 'Network') {
+      return {
+        icon: <Network className="h-5 w-5 text-blue-600 dark:text-blue-400" />,
+        badgeBg: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-400 dark:border-blue-800',
+        progressBg: 'bg-blue-500',
+        cardGlow: 'hover:border-blue-300 dark:hover:border-blue-700',
+        iconBox: 'bg-blue-50 dark:bg-blue-950/80 border-blue-200 dark:border-blue-800',
+      };
+    }
+    return {
+      icon: <Code className="h-5 w-5 text-teal-600 dark:text-teal-400" />,
+      badgeBg: 'bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950 dark:text-teal-400 dark:border-teal-800',
+      progressBg: 'bg-teal-500',
+      cardGlow: 'hover:border-teal-300 dark:hover:border-teal-700',
+      iconBox: 'bg-teal-50 dark:bg-teal-950/80 border-teal-200 dark:border-teal-800',
+    };
   };
+
+  const totalCapacity = majors.reduce((sum, m) => sum + (m.quota || 0), 0);
 
   return (
     <div className="space-y-6">
@@ -127,10 +172,10 @@ export const AdminMajorsPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            Master Jurusan / Kompetensi Keahlian
+            Master Jurusan & Kuota
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            Kelola daftar program keahlian, batas kuota pendaftar, dan status aktif.
+            Kelola program keahlian, batas kuota pendaftar, dan status aktif.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -140,7 +185,7 @@ export const AdminMajorsPage: React.FC = () => {
             onClick={loadMajors}
             className="text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 gap-1.5 shadow-2xs"
           >
-            <RefreshCw className="h-3.5 w-3.5" />
+            <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
             <span>Refresh</span>
           </Button>
           <Button
@@ -154,6 +199,69 @@ export const AdminMajorsPage: React.FC = () => {
         </div>
       </div>
 
+      {/* TOP SUMMARY ROW: 3 METRIC CARDS */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {/* Total Program */}
+        <Card className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xs">
+          <CardHeader className="p-5 pb-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Total Program</span>
+              <div className="p-2 rounded-xl bg-teal-50 dark:bg-teal-950/80 text-teal-700 dark:text-teal-400 border border-teal-100 dark:border-teal-900/50">
+                <GraduationCap className="h-4 w-4" />
+              </div>
+            </div>
+            <CardTitle className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">
+              {majors.length} <span className="text-sm font-semibold text-slate-500 dark:text-slate-400">Jurusan</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-5 pt-0">
+            <span className="text-[11px] text-slate-500 dark:text-slate-400">
+              {majors.filter((m) => m.is_active).length} program keahlian aktif
+            </span>
+          </CardContent>
+        </Card>
+
+        {/* Total Kapasitas */}
+        <Card className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xs">
+          <CardHeader className="p-5 pb-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Total Kapasitas</span>
+              <div className="p-2 rounded-xl bg-purple-50 dark:bg-purple-950/80 text-purple-700 dark:text-purple-400 border border-purple-100 dark:border-purple-900/50">
+                <Users className="h-4 w-4" />
+              </div>
+            </div>
+            <CardTitle className="text-2xl sm:text-3xl font-extrabold text-purple-600 dark:text-purple-400 mt-1 font-mono">
+              {totalCapacity} <span className="text-sm font-semibold text-slate-500 dark:text-slate-400">Kursi</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-5 pt-0">
+            <span className="text-[11px] text-slate-500 dark:text-slate-400">
+              Daya tampung keseluruhan SPMB 2026
+            </span>
+          </CardContent>
+        </Card>
+
+        {/* Pendaftar Memilih */}
+        <Card className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xs">
+          <CardHeader className="p-5 pb-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Pendaftar Memilih</span>
+              <div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-950/80 text-blue-700 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50">
+                <FileText className="h-4 w-4" />
+              </div>
+            </div>
+            <CardTitle className="text-2xl sm:text-3xl font-extrabold text-blue-600 dark:text-blue-400 mt-1 font-mono">
+              {totalApplicants} <span className="text-sm font-semibold text-slate-500 dark:text-slate-400">Berkas</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-5 pt-0">
+            <span className="text-[11px] text-slate-500 dark:text-slate-400">
+              Peminat terdaftar di pilihan 1
+            </span>
+          </CardContent>
+        </Card>
+      </div>
+
       {/* MAJORS GRID */}
       {loading ? (
         <div className="py-16 text-center space-y-2">
@@ -162,60 +270,92 @@ export const AdminMajorsPage: React.FC = () => {
         </div>
       ) : majors.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {majors.map((major) => (
-            <Card key={major.id} className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xs flex flex-col justify-between">
-              <CardHeader className="p-5 pb-3">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="p-2 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                    {getMajorIcon(major.icon)}
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <Badge className="bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950 dark:text-teal-400 dark:border-teal-800 font-mono text-xs font-bold">
-                      {major.code}
-                    </Badge>
-                    {major.is_active ? (
-                      <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-800 text-[10px]">Aktif</Badge>
-                    ) : (
-                      <Badge className="bg-slate-100 text-slate-500 border-slate-200 dark:bg-slate-800 dark:text-slate-400 text-[10px]">Nonaktif</Badge>
-                    )}
-                  </div>
-                </div>
-                <CardTitle className="text-base font-bold text-slate-900 dark:text-white">
-                  {major.name}
-                </CardTitle>
-                <CardDescription className="text-xs text-slate-500 dark:text-slate-400 line-clamp-3 mt-1.5 leading-relaxed">
-                  {major.description || 'Tidak ada deskripsi.'}
-                </CardDescription>
-              </CardHeader>
+          {majors.map((major) => {
+            const theme = getMajorTheme(major.code, major.icon);
+            const count = majorCounts[major.id] || 0;
+            const quota = major.quota || 100;
+            const pct = quota > 0 ? Math.round((count / quota) * 100) : 0;
+            const barWidth = Math.min(100, pct);
 
-              <CardContent className="p-5 pt-0">
-                <div className="flex items-center justify-between py-2 border-t border-slate-100 dark:border-slate-800/80 text-xs text-slate-500 dark:text-slate-400">
-                  <span>Kuota Siswa:</span>
-                  <span className="font-mono font-bold text-slate-900 dark:text-white text-sm">{major.quota} Kursi</span>
-                </div>
+            return (
+              <Card 
+                key={major.id} 
+                className={`bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xs flex flex-col justify-between transition-all duration-200 ${theme.cardGlow}`}
+              >
+                <CardHeader className="p-5 pb-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className={`p-2 rounded-xl border ${theme.iconBox}`}>
+                      {theme.icon}
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Badge className={`${theme.badgeBg} font-mono text-xs font-bold`}>
+                        {major.code}
+                      </Badge>
+                      {major.is_active ? (
+                        <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-800 text-[10px]">
+                          Aktif
+                        </Badge>
+                      ) : (
+                        <Badge className="bg-slate-100 text-slate-500 border-slate-200 dark:bg-slate-800 dark:text-slate-400 text-[10px]">
+                          Nonaktif
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
 
-                <div className="flex items-center gap-2 pt-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleOpenEdit(major)}
-                    className="flex-1 text-xs bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-800 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 gap-1 h-8 shadow-2xs"
-                  >
-                    <Edit2 className="h-3 w-3" />
-                    <span>Edit</span>
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setMajorToDelete(major)}
-                    className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-950/40 text-xs h-8 px-2"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  <CardTitle className="text-base font-bold text-slate-900 dark:text-white">
+                    {major.name}
+                  </CardTitle>
+                  <CardDescription className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mt-1 leading-relaxed">
+                    {major.description || 'Tidak ada deskripsi.'}
+                  </CardDescription>
+                </CardHeader>
+
+                <CardContent className="p-5 pt-0 space-y-3">
+                  {/* Realtime Quota Progress Bar */}
+                  <div className="space-y-1.5 pt-2 border-t border-slate-100 dark:border-slate-800/80">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-slate-500 dark:text-slate-400 font-medium">
+                        {count} / {quota} Kursi
+                      </span>
+                      <span className={`font-mono font-bold ${pct >= 100 ? 'text-amber-600 dark:text-amber-400' : 'text-teal-600 dark:text-teal-400'}`}>
+                        ({pct}%)
+                      </span>
+                    </div>
+                    <div className="w-full bg-slate-100 dark:bg-slate-900 h-2 rounded-full overflow-hidden flex">
+                      <div
+                        className={`h-full rounded-full transition-all duration-500 ${
+                          pct >= 100 ? 'bg-amber-500' : theme.progressBg
+                        }`}
+                        style={{ width: `${barWidth}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Actions Buttons */}
+                  <div className="flex items-center gap-2 pt-1">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleOpenEdit(major)}
+                      className="flex-1 text-xs bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-800 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 gap-1.5 h-8 shadow-2xs font-medium"
+                    >
+                      <Edit2 className="h-3 w-3" />
+                      <span>Edit</span>
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setMajorToDelete(major)}
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-950/40 text-xs h-8 px-2.5 font-medium"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       ) : (
         <div className="p-12 text-center text-xs text-slate-500 bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">

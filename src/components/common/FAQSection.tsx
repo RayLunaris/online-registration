@@ -15,8 +15,8 @@ const FAQ_DATA: FAQItem[] = [
   },
   {
     category: 'Jurusan',
-    question: 'Berapa banyak pilihan jurusan yang dapat dipilih?',
-    answer: 'Setiap calon siswa dapat memilih maksimal 2 program keahlian. Pilihan 1 adalah prioritas utama keahlian yang diminati, dan Pilihan 2 adalah opsi alternatif cadangan.',
+    question: 'Berapa banyak jurusan yang bisa saya pilih saat mendaftar?',
+    answer: 'Setiap calon siswa dapat memilih maksimal 2 program keahlian. Pilihan 1 adalah prioritas utama keahlian yang diminati, dan Pilihan 2 adalah pilihan alternatif kedua.',
   },
   {
     category: 'Seleksi & Nilai',

@@ -166,7 +166,7 @@ export const AdminDashboardPage: React.FC = () => {
           </CardHeader>
           <CardContent className="p-5 pt-0">
             <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center justify-between mt-2">
-              <span>Cadangan: {stats.statusCounts.reserve}</span>
+              <span>Status Seleksi Final</span>
               <span>Ditolak: {stats.statusCounts.rejected}</span>
             </div>
           </CardContent>

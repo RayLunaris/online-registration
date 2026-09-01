@@ -11,7 +11,7 @@ const TabsContext = React.createContext<TabsContextType | undefined>(undefined);
 const Tabs = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
-    value: string;
+    value?: string;
     onValueChange?: (value: string) => void;
     defaultValue?: string;
   }

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { Lock, Mail, AlertCircle, ArrowLeft, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,9 +14,18 @@ export const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   
-  const { signIn } = useAuth();
+  const { user, signIn } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const configured = isSupabaseConfigured();
+
+  const from = (location.state as any)?.from?.pathname || '/admin';
+
+  useEffect(() => {
+    if (user) {
+      navigate(from, { replace: true });
+    }
+  }, [user, navigate, from]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +43,7 @@ export const LoginPage: React.FC = () => {
     if (error) {
       setErrorMsg(error.message || 'Login gagal. Periksa kembali email dan password.');
     } else {
-      navigate('/admin');
+      navigate(from, { replace: true });
     }
   };
 

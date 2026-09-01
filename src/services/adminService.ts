@@ -28,7 +28,6 @@ export interface DashboardStats {
     verified: number;
     accepted: number;
     rejected: number;
-    reserve: number;
   };
   majorStats: {
     id: string;
@@ -99,7 +98,6 @@ export const adminService = {
         verified: students.filter((s) => s.status === 'Terverifikasi').length,
         accepted: students.filter((s) => s.status === 'Diterima').length,
         rejected: students.filter((s) => s.status === 'Tidak Diterima').length,
-        reserve: students.filter((s) => s.status === 'Cadangan').length,
       };
 
       const majorStats = DEFAULT_MAJORS.map((m) => {
@@ -146,6 +144,7 @@ export const adminService = {
         .from('majors')
         .select('*')
         .order('code', { ascending: true });
+
       const majors = (majorsData || []) as Major[];
 
       // 3. Fetch School Profile
@@ -163,7 +162,6 @@ export const adminService = {
         verified: students.filter((s) => s.status === 'Terverifikasi').length,
         accepted: students.filter((s) => s.status === 'Diterima').length,
         rejected: students.filter((s) => s.status === 'Tidak Diterima').length,
-        reserve: students.filter((s) => s.status === 'Cadangan').length,
       };
 
       // Calculate Major Counts (based on Choice 1)
@@ -195,7 +193,7 @@ export const adminService = {
       return {
         totalStudents: 0,
         targetStudents: 400,
-        statusCounts: { waiting: 0, verified: 0, accepted: 0, rejected: 0, reserve: 0 },
+        statusCounts: { waiting: 0, verified: 0, accepted: 0, rejected: 0 },
         majorStats: [],
         recentStudents: [],
         dailyTrend: calculateDailyTrend([]),
@@ -271,12 +269,51 @@ export const adminService = {
     }
   },
 
+  async getStudentById(idOrRegNumber: string): Promise<StudentCompleteDetail | null> {
+    if (!isSupabaseConfigured()) {
+      const s = mockStudentStore.find(
+        (st) => st.id === idOrRegNumber || st.registration_number === idOrRegNumber
+      );
+      return s || null;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('students')
+        .select(`
+          *,
+          parent_data (*),
+          report_scores (*),
+          achievements (*),
+          documents (*),
+          major_choices (*, major:majors(*)),
+          selection_results (*)
+        `)
+        .or(`id.eq.${idOrRegNumber},registration_number.eq.${idOrRegNumber}`)
+        .maybeSingle();
+
+      if (error) throw error;
+      return (data as unknown as StudentCompleteDetail) || null;
+    } catch (err) {
+      console.error('Error fetching student by ID:', err);
+      return null;
+    }
+  },
+
   async updateStudentStatus(
     studentId: string,
     status: StudentStatus,
     notes?: string
   ): Promise<{ success: boolean; error?: string }> {
-    if (!isSupabaseConfigured()) return { success: true };
+    if (!isSupabaseConfigured()) {
+      const idx = mockStudentStore.findIndex((s) => s.id === studentId);
+      if (idx !== -1) {
+        mockStudentStore[idx].status = status;
+        if (notes !== undefined) mockStudentStore[idx].notes = notes;
+        mockStudentStore[idx].updated_at = new Date().toISOString();
+      }
+      return { success: true };
+    }
 
     try {
       const { error } = await supabase
@@ -296,7 +333,13 @@ export const adminService = {
   },
 
   async deleteStudent(studentId: string): Promise<{ success: boolean; error?: string }> {
-    if (!isSupabaseConfigured()) return { success: true };
+    if (!isSupabaseConfigured()) {
+      const idx = mockStudentStore.findIndex((s) => s.id === studentId);
+      if (idx !== -1) {
+        mockStudentStore.splice(idx, 1);
+      }
+      return { success: true };
+    }
 
     try {
       const { error } = await supabase.from('students').delete().eq('id', studentId);

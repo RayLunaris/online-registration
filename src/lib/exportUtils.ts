@@ -9,6 +9,24 @@ export const formatStudentForExport = (student: StudentCompleteDetail) => {
   const choice1 = student.major_choices?.find((c) => c.choice_order === 1)?.major;
   const choice2 = student.major_choices?.find((c) => c.choice_order === 2)?.major;
 
+  let acceptedMajorName = '-';
+  let jalurLolos = '-';
+
+  if (student.status === 'Diterima') {
+    if (student.selection_results?.major_id) {
+      if (choice2 && student.selection_results.major_id === choice2.id) {
+        acceptedMajorName = `${choice2.name} (${choice2.code})`;
+        jalurLolos = 'Pilihan 2 (Alternatif)';
+      } else if (choice1 && student.selection_results.major_id === choice1.id) {
+        acceptedMajorName = `${choice1.name} (${choice1.code})`;
+        jalurLolos = 'Pilihan 1 (Utama)';
+      }
+    } else if (choice1) {
+      acceptedMajorName = `${choice1.name} (${choice1.code})`;
+      jalurLolos = 'Pilihan 1 (Utama)';
+    }
+  }
+
   return {
     'No. Registrasi': student.registration_number,
     'Nama Lengkap': student.full_name,
@@ -33,6 +51,8 @@ export const formatStudentForExport = (student: StudentCompleteDetail) => {
     'Poin Prestasi (30%)': formatScore(student.achievement_score),
     'Total Skor Seleksi': formatScore(student.total_score),
     'Status Pendaftaran': student.status,
+    'Jurusan Diterima': acceptedMajorName,
+    'Jalur Kelulusan': jalurLolos,
     'Catatan Panitia': student.notes || '-',
     'Waktu Mendaftar': formatDate(student.created_at),
   };
@@ -105,11 +125,29 @@ export const exportRecapReportToExcel = (
       return ch1?.major_id === m.id;
     });
 
-    const diterima = pendaftarCh1.filter((s) => s.status === 'Diterima').length;
+    const acceptedStudents = students.filter((s) => {
+      if (s.status !== 'Diterima') return false;
+      if (s.selection_results?.major_id) {
+        return s.selection_results.major_id === m.id;
+      }
+      const ch1 = s.major_choices?.find((c) => c.choice_order === 1);
+      return ch1?.major_id === m.id;
+    });
+
+    const acceptedCh1 = acceptedStudents.filter((s) => {
+      const ch1 = s.major_choices?.find((c) => c.choice_order === 1);
+      return ch1?.major_id === m.id;
+    }).length;
+
+    const acceptedCh2 = acceptedStudents.filter((s) => {
+      const ch2 = s.major_choices?.find((c) => c.choice_order === 2);
+      return ch2?.major_id === m.id && s.selection_results?.major_id === m.id;
+    }).length;
+
+    const totalAccepted = acceptedStudents.length;
     const terverifikasi = pendaftarCh1.filter((s) => s.status === 'Terverifikasi').length;
-    const cadangan = pendaftarCh1.filter((s) => s.status === 'Cadangan').length;
     const ditolak = pendaftarCh1.filter((s) => s.status === 'Tidak Diterima').length;
-    const sisaKuota = Math.max(0, m.quota - diterima);
+    const sisaKuota = Math.max(0, m.quota - totalAccepted);
 
     const totalSkor = pendaftarCh1.reduce((sum, s) => sum + Number(s.total_score || 0), 0);
     const avgSkor = pendaftarCh1.length ? totalSkor / pendaftarCh1.length : 0;
@@ -119,13 +157,14 @@ export const exportRecapReportToExcel = (
       'Nama Program Keahlian': m.name,
       'Kuota Maksimal': m.quota,
       'Total Pendaftar (Pil 1)': pendaftarCh1.length,
-      'Lulus / Diterima': diterima,
+      'Total Lulus / Diterima': totalAccepted,
+      'Lulus Pilihan 1': acceptedCh1,
+      'Lulus Pilihan 2 (Limpahan)': acceptedCh2,
       'Sisa Kuota': sisaKuota,
       'Berkas Terverifikasi': terverifikasi,
-      'Cadangan': cadangan,
       'Tidak Diterima': ditolak,
       'Rata-rata Skor Pendaftar': formatScore(avgSkor),
-      'Status Kuota': diterima >= m.quota ? 'TERPENUHI' : 'TERSEDIA',
+      'Status Kuota': totalAccepted >= m.quota ? 'TERPENUHI' : 'TERSEDIA',
     };
   });
 

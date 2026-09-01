@@ -140,7 +140,7 @@ export interface Database {
           source_school_id: string | null;
           source_school_name: string;
           graduation_year: number;
-          status: 'Draft' | 'Menunggu Verifikasi' | 'Terverifikasi' | 'Diterima' | 'Tidak Diterima' | 'Cadangan';
+          status: 'Draft' | 'Menunggu Verifikasi' | 'Terverifikasi' | 'Diterima' | 'Tidak Diterima';
           total_score: number;
           average_report_score: number;
           achievement_score: number;
@@ -164,7 +164,7 @@ export interface Database {
           source_school_id?: string | null;
           source_school_name: string;
           graduation_year?: number;
-          status?: 'Draft' | 'Menunggu Verifikasi' | 'Terverifikasi' | 'Diterima' | 'Tidak Diterima' | 'Cadangan';
+          status?: 'Draft' | 'Menunggu Verifikasi' | 'Terverifikasi' | 'Diterima' | 'Tidak Diterima';
           total_score?: number;
           average_report_score?: number;
           achievement_score?: number;
@@ -188,7 +188,7 @@ export interface Database {
           source_school_id?: string | null;
           source_school_name?: string;
           graduation_year?: number;
-          status?: 'Draft' | 'Menunggu Verifikasi' | 'Terverifikasi' | 'Diterima' | 'Tidak Diterima' | 'Cadangan';
+          status?: 'Draft' | 'Menunggu Verifikasi' | 'Terverifikasi' | 'Diterima' | 'Tidak Diterima';
           total_score?: number;
           average_report_score?: number;
           achievement_score?: number;
@@ -356,9 +356,17 @@ export interface Database {
           id: string;
           student_id: string;
           major_id: string | null;
+          choice1_major_id: string | null;
+          choice1_rank: number | null;
+          choice1_status: 'accepted' | 'rejected' | 'pending';
+          choice2_major_id: string | null;
+          choice2_rank: number | null;
+          choice2_status: 'accepted' | 'rejected' | 'not_applicable' | 'pending';
+          final_accepted_major_id: string | null;
+          final_accepted_from_priority: number | null;
           score: number;
           rank: number | null;
-          status: 'Diterima' | 'Tidak Diterima' | 'Cadangan' | 'Belum Diproses';
+          status: 'Diterima' | 'Tidak Diterima' | 'Belum Diproses';
           published_at: string | null;
           notes: string | null;
           created_at: string;
@@ -368,9 +376,17 @@ export interface Database {
           id?: string;
           student_id: string;
           major_id?: string | null;
+          choice1_major_id?: string | null;
+          choice1_rank?: number | null;
+          choice1_status?: 'accepted' | 'rejected' | 'pending';
+          choice2_major_id?: string | null;
+          choice2_rank?: number | null;
+          choice2_status?: 'accepted' | 'rejected' | 'not_applicable' | 'pending';
+          final_accepted_major_id?: string | null;
+          final_accepted_from_priority?: number | null;
           score: number;
           rank?: number | null;
-          status?: 'Diterima' | 'Tidak Diterima' | 'Cadangan' | 'Belum Diproses';
+          status?: 'Diterima' | 'Tidak Diterima' | 'Belum Diproses';
           published_at?: string | null;
           notes?: string | null;
           created_at?: string;
@@ -380,9 +396,17 @@ export interface Database {
           id?: string;
           student_id?: string;
           major_id?: string | null;
+          choice1_major_id?: string | null;
+          choice1_rank?: number | null;
+          choice1_status?: 'accepted' | 'rejected' | 'pending';
+          choice2_major_id?: string | null;
+          choice2_rank?: number | null;
+          choice2_status?: 'accepted' | 'rejected' | 'not_applicable' | 'pending';
+          final_accepted_major_id?: string | null;
+          final_accepted_from_priority?: number | null;
           score?: number;
           rank?: number | null;
-          status?: 'Diterima' | 'Tidak Diterima' | 'Cadangan' | 'Belum Diproses';
+          status?: 'Diterima' | 'Tidak Diterima' | 'Belum Diproses';
           published_at?: string | null;
           notes?: string | null;
           created_at?: string;
@@ -465,6 +489,18 @@ export interface Database {
       fn_calculate_student_score: {
         Args: { p_student_id: string };
         Returns: number;
+      };
+      run_selection_process: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          success: boolean;
+          total_processed: number;
+          total_accepted_choice_1: number;
+          total_accepted_choice_2: number;
+          total_rejected: number;
+          details_by_major: any[];
+          published_at: string;
+        };
       };
       is_admin: {
         Args: Record<PropertyKey, never>;
