@@ -338,7 +338,6 @@ export const SelectionPanel: React.FC = () => {
                     <th className="py-2.5 px-3">No. Reg & Nama</th>
                     <th className="py-2.5 px-3">Pilihan 1 (Tahap 1)</th>
                     <th className="py-2.5 px-3">Pilihan 2 (Tahap 2)</th>
-                    <th className="py-2.5 px-3">Hasil Keputusan</th>
                     <th className="py-2.5 px-3 text-right">Rapor (70%)</th>
                     <th className="py-2.5 px-3 text-right">Prestasi (30%)</th>
                     <th className="py-2.5 px-3 text-right">Total Skor</th>
@@ -424,25 +423,6 @@ export const SelectionPanel: React.FC = () => {
                             </>
                           ) : (
                             <span className="text-xs text-slate-400 dark:text-slate-500">—</span>
-                          )}
-                        </td>
-
-                        {/* HASIL KEPUTUSAN (Badge Tunggal Ringkas) */}
-                        <td className="py-2.5 px-3">
-                          {cand.status === 'Diterima' ? (
-                            cand.choiceOrder === 1 ? (
-                              <span className="inline-block px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60 whitespace-nowrap">
-                                Lolos di {cand.choice1Major.code} (Pilihan 1)
-                              </span>
-                            ) : (
-                              <span className="inline-block px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60 whitespace-nowrap" title={`Tergeser dari ${cand.choice1Major.name}`}>
-                                Lolos di {cand.choice2Major?.code} (Pilihan 2)
-                              </span>
-                            )
-                          ) : (
-                            <span className="inline-block px-2 py-0.5 rounded text-[11px] font-medium bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-300 border border-red-200/60 dark:border-red-800/60 whitespace-nowrap">
-                              Tidak Lolos
-                            </span>
                           )}
                         </td>
 

@@ -22,6 +22,7 @@ export interface Database {
           target_students: number;
           hero_tagline: string | null;
           hero_description: string | null;
+          show_public_leaderboard: boolean;
           metadata: Json;
           created_at: string;
           updated_at: string;
@@ -38,6 +39,7 @@ export interface Database {
           target_students?: number;
           hero_tagline?: string | null;
           hero_description?: string | null;
+          show_public_leaderboard?: boolean;
           metadata?: Json;
           created_at?: string;
           updated_at?: string;
@@ -54,6 +56,7 @@ export interface Database {
           target_students?: number;
           hero_tagline?: string | null;
           hero_description?: string | null;
+          show_public_leaderboard?: boolean;
           metadata?: Json;
           created_at?: string;
           updated_at?: string;
@@ -484,7 +487,20 @@ export interface Database {
         Relationships: [];
       };
     };
-    Views: Record<string, never>;
+    Views: {
+      public_leaderboard: {
+        Row: {
+          registration_number: string;
+          masked_name: string;
+          major_id: string;
+          major_name: string;
+          total_score: number;
+          rank_in_major: number;
+          is_within_quota: boolean;
+        };
+        Relationships: [];
+      };
+    };
     Functions: {
       fn_calculate_student_score: {
         Args: { p_student_id: string };
@@ -501,6 +517,10 @@ export interface Database {
           details_by_major: any[];
           published_at: string;
         };
+      };
+      mask_name: {
+        Args: { full_name: string };
+        Returns: string;
       };
       is_admin: {
         Args: Record<PropertyKey, never>;

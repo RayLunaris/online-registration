@@ -6,6 +6,7 @@ import {
   CheckCircle2, 
   AlertCircle,
   Sparkles,
+  Award,
   Image as ImageIcon 
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -48,6 +49,7 @@ export const AdminSettingsPage: React.FC = () => {
       const res = await adminService.updateSchoolSettings(settings);
       if (res.success) {
         setSuccessMsg('Pengaturan profil sekolah dan konfigurasi SPMB berhasil diperbarui!');
+        window.dispatchEvent(new CustomEvent('school_settings_updated'));
         setTimeout(() => setSuccessMsg(''), 4000);
       } else {
         setErrorMsg(res.error || 'Gagal menyimpan pengaturan sekolah.');
@@ -225,10 +227,10 @@ export const AdminSettingsPage: React.FC = () => {
                     value={settings.logo_url || ''}
                     onChange={(e) => setSettings({ ...settings, logo_url: e.target.value })}
                     className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white font-mono text-xs"
-                    placeholder="/images/logo.png"
+                    placeholder="/images/logo-icon.png"
                   />
                   <p className="text-[11px] text-slate-500">
-                    Gunakan path lokal seperti <code className="text-teal-600 dark:text-teal-400">/images/logo.png</code> atau link URL gambar resmi.
+                    Gunakan path lokal seperti <code className="text-teal-600 dark:text-teal-400">/images/logo-icon.png</code> atau link URL gambar resmi.
                   </p>
                 </div>
 
@@ -287,6 +289,39 @@ export const AdminSettingsPage: React.FC = () => {
                 onChange={(e) => setSettings({ ...settings, hero_description: e.target.value })}
                 className="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md text-slate-900 dark:text-white text-xs"
                 placeholder="Penerimaan Peserta Didik Baru (PPDB/SPMB) Tahun Pelajaran 2026/2027 telah dibuka secara daring."
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* 3. Publikasi Peringkat Publik (Leaderboard) */}
+        <Card className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xs">
+          <CardHeader className="p-5 pb-3 border-b border-slate-100 dark:border-slate-800/80">
+            <CardTitle className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <Award className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+              Publikasi Peringkat Publik (Leaderboard)
+            </CardTitle>
+            <CardDescription className="text-xs text-slate-500 dark:text-slate-400">
+              Kontrol visibilitas tabel hasil scoring sementara di halaman publik /peringkat
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="p-5 space-y-4 text-xs">
+            <div className="flex items-start sm:items-center justify-between gap-4 p-3.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/50">
+              <div className="space-y-1">
+                <label htmlFor="show_public_leaderboard" className="text-slate-800 dark:text-slate-200 font-semibold cursor-pointer block text-xs">
+                  Tampilkan Peringkat Publik
+                </label>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                  Jika diaktifkan, halaman <code className="text-teal-600 dark:text-teal-400 font-mono">/peringkat</code> dapat diakses oleh siapa saja tanpa login (nama disamarkan untuk privasi) dan tautan menu &quot;Lihat Peringkat&quot; akan muncul di navigasi landing page. Jika nonaktif, halaman akan menampilkan pesan bahwa peringkat belum dipublikasikan.
+                </p>
+              </div>
+              <input
+                id="show_public_leaderboard"
+                name="show_public_leaderboard"
+                type="checkbox"
+                checked={settings.show_public_leaderboard ?? false}
+                onChange={(e) => setSettings({ ...settings, show_public_leaderboard: e.target.checked })}
+                className="h-5 w-5 rounded border-slate-300 dark:border-slate-700 text-teal-600 focus:ring-teal-500 cursor-pointer shrink-0 mt-0.5 sm:mt-0"
               />
             </div>
           </CardContent>

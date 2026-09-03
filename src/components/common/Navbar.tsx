@@ -7,12 +7,40 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/context/LanguageContext';
+import { schoolService } from '@/services/schoolService';
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
   const { language, setLanguage, t } = useLanguage();
+
+  // Check if public leaderboard is enabled
+  useEffect(() => {
+    let isMounted = true;
+    const checkLeaderboardStatus = () => {
+      schoolService.getSchoolProfile().then((profile) => {
+        if (isMounted && profile) {
+          setShowLeaderboard(profile.show_public_leaderboard !== false);
+        }
+      }).catch(() => {
+        if (isMounted) setShowLeaderboard(true);
+      });
+    };
+
+    checkLeaderboardStatus();
+
+    const handleSettingsUpdate = () => {
+      checkLeaderboardStatus();
+    };
+
+    window.addEventListener('school_settings_updated', handleSettingsUpdate);
+    return () => {
+      isMounted = false;
+      window.removeEventListener('school_settings_updated', handleSettingsUpdate);
+    };
+  }, []);
 
   // Handle hash scrolling
   useEffect(() => {
@@ -38,6 +66,9 @@ export const Navbar: React.FC = () => {
     { name: language === 'id' ? 'Alur Daftar' : 'How to Apply', path: '/#alur', hash: 'alur' },
     { name: language === 'id' ? 'Syarat Berkas' : 'Requirements', path: '/#syarat', hash: 'syarat' },
     { name: t('nav.announcements'), path: '/pengumuman' },
+    ...(showLeaderboard
+      ? [{ name: t('nav.leaderboard') || (language === 'id' ? 'Lihat Peringkat' : 'Leaderboard'), path: '/peringkat' }]
+      : []),
   ];
 
   const handleNavClick = (e: React.MouseEvent, link: typeof navLinks[0]) => {

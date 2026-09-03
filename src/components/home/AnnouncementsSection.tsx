@@ -5,16 +5,19 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Announcement } from '@/types/spmb';
 import { formatDate } from '@/lib/utils';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface AnnouncementsSectionProps {
   announcements: Announcement[];
 }
 
 export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({ announcements }) => {
+  const { t, language } = useLanguage();
+
   if (!announcements || announcements.length === 0) return null;
 
   return (
-    <section className="py-16 sm:py-20 bg-white border-b border-slate-200/70 relative">
+    <section className="py-14 sm:py-20 bg-white border-b border-slate-200/70 relative">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1440px] space-y-10">
         
         {/* Header */}
@@ -22,25 +25,25 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({ anno
           <div className="max-w-2xl space-y-2">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-200/70 text-[#0D9488] text-xs font-bold uppercase tracking-wider">
               <Newspaper className="h-3.5 w-3.5" />
-              <span>Pusat Informasi</span>
+              <span>{t('announcements.tag')}</span>
             </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
-              Pengumuman & Berita Terbaru
+              {t('announcements.title')}
             </h2>
             <p className="text-xs sm:text-sm text-slate-600">
-              Informasi terkini mengenai jadwal kegiatan, pedoman teknis pendaftaran, dan agenda akademik sekolah.
+              {t('announcements.desc')}
             </p>
           </div>
 
           <Link to="/pengumuman">
             <Button variant="outline" size="sm" className="h-10 px-5 text-xs font-bold border-slate-300 hover:border-[#0D9488] text-slate-700 hover:text-[#0D9488] rounded-full gap-1.5">
-              <span>Lihat Semua Berita</span>
+              <span>{t('announcements.btnAll')}</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Button>
           </Link>
         </div>
 
-        {/* 3-Card Insights Grid (EducateX Style) */}
+        {/* 3-Card Insights Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {announcements.map((item) => (
             <Link
@@ -69,7 +72,7 @@ export const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({ anno
               </div>
 
               <div className="pt-3 border-t border-slate-200/80 flex items-center gap-1.5 text-xs font-bold text-[#0D9488] group-hover:translate-x-1 transition-transform">
-                <span>Baca Selengkapnya</span>
+                <span>{language === 'en' ? 'Read More' : 'Baca Selengkapnya'}</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </div>
             </Link>

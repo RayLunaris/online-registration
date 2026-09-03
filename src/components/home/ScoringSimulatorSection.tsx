@@ -2,28 +2,30 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles, Calculator } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const ScoringSimulatorSection: React.FC = () => {
+  const { t } = useLanguage();
   const [calcRapor, setCalcRapor] = useState<number>(85);
   const [calcPrestasi, setCalcPrestasi] = useState<number>(0);
 
   const calculatedTotal = (calcRapor * 0.7) + (calcPrestasi * 0.3);
 
   return (
-    <section className="py-16 sm:py-20 bg-white border-b border-slate-200/70 relative">
+    <section className="py-14 sm:py-20 bg-white border-b border-slate-200/70 relative">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1440px] space-y-10">
         
         {/* Header */}
         <div className="max-w-3xl space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-200/70 text-[#0D9488] text-xs font-bold uppercase tracking-wider">
             <Calculator className="h-3.5 w-3.5" />
-            <span>Transparansi Seleksi</span>
+            <span>{t('simulator.tag')}</span>
           </div>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Formula Perhitungan Skor & Simulasi Nilai Akhir
+            {t('simulator.title')}
           </h2>
           <p className="text-xs sm:text-sm text-slate-600">
-            Sistem perankingan seleksi berjalan secara otomatis, adil, dan transparan berdasarkan gabungan nilai rapor 5 semester dan piagam prestasi kejuaraan.
+            {t('simulator.desc')}
           </p>
         </div>
 
@@ -38,9 +40,9 @@ export const ScoringSimulatorSection: React.FC = () => {
                 70%
               </div>
               <div>
-                <h3 className="text-xs font-bold text-slate-900">Rata-rata Rapor (Sem. 1-5)</h3>
+                <h3 className="text-xs font-bold text-slate-900">{t('simulator.boxRaporTitle')}</h3>
                 <p className="text-[11px] text-slate-600 leading-relaxed mt-1">
-                  5 Mapel Utama: Matematika, Bahasa Indonesia, Bahasa Inggris, IPA, dan IPS.
+                  {t('simulator.boxRaporDesc')}
                 </p>
               </div>
             </div>
@@ -51,11 +53,9 @@ export const ScoringSimulatorSection: React.FC = () => {
                 30%
               </div>
               <div>
-                <h3 className="text-xs font-bold text-slate-900">Piagam Prestasi Juara</h3>
+                <h3 className="text-xs font-bold text-slate-900">{t('simulator.boxPrestasiTitle')}</h3>
                 <p className="text-[11px] text-slate-600 leading-relaxed mt-1">
-                  Internasional: 100 pt<br />
-                  Nasional: 80 pt • Provinsi: 60 pt<br />
-                  Kabupaten/Kota: 40 pt
+                  {t('simulator.boxPrestasiDesc')}
                 </p>
               </div>
             </div>
@@ -66,9 +66,9 @@ export const ScoringSimulatorSection: React.FC = () => {
                 100%
               </div>
               <div>
-                <h3 className="text-xs font-bold text-white">Total Skor Akhir</h3>
+                <h3 className="text-xs font-bold text-white">{t('simulator.boxTotalTitle')}</h3>
                 <p className="text-[11px] text-teal-100 leading-relaxed mt-1">
-                  (Rapor × 0.7) + (Prestasi × 0.3). Perangkingan otomatis per kuota jurusan.
+                  {t('simulator.boxTotalDesc')}
                 </p>
               </div>
             </div>
@@ -80,9 +80,9 @@ export const ScoringSimulatorSection: React.FC = () => {
             <div className="border-b border-slate-800 pb-3 flex items-center justify-between">
               <div>
                 <span className="text-[11px] font-mono text-[#0D9488] font-bold uppercase tracking-wider block">
-                  Simulasi Mandiri
+                  {t('simulator.tag')}
                 </span>
-                <h3 className="text-sm font-bold text-white mt-0.5">Kalkulator Prediksi Skor</h3>
+                <h3 className="text-sm font-bold text-white mt-0.5">{t('simulator.simCardTitle')}</h3>
               </div>
               <Sparkles className="h-4 w-4 text-[#FDBA74]" />
             </div>
@@ -90,7 +90,9 @@ export const ScoringSimulatorSection: React.FC = () => {
             {/* Slider Rapor */}
             <div className="space-y-2">
               <div className="flex justify-between text-xs">
-                <label htmlFor="simulator-rapor-range" className="text-slate-300 font-medium cursor-pointer">Rata-rata Nilai Rapor:</label>
+                <label htmlFor="simulator-rapor-range" className="text-slate-300 font-medium cursor-pointer">
+                  {t('simulator.labelRapor')}
+                </label>
                 <span className="font-mono font-bold text-[#0D9488] text-sm">{calcRapor.toFixed(1)}</span>
               </div>
               <input 
@@ -102,7 +104,7 @@ export const ScoringSimulatorSection: React.FC = () => {
                 step="0.5"
                 value={calcRapor}
                 onChange={(e) => setCalcRapor(parseFloat(e.target.value))}
-                aria-label="Rata-rata Nilai Rapor"
+                aria-label={t('simulator.labelRapor')}
                 className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#0D9488]"
               />
               <div className="flex justify-between text-[10px] text-slate-500 font-mono">
@@ -114,35 +116,36 @@ export const ScoringSimulatorSection: React.FC = () => {
 
             {/* Select Prestasi */}
             <div className="space-y-1.5">
-              <label htmlFor="simulator-prestasi-select" className="text-xs text-slate-300 font-medium block cursor-pointer">Tingkat Prestasi Tertinggi:</label>
+              <label htmlFor="simulator-prestasi-select" className="text-xs text-slate-300 font-medium block cursor-pointer">
+                {t('simulator.labelPrestasi')}
+              </label>
               <select 
                 id="simulator-prestasi-select"
                 name="calcPrestasi"
                 value={calcPrestasi}
                 onChange={(e) => setCalcPrestasi(parseInt(e.target.value))}
-                aria-label="Tingkat Prestasi Tertinggi"
+                aria-label={t('simulator.labelPrestasi')}
                 className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#0D9488] font-mono"
               >
-                <option value={0}>Tidak Ada Piagam (0 Poin)</option>
-                <option value={20}>Tingkat Sekolah (20 Poin)</option>
-                <option value={40}>Tingkat Kabupaten/Kota (40 Poin)</option>
-                <option value={60}>Tingkat Provinsi (60 Poin)</option>
-                <option value={80}>Tingkat Nasional (80 Poin)</option>
-                <option value={100}>Tingkat Internasional (100 Poin)</option>
+                <option value={0}>{t('simulator.prestasiNone')}</option>
+                <option value={40}>{t('simulator.prestasiCity')}</option>
+                <option value={60}>{t('simulator.prestasiProv')}</option>
+                <option value={80}>{t('simulator.prestasiNat')}</option>
+                <option value={100}>{t('simulator.prestasiInt')}</option>
               </select>
             </div>
 
             {/* Result Box */}
             <div className="p-4 bg-slate-800/90 rounded-2xl border border-slate-700 flex items-center justify-between gap-4">
               <div>
-                <span className="text-[11px] text-slate-400 block">Estimasi Skor Seleksi:</span>
+                <span className="text-[11px] text-slate-400 block">{t('simulator.resultLabel')}</span>
                 <span className="text-2xl sm:text-3xl font-black text-[#0D9488] font-mono">
                   {calculatedTotal.toFixed(2)}
                 </span>
               </div>
               <Link to="/daftar">
                 <Button size="sm" className="bg-[#0D9488] hover:bg-teal-700 text-white text-xs font-bold rounded-full px-5 h-10 shadow-xs">
-                  Daftar Sekarang
+                  {t('hero.btnRegister')}
                 </Button>
               </Link>
             </div>

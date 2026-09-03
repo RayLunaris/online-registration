@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS public.schools (
     target_students INT DEFAULT 500,
     hero_tagline TEXT DEFAULT 'Membangun Generasi Unggul di Era Digital',
     hero_description TEXT DEFAULT 'Bergabunglah dengan SMK terdepan dengan fasilitas modern dan kurikulum industri siap kerja.',
+    show_public_leaderboard BOOLEAN NOT NULL DEFAULT false,
     metadata JSONB DEFAULT '{}'::jsonb,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
@@ -505,7 +506,7 @@ INSERT INTO public.schools (
     '(021) 7890-1234',
     'spmb@smkn1digital.sch.id',
     '2026/2027',
-    'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=150&auto=format&fit=crop&q=80',
+    '/images/logo-icon.png',
     400,
     'Membangun Generasi Vokasi Berkarakter, Cerdas, dan Siap Kerja Global',
     'Penerimaan Peserta Didik Baru (PPDB/SPMB) Tahun Pelajaran 2026/2027 telah dibuka. Daftarkan diri Anda sekarang secara daring.'
@@ -827,3 +828,73 @@ BEGIN
     );
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+
+-- ----------------------------------------------------------------------------
+-- 7. PUBLIC LEADERBOARD (VIEW & PRIVACY MASKING FUNCTION)
+-- ----------------------------------------------------------------------------
+
+-- Function: mask_name(full_name TEXT) RETURNS TEXT
+CREATE OR REPLACE FUNCTION public.mask_name(full_name TEXT)
+RETURNS TEXT AS $$
+DECLARE
+    v_trimmed TEXT;
+    v_parts TEXT[];
+BEGIN
+    v_trimmed := TRIM(COALESCE(full_name, ''));
+    IF v_trimmed = '' THEN
+        RETURN '';
+    END IF;
+
+    v_parts := regexp_split_to_array(v_trimmed, '\s+');
+
+    IF array_length(v_parts, 1) >= 2 THEN
+        RETURN v_parts[1] || ' ' || UPPER(SUBSTRING(v_parts[2] FROM 1 FOR 1)) || '.';
+    ELSE
+        RETURN v_parts[1];
+    END IF;
+END;
+$$ LANGUAGE plpgsql IMMUTABLE SECURITY DEFINER;
+
+-- View: public_leaderboard
+DROP VIEW IF EXISTS public.public_leaderboard CASCADE;
+
+CREATE OR REPLACE VIEW public.public_leaderboard AS
+SELECT 
+    s.registration_number,
+    public.mask_name(s.full_name) AS masked_name,
+    m.id AS major_id,
+    m.name AS major_name,
+    COALESCE(sr.score, s.total_score, 0.00) AS total_score,
+    (
+        ROW_NUMBER() OVER (
+            PARTITION BY m.id 
+            ORDER BY 
+                COALESCE(sr.score, s.total_score, 0.00) DESC,
+                COALESCE(s.average_report_score, 0.00) DESC,
+                COALESCE(s.achievement_score, 0.00) DESC,
+                s.created_at ASC
+        )
+    )::INT AS rank_in_major,
+    (
+        ROW_NUMBER() OVER (
+            PARTITION BY m.id 
+            ORDER BY 
+                COALESCE(sr.score, s.total_score, 0.00) DESC,
+                COALESCE(s.average_report_score, 0.00) DESC,
+                COALESCE(s.achievement_score, 0.00) DESC,
+                s.created_at ASC
+        ) <= m.quota
+    )::BOOLEAN AS is_within_quota
+FROM public.students s
+LEFT JOIN public.selection_results sr ON sr.student_id = s.id
+LEFT JOIN public.major_choices mc1 ON mc1.student_id = s.id AND mc1.choice_order = 1
+INNER JOIN public.majors m ON m.id = COALESCE(sr.final_accepted_major_id, sr.choice1_major_id, sr.major_id, mc1.major_id)
+WHERE 
+    s.status NOT IN ('Draft')
+    AND m.is_active = true
+ORDER BY m.id, total_score DESC;
+
+ALTER VIEW public.public_leaderboard OWNER TO postgres;
+GRANT SELECT ON public.public_leaderboard TO anon, authenticated;
+

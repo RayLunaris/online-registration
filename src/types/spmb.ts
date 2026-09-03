@@ -12,6 +12,7 @@ export type MajorChoice = Database['public']['Tables']['major_choices']['Row'];
 export type SelectionResult = Database['public']['Tables']['selection_results']['Row'];
 export type Announcement = Database['public']['Tables']['announcements']['Row'];
 export type AdminProfile = Database['public']['Tables']['admin_profiles']['Row'];
+export type PublicLeaderboardEntry = Database['public']['Views']['public_leaderboard']['Row'];
 
 export type StudentStatus = Student['status'];
 export type SelectionStatus = SelectionResult['status'];

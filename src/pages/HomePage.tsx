@@ -14,11 +14,13 @@ import { FAQSection } from '@/components/common/FAQSection';
 import { schoolService } from '@/services/schoolService';
 import { announcementService } from '@/services/announcementService';
 import { School, Major, Announcement } from '@/types/spmb';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const HomePage: React.FC = () => {
   const [school, setSchool] = useState<School | null>(null);
   const [majors, setMajors] = useState<Major[]>([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const loadData = async () => {
@@ -48,14 +50,14 @@ export const HomePage: React.FC = () => {
         <div className="mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 max-w-[1440px] px-4 sm:px-8 lg:px-12">
           <div className="flex items-center gap-2 font-medium">
             <span className="inline-block h-2 w-2 rounded-full bg-[#0D9488] animate-pulse" />
-            <span className="text-white font-semibold">Penerimaan Peserta Didik Baru (SPMB) T.A. 2026/2027</span>
+            <span className="text-white font-semibold">{t('topStrip.title')}</span>
             <span className="text-slate-600 hidden md:inline">|</span>
             <span className="text-slate-400 hidden md:inline">{school?.name || 'SMK Negeri 1 Digital Teknologi'}</span>
           </div>
           <div className="flex items-center gap-4 text-[11px] text-slate-400 font-mono">
             <span>NPSN: <strong className="text-slate-200">{school?.npsn || '20109988'}</strong></span>
-            <span>Akreditasi: <strong className="text-[#0D9488]">A (Unggul)</strong></span>
-            <span className="text-emerald-400 font-semibold">100% Bebas Biaya</span>
+            <span>{t('topStrip.accreditation')}: <strong className="text-[#0D9488]">{t('topStrip.accreditationVal')}</strong></span>
+            <span className="text-emerald-400 font-semibold">{t('topStrip.free')}</span>
           </div>
         </div>
       </div>

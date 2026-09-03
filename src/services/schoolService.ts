@@ -10,10 +10,11 @@ export const DEFAULT_SCHOOL: School = {
   phone: '(021) 7890-1234',
   email: 'spmb@smkn1digital.sch.id',
   academic_year: '2026/2027',
-  logo_url: '/images/logo.png',
+  logo_url: '/images/logo-icon.png',
   target_students: 400,
   hero_tagline: 'Membangun Generasi Vokasi Berkarakter, Cerdas, dan Siap Kerja Global',
   hero_description: 'Penerimaan Peserta Didik Baru (PPDB/SPMB) Tahun Pelajaran 2026/2027 telah dibuka secara daring. Fasilitas modern dan kurikulum industri.',
+  show_public_leaderboard: true,
   metadata: {},
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
@@ -89,7 +90,11 @@ export const schoolService = {
       console.warn('Error fetching school profile from Supabase, using default data:', error);
       return DEFAULT_SCHOOL;
     }
-    return data as School;
+    const schoolObj = data as School;
+    if (!schoolObj.logo_url || schoolObj.logo_url.includes('unsplash.com') || schoolObj.logo_url.includes('photo-')) {
+      schoolObj.logo_url = '/images/logo-icon.png';
+    }
+    return schoolObj;
   },
 
   async getMajors(): Promise<Major[]> {

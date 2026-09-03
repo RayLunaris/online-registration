@@ -50,6 +50,7 @@ const RegistrationCardPage = lazyRetry(() => import('@/pages/RegistrationCardPag
 const StatusCheckPage = lazyRetry(() => import('@/pages/StatusCheckPage').then(m => ({ default: m.StatusCheckPage })));
 const AnnouncementListPage = lazyRetry(() => import('@/pages/AnnouncementListPage').then(m => ({ default: m.AnnouncementListPage })));
 const AnnouncementDetailPage = lazyRetry(() => import('@/pages/AnnouncementDetailPage').then(m => ({ default: m.AnnouncementDetailPage })));
+const LeaderboardPage = lazyRetry(() => import('@/pages/public/LeaderboardPage').then(m => ({ default: m.LeaderboardPage })));
 const LoginPage = lazyRetry(() => import('@/pages/admin/LoginPage').then(m => ({ default: m.LoginPage })));
 const AdminDashboardPage = lazyRetry(() => import('@/pages/admin/AdminDashboardPage').then(m => ({ default: m.AdminDashboardPage })));
 const AdminStudentsPage = lazyRetry(() => import('@/pages/admin/AdminStudentsPage').then(m => ({ default: m.AdminStudentsPage })));
@@ -93,6 +94,9 @@ export const App: React.FC = () => {
                     
                     {/* Kartu Peserta */}
                     <Route path="/kartu-peserta/:regNumber" element={<RegistrationCardPage />} />
+
+                    {/* Peringkat Publik Leaderboard */}
+                    <Route path="/peringkat" element={<LeaderboardPage />} />
 
                     {/* Pengumuman List & Detail (both :slug and :id) */}
                     <Route path="/pengumuman" element={<AnnouncementListPage />} />

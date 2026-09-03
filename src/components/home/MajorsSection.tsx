@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Dialog } from '@/components/ui/dialog';
 import { Major } from '@/types/spmb';
+import { useLanguage } from '@/context/LanguageContext';
 
 // Major Metadata & Industrial Specifications
 export const MAJOR_META: Record<string, {
@@ -109,14 +110,15 @@ interface MajorsSectionProps {
 }
 
 export const MajorsSection: React.FC<MajorsSectionProps> = ({ majors }) => {
+  const { t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<'all' | 'tech' | 'creative' | 'business'>('all');
   const [selectedMajorModal, setSelectedMajorModal] = useState<Major | null>(null);
 
   const filterTabs = [
-    { key: 'all', label: 'Semua Jurusan' },
-    { key: 'tech', label: 'Teknologi & IT' },
-    { key: 'creative', label: 'Desain Kreatif' },
-    { key: 'business', label: 'Bisnis & Keuangan' },
+    { key: 'all', label: t('majors.tabAll') },
+    { key: 'tech', label: t('majors.tabTech') },
+    { key: 'creative', label: t('majors.tabCreative') },
+    { key: 'business', label: t('majors.tabBusiness') },
   ] as const;
 
   const filteredMajors = majors.filter((m) => {
@@ -126,7 +128,7 @@ export const MajorsSection: React.FC<MajorsSectionProps> = ({ majors }) => {
   });
 
   return (
-    <section id="jurusan" className="py-16 sm:py-24 bg-slate-50/60 dark:bg-slate-950/60 border-b border-slate-200/70 dark:border-slate-800/80 scroll-mt-16 relative">
+    <section id="jurusan" className="py-14 sm:py-20 bg-slate-50/60 dark:bg-slate-950/60 border-b border-slate-200/70 dark:border-slate-800/80 scroll-mt-16 relative">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1440px] space-y-10">
         
         {/* Header & Filter Controls */}
@@ -134,13 +136,13 @@ export const MajorsSection: React.FC<MajorsSectionProps> = ({ majors }) => {
           <div className="max-w-2xl space-y-2.5">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 dark:bg-teal-950/80 border border-teal-200/80 dark:border-teal-800 text-teal-700 dark:text-teal-400 text-xs font-bold uppercase tracking-wider shadow-2xs">
               <Sparkles className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
-              <span>Program Keahlian</span>
+              <span>{t('majors.tag')}</span>
             </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
-              Pilihan Program Keahlian Unggulan
+              {t('majors.title')}
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-              Setiap calon siswa dapat memilih maksimal 2 program keahlian (Pilihan 1 Prioritas & Pilihan 2 Alternatif).
+              {t('majors.desc')}
             </p>
           </div>
 
@@ -163,7 +165,7 @@ export const MajorsSection: React.FC<MajorsSectionProps> = ({ majors }) => {
           </div>
         </div>
 
-        {/* 4-COLUMN RESPONSIVE GRID (Perfect 4-in-a-row on desktop) */}
+        {/* 4-COLUMN RESPONSIVE GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {filteredMajors.map((major) => {
             const meta = MAJOR_META[major.code] || MAJOR_META.RPL;
@@ -192,7 +194,7 @@ export const MajorsSection: React.FC<MajorsSectionProps> = ({ majors }) => {
                       </span>
                       <span className="px-3 py-1 rounded-full bg-slate-900/80 dark:bg-slate-950/90 text-white font-bold text-xs shadow-xs backdrop-blur-md border border-white/10 flex items-center gap-1.5">
                         <Users className="h-3 w-3 text-teal-400" />
-                        <span>{major.quota} Kuota</span>
+                        <span>{major.quota} {t('majors.quotaLabel')}</span>
                       </span>
                     </div>
 
@@ -249,7 +251,7 @@ export const MajorsSection: React.FC<MajorsSectionProps> = ({ majors }) => {
                     onClick={() => setSelectedMajorModal(major)}
                     className="text-xs font-bold text-teal-600 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300 transition-colors inline-flex items-center gap-1 p-0 cursor-pointer"
                   >
-                    <span>Rincian & Lab</span>
+                    <span>{t('majors.btnDetail')}</span>
                     <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
                   </button>
 
@@ -258,7 +260,7 @@ export const MajorsSection: React.FC<MajorsSectionProps> = ({ majors }) => {
                       size="sm" 
                       className={`h-8 px-3.5 ${meta.buttonBg} text-xs font-bold rounded-full shadow-xs gap-1`}
                     >
-                      <span>Pilih</span>
+                      <span>{t('majors.btnApply')}</span>
                       <ArrowRight className="h-3 w-3" />
                     </Button>
                   </Link>
@@ -290,7 +292,7 @@ export const MajorsSection: React.FC<MajorsSectionProps> = ({ majors }) => {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-slate-900 dark:text-white">{selectedMajorModal.name}</h3>
-                    <span className="text-xs text-teal-600 dark:text-teal-400 font-bold font-mono">Daya Tampung: {selectedMajorModal.quota} Siswa</span>
+                    <span className="text-xs text-teal-600 dark:text-teal-400 font-bold font-mono">{t('majors.quotaLabel')}: {selectedMajorModal.quota}</span>
                   </div>
                 </div>
                 <button 
@@ -305,7 +307,7 @@ export const MajorsSection: React.FC<MajorsSectionProps> = ({ majors }) => {
               {/* Isi Modal */}
               <div className="space-y-4 text-xs">
                 <div>
-                  <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-1">Deskripsi Kompetensi</h4>
+                  <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-1">{t('majors.modalTitle')}</h4>
                   <p className="text-slate-600 dark:text-slate-300 leading-relaxed">{selectedMajorModal.description || MAJOR_META[selectedMajorModal.code]?.shortDesc}</p>
                 </div>
 
@@ -314,7 +316,7 @@ export const MajorsSection: React.FC<MajorsSectionProps> = ({ majors }) => {
                     <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
                       <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
                         <Building2 className="h-4 w-4 text-teal-600 dark:text-teal-400" />
-                        <span>Fasilitas Laboratorium Praktek</span>
+                        <span>{t('majors.modalFacilities')}</span>
                       </h4>
                       <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
                         {MAJOR_META[selectedMajorModal.code].facilities}
@@ -324,7 +326,7 @@ export const MajorsSection: React.FC<MajorsSectionProps> = ({ majors }) => {
                     <div className="p-4 rounded-2xl bg-teal-50/70 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-900 space-y-2">
                       <h4 className="font-bold text-teal-900 dark:text-teal-300 uppercase tracking-wider flex items-center gap-1.5">
                         <Briefcase className="h-4 w-4 text-teal-600 dark:text-teal-400" />
-                        <span>Perusahaan Mitra & Tempat PKL</span>
+                        <span>{t('majors.modalPartners')}</span>
                       </h4>
                       <div className="flex flex-wrap gap-1.5">
                         {MAJOR_META[selectedMajorModal.code].partnerIndustries.map((partner, idx) => (
@@ -338,7 +340,7 @@ export const MajorsSection: React.FC<MajorsSectionProps> = ({ majors }) => {
                     <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
                       <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
                         <BookOpen className="h-4 w-4 text-teal-600 dark:text-teal-400" />
-                        <span>Prospek Karir & Profesi Lulusan</span>
+                        <span>{t('majors.modalCareer')}</span>
                       </h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
                         {MAJOR_META[selectedMajorModal.code].careerProspects.map((career, idx) => (
@@ -356,11 +358,11 @@ export const MajorsSection: React.FC<MajorsSectionProps> = ({ majors }) => {
               {/* Footer Modal */}
               <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-2.5">
                 <Button variant="outline" onClick={() => setSelectedMajorModal(null)} className="text-xs border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 h-9 rounded-full">
-                  Tutup
+                  {t('majors.modalClose')}
                 </Button>
                 <Link to="/daftar">
                   <Button className="text-xs bg-teal-600 hover:bg-teal-700 text-white font-bold h-9 rounded-full px-5">
-                    Daftar di Jurusan Ini
+                    {t('majors.btnApply')}
                   </Button>
                 </Link>
               </div>

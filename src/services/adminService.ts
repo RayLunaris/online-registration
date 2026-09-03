@@ -531,7 +531,23 @@ export const adminService = {
   },
 
   async updateSchoolSettings(settings: Partial<School>): Promise<{ success: boolean; error?: string }> {
-    if (!isSupabaseConfigured()) return { success: true };
+    if (!isSupabaseConfigured()) {
+      if (settings.show_public_leaderboard !== undefined) {
+        DEFAULT_SCHOOL.show_public_leaderboard = settings.show_public_leaderboard;
+      }
+      if (settings.name) DEFAULT_SCHOOL.name = settings.name;
+      if (settings.npsn) DEFAULT_SCHOOL.npsn = settings.npsn;
+      if (settings.address) DEFAULT_SCHOOL.address = settings.address;
+      if (settings.phone) DEFAULT_SCHOOL.phone = settings.phone;
+      if (settings.email) DEFAULT_SCHOOL.email = settings.email;
+      if (settings.academic_year) DEFAULT_SCHOOL.academic_year = settings.academic_year;
+      if (settings.target_students) DEFAULT_SCHOOL.target_students = Number(settings.target_students);
+      if (settings.hero_tagline) DEFAULT_SCHOOL.hero_tagline = settings.hero_tagline;
+      if (settings.hero_description) DEFAULT_SCHOOL.hero_description = settings.hero_description;
+      if (settings.logo_url) DEFAULT_SCHOOL.logo_url = settings.logo_url;
+      DEFAULT_SCHOOL.updated_at = new Date().toISOString();
+      return { success: true };
+    }
     try {
       const existing = await this.getSchoolSettings();
       const { error } = await supabase
@@ -547,6 +563,7 @@ export const adminService = {
           hero_tagline: settings.hero_tagline,
           hero_description: settings.hero_description,
           logo_url: settings.logo_url,
+          show_public_leaderboard: settings.show_public_leaderboard !== undefined ? settings.show_public_leaderboard : existing.show_public_leaderboard,
           updated_at: new Date().toISOString(),
         })
         .eq('id', existing.id);

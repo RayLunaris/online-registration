@@ -22,7 +22,7 @@ VALUES (
     '(021) 7890-1234',
     'spmb@smkn1digital.sch.id',
     '2026/2027',
-    'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=150&auto=format&fit=crop&q=80',
+    '/images/logo-icon.png',
     400,
     'Membangun Generasi Vokasi Berkarakter, Cerdas, dan Siap Kerja Global',
     'Penerimaan Peserta Didik Baru (PPDB/SPMB) Tahun Pelajaran 2026/2027 telah dibuka. Daftarkan diri Anda sekarang secara daring.'
