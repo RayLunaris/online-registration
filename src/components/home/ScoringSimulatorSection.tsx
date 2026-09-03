@@ -12,7 +12,7 @@ export const ScoringSimulatorSection: React.FC = () => {
   const calculatedTotal = (calcRapor * 0.7) + (calcPrestasi * 0.3);
 
   return (
-    <section className="py-14 sm:py-20 bg-white border-b border-slate-200/70 relative">
+    <section id="simulasi" className="py-14 sm:py-20 bg-white border-b border-slate-200/70 relative scroll-mt-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1440px] space-y-10">
         
         {/* Header */}
