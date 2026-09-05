@@ -85,11 +85,14 @@ export const AdminSecretLoginModal: React.FC<AdminSecretLoginModalProps> = ({
 
         <form onSubmit={handleLogin} className="space-y-3.5">
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-slate-700">Email Panitia</label>
+            <label htmlFor="admin-secret-email" className="text-xs font-semibold text-slate-700 cursor-pointer">Email Panitia</label>
             <div className="relative">
               <Mail className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
               <Input
+                id="admin-secret-email"
+                name="email"
                 type="email"
+                autoComplete="email"
                 placeholder="panitia@smkn1digital.sch.id"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -101,11 +104,14 @@ export const AdminSecretLoginModal: React.FC<AdminSecretLoginModalProps> = ({
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-slate-700">Kata Sandi</label>
+            <label htmlFor="admin-secret-password" className="text-xs font-semibold text-slate-700 cursor-pointer">Kata Sandi</label>
             <div className="relative">
               <Lock className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
               <Input
+                id="admin-secret-password"
+                name="password"
                 type="password"
+                autoComplete="current-password"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

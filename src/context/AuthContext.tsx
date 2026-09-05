@@ -21,17 +21,56 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [adminProfile, setAdminProfile] = useState<AdminProfile | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const fetchAdminProfile = async (userId: string) => {
+  const fetchAdminProfile = async (userId: string, currentUser?: User | null) => {
     if (!isSupabaseConfigured()) return;
     try {
       const { data, error } = await supabase
         .from('admin_profiles')
         .select('*')
         .eq('user_id', userId)
-        .single();
+        .maybeSingle();
 
-      if (!error && data) {
+      if (error) {
+        // Detect 401 Unauthorized or expired/invalid JWT token
+        const isUnauthorized =
+          (error as any).status === 401 ||
+          error.code === 'PGRST301' ||
+          error.message?.toLowerCase().includes('jwt') ||
+          error.message?.toLowerCase().includes('unauthorized') ||
+          error.message?.toLowerCase().includes('token');
+
+        if (isUnauthorized) {
+          console.warn('Session expired or unauthorized (401). Clearing stale credentials...');
+          try {
+            await supabase.auth.signOut();
+          } catch {
+            // Ignore sign-out errors on already-expired tokens
+          }
+          setUser(null);
+          setSession(null);
+          setAdminProfile(null);
+          return;
+        }
+
+        console.error('Failed to fetch admin profile:', error.message);
+        return;
+      }
+
+      if (data) {
         setAdminProfile(data as AdminProfile);
+      } else {
+        // Fallback for valid authenticated users whose admin profile row hasn't been created yet
+        const activeUser = currentUser || user;
+        if (activeUser) {
+          setAdminProfile({
+            id: `profile-${userId}`,
+            user_id: userId,
+            full_name: activeUser.user_metadata?.full_name || activeUser.email?.split('@')[0] || 'Admin SPMB',
+            role: (activeUser.user_metadata?.role as any) || 'admin',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          });
+        }
       }
     } catch (err) {
       console.error('Failed to fetch admin profile:', err);
@@ -44,24 +83,74 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return;
     }
 
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchAdminProfile(session.user.id);
+    let isMounted = true;
+
+    const initAuth = async () => {
+      try {
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+        if (sessionError || !session) {
+          if (isMounted) {
+            setSession(null);
+            setUser(null);
+            setAdminProfile(null);
+            setIsLoading(false);
+          }
+          return;
+        }
+
+        // Validate the session token with the Supabase Auth server to prevent stale 401 errors
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        if (userError || !user) {
+          console.warn('Cached auth session is expired or invalid. Purging local storage session.');
+          try {
+            await supabase.auth.signOut();
+          } catch {
+            // Ignore sign out error on stale token
+          }
+          if (isMounted) {
+            setSession(null);
+            setUser(null);
+            setAdminProfile(null);
+            setIsLoading(false);
+          }
+          return;
+        }
+
+        if (isMounted) {
+          setSession(session);
+          setUser(user);
+          await fetchAdminProfile(user.id, user);
+          setIsLoading(false);
+        }
+      } catch (err) {
+        console.error('Auth initialization error:', err);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
-      setIsLoading(false);
-    });
+    };
+
+    initAuth();
 
     // Listen for auth state changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        await fetchAdminProfile(session.user.id);
+    } = supabase.auth.onAuthStateChange(async (event, newSession) => {
+      if (!isMounted) return;
+
+      if (event === 'SIGNED_OUT' || !newSession) {
+        setSession(null);
+        setUser(null);
+        setAdminProfile(null);
+        setIsLoading(false);
+        return;
+      }
+
+      setSession(newSession);
+      setUser(newSession.user);
+      if (newSession.user) {
+        await fetchAdminProfile(newSession.user.id, newSession.user);
       } else {
         setAdminProfile(null);
       }
@@ -69,6 +158,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     return () => {
+      isMounted = false;
       subscription.unsubscribe();
     };
   }, []);
@@ -100,26 +190,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      return { error: error ? new Error(error.message) : null };
+
+      if (error) {
+        return { error: new Error(error.message) };
+      }
+
+      if (data.session && data.user) {
+        setSession(data.session);
+        setUser(data.user);
+        await fetchAdminProfile(data.user.id, data.user);
+      }
+
+      return { error: null };
     } catch (err) {
       return { error: err as Error };
     }
   };
 
   const signOut = async () => {
-    if (isSupabaseConfigured()) {
-      await supabase.auth.signOut();
+    try {
+      if (isSupabaseConfigured()) {
+        await supabase.auth.signOut();
+      }
+    } catch (err) {
+      console.error('Error signing out:', err);
+    } finally {
+      setUser(null);
+      setSession(null);
+      setAdminProfile(null);
     }
-    setUser(null);
-    setSession(null);
-    setAdminProfile(null);
   };
 
-  const isAdmin = Boolean(adminProfile || user);
+  const isAdmin = Boolean(
+    (!isSupabaseConfigured() && user) ||
+    (adminProfile && user)
+  );
 
   return (
     <AuthContext.Provider

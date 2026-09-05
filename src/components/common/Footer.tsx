@@ -104,8 +104,14 @@ export const Footer: React.FC = () => {
             {/* Newsletter Subscription Box */}
             <form onSubmit={handleNewsletterSubmit} className="relative mt-3">
               <div className="relative flex items-center">
+                <label htmlFor="footer-newsletter-email" className="sr-only">
+                  {language === 'id' ? 'Email Berlangganan Info SPMB' : 'Newsletter Email Subscription'}
+                </label>
                 <Input
+                  id="footer-newsletter-email"
+                  name="email"
                   type="email"
+                  autoComplete="email"
                   required
                   placeholder={language === 'id' ? 'Masukkan email Anda...' : 'Enter your email...'}
                   value={emailInput}

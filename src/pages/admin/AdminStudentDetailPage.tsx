@@ -163,6 +163,7 @@ export const AdminStudentDetailPage: React.FC = () => {
               </label>
               <select
                 id="student-detail-status-select"
+                name="status"
                 value={editingStatus}
                 onChange={(e) => setEditingStatus(e.target.value as StudentStatus)}
                 className="w-full h-9 px-2.5 text-xs rounded bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white"
@@ -181,6 +182,7 @@ export const AdminStudentDetailPage: React.FC = () => {
               <div className="flex gap-2">
                 <Input
                   id="student-detail-notes-input"
+                  name="notes"
                   placeholder="Catatan verifikasi berkas atau instruksi khusus..."
                   value={editingNotes}
                   onChange={(e) => setEditingNotes(e.target.value)}

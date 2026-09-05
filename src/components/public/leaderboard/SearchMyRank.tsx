@@ -86,7 +86,11 @@ export const SearchMyRank: React.FC<SearchMyRankProps> = ({
 
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2.5 max-w-xl">
         <div className="relative flex-1">
+          <label htmlFor="search-my-rank-input" className="sr-only">Nomor Pendaftaran</label>
           <Input
+            id="search-my-rank-input"
+            name="registration_number"
+            autoComplete="off"
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);

@@ -309,7 +309,10 @@ export const SelectionPanel: React.FC = () => {
               />
             </div>
 
+            <label htmlFor="selection-status-filter" className="sr-only">Filter status kelulusan</label>
             <select
+              id="selection-status-filter"
+              name="statusFilter"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as any)}
               aria-label="Filter status kelulusan"
@@ -439,7 +442,12 @@ export const SelectionPanel: React.FC = () => {
 
                         {/* STATUS OVERRIDE */}
                         <td className="py-2.5 px-3">
+                          <label htmlFor={`candidate-status-${cand.student.id || candidateGlobalIndex}`} className="sr-only">
+                            {`Ubah status untuk ${cand.student.full_name}`}
+                          </label>
                           <select
+                            id={`candidate-status-${cand.student.id || candidateGlobalIndex}`}
+                            name={`candidate_status_${cand.student.id || candidateGlobalIndex}`}
                             value={cand.status}
                             onChange={(e) =>
                               handleStatusOverride(candidateGlobalIndex, e.target.value as StudentStatus)
