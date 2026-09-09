@@ -898,3 +898,43 @@ ORDER BY m.id, total_score DESC;
 ALTER VIEW public.public_leaderboard OWNER TO postgres;
 GRANT SELECT ON public.public_leaderboard TO anon, authenticated;
 
+
+-- ==============================================================================
+-- REGISTRATION STATUS & AUTOMATIC SCHEDULE CONTROL
+-- ==============================================================================
+ALTER TABLE public.schools 
+ADD COLUMN IF NOT EXISTS registration_status TEXT CHECK (registration_status IN ('open', 'closed')) DEFAULT 'open',
+ADD COLUMN IF NOT EXISTS registration_close_date TIMESTAMPTZ NULL;
+
+CREATE OR REPLACE FUNCTION public.get_registration_status()
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  v_status TEXT;
+  v_close_date TIMESTAMPTZ;
+BEGIN
+  SELECT registration_status, registration_close_date
+  INTO v_status, v_close_date
+  FROM public.schools
+  LIMIT 1;
+
+  IF NOT FOUND THEN
+    RETURN true;
+  END IF;
+
+  IF v_status = 'closed' THEN
+    RETURN false;
+  END IF;
+
+  IF v_close_date IS NOT NULL AND now() > v_close_date THEN
+    RETURN false;
+  END IF;
+
+  RETURN true;
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION public.get_registration_status() TO anon, authenticated, service_role;

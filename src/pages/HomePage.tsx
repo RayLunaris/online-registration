@@ -5,6 +5,7 @@ import { AboutSection } from '@/components/home/AboutSection';
 import { FeatureBand } from '@/components/home/FeatureBand';
 import { MajorsSection } from '@/components/home/MajorsSection';
 import { ScoringSimulatorSection } from '@/components/home/ScoringSimulatorSection';
+import { RankingSection } from '@/components/home/RankingSection';
 import { RegistrationStepsSection } from '@/components/home/RegistrationStepsSection';
 import { AdmissionScheduleSection } from '@/components/home/AdmissionScheduleSection';
 import { AdmissionRequirementsSection } from '@/components/home/AdmissionRequirementsSection';
@@ -14,13 +15,11 @@ import { FAQSection } from '@/components/common/FAQSection';
 import { schoolService } from '@/services/schoolService';
 import { announcementService } from '@/services/announcementService';
 import { School, Major, Announcement } from '@/types/spmb';
-import { useLanguage } from '@/context/LanguageContext';
 
 export const HomePage: React.FC = () => {
   const [school, setSchool] = useState<School | null>(null);
   const [majors, setMajors] = useState<Major[]>([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
-  const { t } = useLanguage();
 
   useEffect(() => {
     const loadData = async () => {
@@ -44,25 +43,7 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#FAFAF9] text-slate-900 font-sans selection:bg-[#CCFBF1] selection:text-[#0D9488]">
-      
-      {/* 1. TOP NOTICE STRIP */}
-      <div className="bg-[#111827] text-slate-300 border-b border-slate-800 text-xs py-2 px-4">
-        <div className="mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 max-w-[1440px] px-4 sm:px-8 lg:px-12">
-          <div className="flex items-center gap-2 font-medium">
-            <span className="inline-block h-2 w-2 rounded-full bg-[#0D9488] animate-pulse" />
-            <span className="text-white font-semibold">{t('topStrip.title')}</span>
-            <span className="text-slate-600 hidden md:inline">|</span>
-            <span className="text-slate-400 hidden md:inline">{school?.name || 'SMK Negeri 1 Digital Teknologi'}</span>
-          </div>
-          <div className="flex items-center gap-4 text-[11px] text-slate-400 font-mono">
-            <span>NPSN: <strong className="text-slate-200">{school?.npsn || '20109988'}</strong></span>
-            <span>{t('topStrip.accreditation')}: <strong className="text-[#0D9488]">{t('topStrip.accreditationVal')}</strong></span>
-            <span className="text-emerald-400 font-semibold">{t('topStrip.free')}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. HERO SECTION */}
+      {/* 1. HERO SECTION */}
       <HeroSection 
         school={school} 
         majorsCount={majors.length || 4} 
@@ -88,7 +69,10 @@ export const HomePage: React.FC = () => {
       {/* 7. SCORING & SIMULATOR SECTION */}
       <ScoringSimulatorSection />
 
-      {/* 8. ADMISSION STEPS SECTION */}
+      {/* 8. LIVE RANKING PREVIEW SECTION */}
+      <RankingSection />
+
+      {/* 9. ADMISSION STEPS SECTION */}
       <RegistrationStepsSection />
 
       {/* 9. SCHEDULE & CALENDAR SECTION */}

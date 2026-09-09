@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import { 
   Users, 
   CheckCircle2, 
@@ -16,11 +17,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { adminService, DashboardStats } from '@/services/adminService';
+import { useRegistrationStatus } from '@/hooks/useRegistrationStatus';
 import { formatDate } from '@/lib/utils';
 
 export const AdminDashboardPage: React.FC = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [toggling, setToggling] = useState(false);
+  const regStatus = useRegistrationStatus();
 
   const loadDashboard = async () => {
     setLoading(true);
@@ -31,6 +35,70 @@ export const AdminDashboardPage: React.FC = () => {
       console.error('Error loading dashboard stats:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleQuickToggle = async () => {
+    if (regStatus.isOpen) {
+      // Currently active -> ask confirmation before closing
+      const result = await Swal.fire({
+        title: 'Konfirmasi Tutup Pendaftaran',
+        text: 'Pendaftaran akan langsung ditutup untuk publik. Lanjutkan?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Ya, Tutup Pendaftaran',
+        cancelButtonText: 'Batal',
+      });
+
+      if (result.isConfirmed) {
+        setToggling(true);
+        try {
+          const res = await adminService.updateRegistrationStatus('closed');
+          if (res.success) {
+            window.dispatchEvent(new CustomEvent('school_settings_updated'));
+            await regStatus.refetch();
+            Swal.fire({
+              title: 'Pendaftaran Ditutup',
+              text: 'Status pendaftaran berhasil diubah menjadi DITUTUP untuk publik.',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false,
+            });
+          } else {
+            Swal.fire('Gagal', res.error || 'Gagal mengubah status pendaftaran', 'error');
+          }
+        } catch (err: any) {
+          Swal.fire('Error', err.message || 'Terjadi kesalahan sistem', 'error');
+        } finally {
+          setToggling(false);
+        }
+      }
+    } else {
+      // Currently closed -> reopen registration
+      setToggling(true);
+      try {
+        // If closed by date, clearing the date so manual reopen takes effect
+        const res = await adminService.updateRegistrationStatus('open', regStatus.isClosedByDate ? null : undefined);
+        if (res.success) {
+          window.dispatchEvent(new CustomEvent('school_settings_updated'));
+          await regStatus.refetch();
+          Swal.fire({
+            title: 'Pendaftaran Dibuka',
+            text: 'Status pendaftaran berhasil diubah menjadi AKTIF untuk publik.',
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        } else {
+          Swal.fire('Gagal', res.error || 'Gagal mengubah status pendaftaran', 'error');
+        }
+      } catch (err: any) {
+        Swal.fire('Error', err.message || 'Terjadi kesalahan sistem', 'error');
+      } finally {
+        setToggling(false);
+      }
     }
   };
 
@@ -53,17 +121,45 @@ export const AdminDashboardPage: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      {/* Header Title & Refresh */}
+      {/* Header Title & Quick Toggle */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            Dashboard Analitik SPMB
-          </h1>
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              Dashboard Analitik SPMB
+            </h1>
+            <Badge variant="outline" className="hidden sm:inline-flex text-xs font-semibold px-2.5 py-0.5 border-teal-200 dark:border-teal-800 text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/60">
+              T.A. 2026/2027
+            </Badge>
+          </div>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Pantau statistik pendaftar, progress kuota jurusan, dan hasil seleksi secara real-time.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+
+        {/* Pojok Kanan Atas: Quick Toggle Pill + Actions */}
+        <div className="flex flex-wrap items-center gap-2.5">
+          {/* Quick Toggle Status Pill */}
+          <button
+            type="button"
+            onClick={handleQuickToggle}
+            disabled={toggling}
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-2xs border cursor-pointer select-none active:scale-95 ${
+              regStatus.isOpen
+                ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-700'
+                : 'bg-red-50 hover:bg-red-100 text-red-800 border-red-300 dark:bg-red-950/80 dark:text-red-300 dark:border-red-700'
+            } ${toggling ? 'opacity-50 cursor-wait' : ''}`}
+            title="Klik untuk toggle cepat status pendaftaran"
+          >
+            <span className="relative flex h-2 w-2">
+              {regStatus.isOpen && (
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              )}
+              <span className={`relative inline-flex rounded-full h-2 w-2 ${regStatus.isOpen ? 'bg-emerald-600' : 'bg-red-600'}`}></span>
+            </span>
+            <span>{regStatus.isOpen ? 'Pendaftaran Aktif' : 'Pendaftaran Ditutup'}</span>
+          </button>
+
           <Button
             size="sm"
             variant="outline"
@@ -73,6 +169,7 @@ export const AdminDashboardPage: React.FC = () => {
             <RefreshCw className="h-3.5 w-3.5" />
             <span>Perbarui Data</span>
           </Button>
+
           <Link to="/admin/pendaftar">
             <Button size="sm" className="bg-teal-600 hover:bg-teal-700 text-white text-xs gap-1.5 font-semibold shadow-xs">
               <Users className="h-3.5 w-3.5" />

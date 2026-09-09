@@ -23,6 +23,8 @@ export interface Database {
           hero_tagline: string | null;
           hero_description: string | null;
           show_public_leaderboard: boolean;
+          registration_status?: 'open' | 'closed' | null;
+          registration_close_date?: string | null;
           metadata: Json;
           created_at: string;
           updated_at: string;
@@ -40,6 +42,8 @@ export interface Database {
           hero_tagline?: string | null;
           hero_description?: string | null;
           show_public_leaderboard?: boolean;
+          registration_status?: 'open' | 'closed' | null;
+          registration_close_date?: string | null;
           metadata?: Json;
           created_at?: string;
           updated_at?: string;
@@ -57,6 +61,8 @@ export interface Database {
           hero_tagline?: string | null;
           hero_description?: string | null;
           show_public_leaderboard?: boolean;
+          registration_status?: 'open' | 'closed' | null;
+          registration_close_date?: string | null;
           metadata?: Json;
           created_at?: string;
           updated_at?: string;
@@ -502,6 +508,10 @@ export interface Database {
       };
     };
     Functions: {
+      get_registration_status: {
+        Args: Record<PropertyKey, never>;
+        Returns: boolean;
+      };
       fn_calculate_student_score: {
         Args: { p_student_id: string };
         Returns: number;

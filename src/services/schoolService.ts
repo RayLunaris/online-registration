@@ -15,6 +15,8 @@ export const DEFAULT_SCHOOL: School = {
   hero_tagline: 'Membangun Generasi Vokasi Berkarakter, Cerdas, dan Siap Kerja Global',
   hero_description: 'Penerimaan Peserta Didik Baru (PPDB/SPMB) Tahun Pelajaran 2026/2027 telah dibuka secara daring. Fasilitas modern dan kurikulum industri.',
   show_public_leaderboard: true,
+  registration_status: 'open',
+  registration_close_date: null,
   metadata: {},
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
@@ -94,7 +96,30 @@ export const schoolService = {
     if (!schoolObj.logo_url || schoolObj.logo_url.includes('unsplash.com') || schoolObj.logo_url.includes('photo-')) {
       schoolObj.logo_url = '/images/logo-icon.png';
     }
+    schoolObj.show_public_leaderboard = true;
     return schoolObj;
+  },
+
+  async getRegistrationStatus(): Promise<boolean> {
+    if (isSupabaseConfigured()) {
+      try {
+        const { data, error } = await supabase.rpc('get_registration_status');
+        if (!error && typeof data === 'boolean') {
+          return data;
+        }
+      } catch (err) {
+        console.warn('RPC get_registration_status failed, calculating locally:', err);
+      }
+    }
+    const school = await this.getSchoolProfile();
+    if (school.registration_status === 'closed') return false;
+    if (school.registration_close_date) {
+      const closeTime = new Date(school.registration_close_date).getTime();
+      if (!isNaN(closeTime) && Date.now() > closeTime) {
+        return false;
+      }
+    }
+    return true;
   },
 
   async getMajors(): Promise<Major[]> {

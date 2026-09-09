@@ -47,6 +47,8 @@ import {
   documentsSchema 
 } from '@/schemas/registrationSchema';
 import { RegistrationSuccessCard } from '@/components/registration/RegistrationSuccessCard';
+import { RegistrationClosedPage } from '@/pages/public/RegistrationClosedPage';
+import { useRegistrationStatus } from '@/hooks/useRegistrationStatus';
 import { formatScore } from '@/lib/utils';
 
 const INITIAL_REPORT_SCORES = [1, 2, 3, 4, 5].flatMap((semester) =>
@@ -67,6 +69,7 @@ const WIZARD_STEPS = [
 ];
 
 export const RegistrationPage: React.FC = () => {
+  const registrationStatus = useRegistrationStatus();
   const [currentStep, setCurrentStep] = useState(1);
   const [school, setSchool] = useState<School | null>(null);
   const [majors, setMajors] = useState<Major[]>([]);
@@ -359,6 +362,20 @@ export const RegistrationPage: React.FC = () => {
       setIsSubmitting(false);
     }
   };
+
+  if (registrationStatus.loading) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-3 bg-slate-50">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-teal-500 border-t-transparent" />
+        <p className="text-xs text-slate-500 font-medium">Memeriksa status pendaftaran...</p>
+      </div>
+    );
+  }
+
+  // Jika pendaftaran ditutup, JANGAN render form sama sekali. Tampilkan halaman khusus:
+  if (!registrationStatus.isOpen) {
+    return <RegistrationClosedPage school={school} />;
+  }
 
   if (successRegNumber) {
     return (

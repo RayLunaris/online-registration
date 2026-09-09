@@ -35,13 +35,7 @@ export function useLeaderboard() {
     try {
       // 1. Ambil Pengaturan Profil Sekolah
       const schoolProfile = await schoolService.getSchoolProfile();
-      const isEnabled = schoolProfile.show_public_leaderboard !== false;
-      setIsLeaderboardEnabled(isEnabled);
-
-      if (!isEnabled) {
-        setIsLoading(false);
-        return;
-      }
+      setIsLeaderboardEnabled(schoolProfile.show_public_leaderboard !== false);
 
       // 2. Ambil Daftar Jurusan Aktif
       const fetchedMajors = await schoolService.getMajors();

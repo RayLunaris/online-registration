@@ -1,4 +1,5 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { Database } from '@/types/database';
 import { 
   StudentCompleteDetail, 
   Major, 
@@ -545,27 +546,34 @@ export const adminService = {
       if (settings.hero_tagline) DEFAULT_SCHOOL.hero_tagline = settings.hero_tagline;
       if (settings.hero_description) DEFAULT_SCHOOL.hero_description = settings.hero_description;
       if (settings.logo_url) DEFAULT_SCHOOL.logo_url = settings.logo_url;
+      if (settings.registration_status !== undefined) DEFAULT_SCHOOL.registration_status = settings.registration_status;
+      if (settings.registration_close_date !== undefined) DEFAULT_SCHOOL.registration_close_date = settings.registration_close_date;
       DEFAULT_SCHOOL.updated_at = new Date().toISOString();
       return { success: true };
     }
     try {
       const existing = await this.getSchoolSettings();
+      const updatePayload: Database['public']['Tables']['schools']['Update'] = {
+        updated_at: new Date().toISOString(),
+      };
+
+      if (settings.name !== undefined) updatePayload.name = settings.name;
+      if (settings.npsn !== undefined) updatePayload.npsn = settings.npsn;
+      if (settings.address !== undefined) updatePayload.address = settings.address;
+      if (settings.phone !== undefined) updatePayload.phone = settings.phone;
+      if (settings.email !== undefined) updatePayload.email = settings.email;
+      if (settings.academic_year !== undefined) updatePayload.academic_year = settings.academic_year;
+      if (settings.target_students !== undefined) updatePayload.target_students = Number(settings.target_students);
+      if (settings.hero_tagline !== undefined) updatePayload.hero_tagline = settings.hero_tagline;
+      if (settings.hero_description !== undefined) updatePayload.hero_description = settings.hero_description;
+      if (settings.logo_url !== undefined) updatePayload.logo_url = settings.logo_url;
+      if (settings.show_public_leaderboard !== undefined) updatePayload.show_public_leaderboard = settings.show_public_leaderboard;
+      if (settings.registration_status !== undefined) updatePayload.registration_status = settings.registration_status;
+      if (settings.registration_close_date !== undefined) updatePayload.registration_close_date = settings.registration_close_date;
+
       const { error } = await supabase
         .from('schools')
-        .update({
-          name: settings.name,
-          npsn: settings.npsn,
-          address: settings.address,
-          phone: settings.phone,
-          email: settings.email,
-          academic_year: settings.academic_year,
-          target_students: Number(settings.target_students),
-          hero_tagline: settings.hero_tagline,
-          hero_description: settings.hero_description,
-          logo_url: settings.logo_url,
-          show_public_leaderboard: settings.show_public_leaderboard !== undefined ? settings.show_public_leaderboard : existing.show_public_leaderboard,
-          updated_at: new Date().toISOString(),
-        })
+        .update(updatePayload)
         .eq('id', existing.id);
 
       if (error) throw error;
@@ -573,5 +581,16 @@ export const adminService = {
     } catch (err: any) {
       return { success: false, error: err.message || 'Gagal memperbarui pengaturan sekolah.' };
     }
+  },
+
+  async updateRegistrationStatus(
+    status: 'open' | 'closed', 
+    closeDate?: string | null
+  ): Promise<{ success: boolean; error?: string }> {
+    const payload: Partial<School> = { registration_status: status };
+    if (closeDate !== undefined) {
+      payload.registration_close_date = closeDate;
+    }
+    return this.updateSchoolSettings(payload);
   },
 };

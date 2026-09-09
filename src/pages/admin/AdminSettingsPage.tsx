@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 import { 
   Building2, 
   Save, 
@@ -7,7 +8,11 @@ import {
   AlertCircle,
   Sparkles,
   Award,
-  Image as ImageIcon 
+  Image as ImageIcon,
+  Power,
+  CalendarClock,
+  CalendarX,
+  AlertTriangle
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -15,6 +20,37 @@ import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { adminService } from '@/services/adminService';
 import { School } from '@/types/spmb';
+
+function toDatetimeLocal(isoStr?: string | null): string {
+  if (!isoStr) return '';
+  const d = new Date(isoStr);
+  if (isNaN(d.getTime())) return '';
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function fromDatetimeLocal(val: string): string | null {
+  if (!val) return null;
+  const d = new Date(val);
+  return isNaN(d.getTime()) ? null : d.toISOString();
+}
+
+function formatIndonesianDateTime(isoString?: string | null): string {
+  if (!isoString) return '';
+  try {
+    const d = new Date(isoString);
+    if (isNaN(d.getTime())) return isoString;
+    return d.toLocaleString('id-ID', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  } catch {
+    return isoString;
+  }
+}
 
 export const AdminSettingsPage: React.FC = () => {
   const [settings, setSettings] = useState<Partial<School>>({});
@@ -38,6 +74,76 @@ export const AdminSettingsPage: React.FC = () => {
   useEffect(() => {
     loadSettings();
   }, []);
+
+  const isManualClosed = settings.registration_status === 'closed';
+  const isDateExpired = Boolean(
+    settings.registration_close_date && 
+    new Date(settings.registration_close_date).getTime() < Date.now()
+  );
+  const isEffectiveOpen = !isManualClosed && !isDateExpired;
+  const isClosedByDate = !isManualClosed && isDateExpired;
+
+  const handleToggleClick = async () => {
+    if (!isEffectiveOpen) {
+      // Currently effectively closed (by manual OR by date) -> reopen registration
+      // If closed by expired date, clear the date so manual override takes effect
+      const newCloseDate = isDateExpired ? null : settings.registration_close_date;
+      const updated = {
+        ...settings,
+        registration_status: 'open' as const,
+        registration_close_date: newCloseDate
+      };
+      setSettings(updated);
+      try {
+        await adminService.updateRegistrationStatus('open', newCloseDate);
+        window.dispatchEvent(new CustomEvent('school_settings_updated'));
+        setSuccessMsg('Pendaftaran berhasil DIBUKA kembali untuk publik.');
+        setTimeout(() => setSuccessMsg(''), 4000);
+      } catch (err: any) {
+        setErrorMsg(err.message || 'Gagal mengubah status pendaftaran.');
+      }
+    } else {
+      // Currently effectively open -> ask confirmation before closing
+      const result = await Swal.fire({
+        title: 'Konfirmasi Tutup Pendaftaran',
+        text: 'Pendaftaran akan langsung ditutup untuk publik. Lanjutkan?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Ya, Tutup Pendaftaran',
+        cancelButtonText: 'Batal'
+      });
+
+      if (result.isConfirmed) {
+        const updated = {
+          ...settings,
+          registration_status: 'closed' as const
+        };
+        setSettings(updated);
+        try {
+          await adminService.updateRegistrationStatus('closed', settings.registration_close_date);
+          window.dispatchEvent(new CustomEvent('school_settings_updated'));
+          setSuccessMsg('Pendaftaran berhasil DITUTUP untuk publik.');
+          setTimeout(() => setSuccessMsg(''), 4000);
+        } catch (err: any) {
+          setErrorMsg(err.message || 'Gagal mengubah status pendaftaran.');
+        }
+      }
+    }
+  };
+
+  const handleClearCloseDate = async () => {
+    setSettings(prev => ({ ...prev, registration_close_date: null }));
+    try {
+      await adminService.updateSchoolSettings({ registration_close_date: null });
+      window.dispatchEvent(new CustomEvent('school_settings_updated'));
+      setSuccessMsg('Jadwal tutup otomatis berhasil dihapus.');
+      setTimeout(() => setSuccessMsg(''), 3000);
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Gagal menghapus jadwal.');
+    }
+  };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,6 +217,148 @@ export const AdminSettingsPage: React.FC = () => {
 
       {/* SETTINGS FORM */}
       <form onSubmit={handleSave} className="space-y-6">
+        {/* CARD 0. STATUS PENDAFTARAN (PPDB / SPMB) - PALING ATAS */}
+        <Card className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-sm overflow-hidden">
+          <div className={`h-1.5 ${isEffectiveOpen ? 'bg-emerald-500' : 'bg-red-500'}`} />
+          
+          <CardHeader className="p-5 pb-3 border-b border-slate-100 dark:border-slate-800/80 flex flex-row items-center justify-between gap-4">
+            <div>
+              <CardTitle className="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Power className={`h-5 w-5 ${isEffectiveOpen ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`} />
+                Status Pendaftaran
+              </CardTitle>
+              <CardDescription className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                Kontrol pembukaan formulir pendaftaran PPDB secara manual dan otomatis
+              </CardDescription>
+            </div>
+
+            {/* Indikator status besar di kanan atas: badge hijau "AKTIF" atau badge merah "DITUTUP" */}
+            <div>
+              {isEffectiveOpen ? (
+                <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700 text-emerald-800 dark:text-emerald-300 font-extrabold text-xs tracking-wider shadow-2xs">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>AKTIF</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-red-50 dark:bg-red-950/80 border border-red-300 dark:border-red-700 text-red-800 dark:text-red-300 font-extrabold text-xs tracking-wider shadow-2xs">
+                  <span className="h-2 w-2 rounded-full bg-red-500" />
+                  <span>DITUTUP</span>
+                </div>
+              )}
+            </div>
+          </CardHeader>
+
+          <CardContent className="p-5 space-y-5 text-xs">
+            {/* Banner Kuning jika status efektif = closed karena tanggal (bukan manual) */}
+            {isClosedByDate && settings.registration_close_date && (
+              <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-300 dark:bg-amber-950/60 dark:border-amber-800 text-amber-900 dark:text-amber-200 flex items-start gap-2.5">
+                <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                <div className="space-y-1">
+                  <p className="font-bold">Pendaftaran Tertutup Secara Otomatis</p>
+                  <p className="text-xs leading-relaxed">
+                    Ditutup otomatis pada <strong className="font-bold underline">{formatIndonesianDateTime(settings.registration_close_date)}</strong>. Aktifkan toggle di atas untuk membuka kembali.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* TOGGLE SWITCH BESAR: "Buka Pendaftaran" / "Tutup Pendaftaran" */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-sm text-slate-900 dark:text-white">
+                    {isEffectiveOpen ? 'Buka Pendaftaran' : 'Tutup Pendaftaran'}
+                  </span>
+                  <span className={`text-[10px] px-2 py-0.5 rounded-md font-semibold ${
+                    settings.registration_status === 'closed' 
+                      ? 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300' 
+                      : 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300'
+                  }`}>
+                    Manual: {settings.registration_status === 'closed' ? 'Closed' : 'Open'}
+                  </span>
+                </div>
+                <p className="text-slate-500 dark:text-slate-400 text-xs">
+                  {!isEffectiveOpen
+                    ? (isClosedByDate 
+                        ? 'Pendaftaran tertutup otomatis karena tanggal tutup telah lewat. Aktifkan toggle untuk membuka kembali.'
+                        : 'Pendaftaran sedang ditutup manual oleh admin. Calon siswa baru tidak dapat mengisi formulir.')
+                    : 'Pendaftaran aktif menerima berkas pendaftaran calon siswa baru.'}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleToggleClick}
+                className={`relative inline-flex h-8 w-14 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 ${
+                  isEffectiveOpen ? 'bg-emerald-600' : 'bg-slate-300 dark:bg-slate-700'
+                }`}
+                role="switch"
+                aria-checked={isEffectiveOpen}
+                title={isEffectiveOpen ? 'Klik untuk Tutup Pendaftaran' : 'Klik untuk Buka Pendaftaran'}
+              >
+                <span className="sr-only">Toggle Pendaftaran</span>
+                <span
+                  className={`pointer-events-none inline-block h-7 w-7 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+                    isEffectiveOpen ? 'translate-x-6' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+            </div>
+
+            {/* FIELD TERPISAH (OPSIONAL): DATE-TIME PICKER "TUTUP OTOMATIS PADA" */}
+            <div className="space-y-3 pt-2 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex items-center justify-between">
+                <label 
+                  htmlFor="registration_close_date" 
+                  className="text-slate-700 dark:text-slate-300 font-bold flex items-center gap-1.5 cursor-pointer"
+                >
+                  <CalendarClock className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+                  <span>Tutup Otomatis Pada (Opsional)</span>
+                </label>
+
+                {settings.registration_close_date && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleClearCloseDate}
+                    className="h-7 px-2 text-[11px] text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 gap-1"
+                  >
+                    <CalendarX className="h-3.5 w-3.5" />
+                    <span>Hapus Jadwal</span>
+                  </Button>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+                <div className="space-y-1">
+                  <Input
+                    type="datetime-local"
+                    id="registration_close_date"
+                    name="registration_close_date"
+                    value={toDatetimeLocal(settings.registration_close_date)}
+                    onChange={(e) => {
+                      const iso = fromDatetimeLocal(e.target.value);
+                      setSettings({ ...settings, registration_close_date: iso });
+                    }}
+                    className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white font-mono"
+                  />
+                  {settings.registration_close_date && (
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 pt-0.5">
+                      Pendaftaran akan otomatis tertutup pada tanggal ini meski toggle di atas masih Aktif.
+                    </p>
+                  )}
+                </div>
+
+                <div className="text-[11px] text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/40 p-3 rounded-lg border border-slate-100 dark:border-slate-800/60 leading-relaxed">
+                  <span className="font-semibold text-slate-700 dark:text-slate-300 block mb-0.5">💡 Logika Override:</span>
+                  Admin tetap bisa membuka lagi meski tanggal otomatis sudah lewat, cukup dengan mengaktifkan toggle switch di atas.
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* 1. Identitas Resmi Sekolah */}
         <Card className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xs">
           <CardHeader className="p-5 pb-3 border-b border-slate-100 dark:border-slate-800/80">

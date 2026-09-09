@@ -10,6 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { School } from '@/types/spmb';
 import { useLanguage } from '@/context/LanguageContext';
+import { useRegistrationStatus } from '@/hooks/useRegistrationStatus';
 
 interface HeroSectionProps {
   school: School | null;
@@ -21,6 +22,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   school, 
   majorsCount = 4
 }) => {
+  const { isOpen: isRegistrationOpen } = useRegistrationStatus();
   const [quickReg, setQuickReg] = useState('');
   const { t } = useLanguage();
 
@@ -43,16 +45,25 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="lg:col-span-7 space-y-5 text-left order-2 lg:order-1">
             
             {/* Top Pill Eyebrow Badge - Ringkas */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/95 border border-teal-200/80 shadow-2xs backdrop-blur-xs">
-              <span className="flex h-2 w-2 rounded-full bg-[#0D9488] animate-pulse" />
-              <span className="text-xs font-bold text-[#0D9488] tracking-wide">
-                {t('hero.badge')}
-              </span>
-              <span className="text-xs text-slate-300">•</span>
-              <span className="text-xs text-emerald-700 font-semibold">
-                {t('hero.badgeSub')}
-              </span>
-            </div>
+            {isRegistrationOpen ? (
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/95 border border-teal-200/80 shadow-2xs backdrop-blur-xs">
+                <span className="flex h-2 w-2 rounded-full bg-[#0D9488] animate-pulse" />
+                <span className="text-xs font-bold text-[#0D9488] tracking-wide">
+                  {t('hero.badge')}
+                </span>
+                <span className="text-xs text-slate-300">•</span>
+                <span className="text-xs text-emerald-700 font-semibold">
+                  {t('hero.badgeSub')}
+                </span>
+              </div>
+            ) : (
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/95 border border-red-200 shadow-2xs backdrop-blur-xs">
+                <span className="flex h-2 w-2 rounded-full bg-red-500" />
+                <span className="text-xs font-bold text-red-700 tracking-wide">
+                  Pendaftaran Periode Ini Telah Ditutup
+                </span>
+              </div>
+            )}
 
             {/* Main Headline - Ringkas & Bertenaga */}
             <div className="space-y-2.5">
@@ -74,12 +85,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
             {/* Action Buttons - Ringkas */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-0.5">
-              <Link to="/daftar">
-                <Button className="w-full sm:w-auto h-11 px-7 bg-[#0D9488] hover:bg-teal-700 text-white font-bold text-xs sm:text-sm rounded-full shadow-md hover:shadow-lg transition-all gap-2 group">
-                  <span>{t('hero.btnRegister')}</span>
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              {!isRegistrationOpen ? (
+                <Button 
+                  disabled 
+                  variant="outline"
+                  className="w-full sm:w-auto h-11 px-7 border-2 border-slate-300 bg-slate-100 text-slate-500 font-bold text-xs sm:text-sm rounded-full cursor-not-allowed shadow-none select-none"
+                >
+                  <span>Pendaftaran Ditutup</span>
                 </Button>
-              </Link>
+              ) : (
+                <Link to="/daftar">
+                  <Button className="w-full sm:w-auto h-11 px-7 bg-[#0D9488] hover:bg-teal-700 text-white font-bold text-xs sm:text-sm rounded-full shadow-md hover:shadow-lg transition-all gap-2 group">
+                    <span>{t('hero.btnRegister')}</span>
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Button>
+                </Link>
+              )}
 
               <a href="#jurusan">
                 <Button variant="outline" className="w-full sm:w-auto h-11 px-6 border border-slate-200 hover:border-[#0D9488] text-slate-700 hover:text-[#0D9488] font-bold text-xs sm:text-sm rounded-full bg-white/90 hover:bg-teal-50/50 transition-all">
