@@ -93,7 +93,7 @@ export const schoolService = {
       return DEFAULT_SCHOOL;
     }
     const schoolObj = data as School;
-    if (!schoolObj.logo_url || schoolObj.logo_url.includes('unsplash.com') || schoolObj.logo_url.includes('photo-')) {
+    if (!schoolObj.logo_url || schoolObj.logo_url.includes('images.unsplash.com')) {
       schoolObj.logo_url = '/images/logo-icon.png';
     }
     schoolObj.show_public_leaderboard = true;

@@ -159,7 +159,10 @@ export const Navbar: React.FC = () => {
               <img 
                 src={school?.logo_url || "/images/logo-icon.png"} 
                 alt="Logo Sekolah" 
-                className="h-full w-full object-contain" 
+                className="h-full w-full object-contain"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/logo-icon.png';
+                }}
               />
             </div>
             <div className="flex flex-col text-left">

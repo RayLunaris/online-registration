@@ -7,12 +7,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useAuth } from '@/hooks/useAuth';
 import { isSupabaseConfigured } from '@/lib/supabase';
+import { schoolService, DEFAULT_SCHOOL } from '@/services/schoolService';
+import { School } from '@/types/spmb';
 
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [school, setSchool] = useState<School>(DEFAULT_SCHOOL);
   
   const { user, isAdmin, signIn } = useAuth();
   const navigate = useNavigate();
@@ -26,6 +29,10 @@ export const LoginPage: React.FC = () => {
       navigate(from, { replace: true });
     }
   }, [user, isAdmin, navigate, from]);
+
+  useEffect(() => {
+    schoolService.getSchoolProfile().then(setSchool).catch(console.error);
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,11 +66,18 @@ export const LoginPage: React.FC = () => {
 
         <div className="flex items-center justify-center gap-3.5">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-xl shadow-slate-200/50 dark:shadow-black/40 p-1.5 overflow-hidden border border-slate-200 dark:border-slate-700/80">
-            <img src="/images/logo-icon.png" alt="Logo SPMB" className="h-full w-full object-contain" />
+            <img 
+              src={school?.logo_url || "/images/logo-icon.png"} 
+              alt="Logo SPMB" 
+              className="h-full w-full object-contain"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = '/images/logo-icon.png';
+              }}
+            />
           </div>
           <div className="text-left">
             <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">SPMB Admin</h1>
-            <p className="text-xs text-teal-600 dark:text-teal-400 font-mono font-medium">SMK Negeri 1 Digital Teknologi</p>
+            <p className="text-xs text-teal-600 dark:text-teal-400 font-mono font-medium">{school?.name || 'SMK Negeri 1 Digital Teknologi'}</p>
           </div>
         </div>
       </div>

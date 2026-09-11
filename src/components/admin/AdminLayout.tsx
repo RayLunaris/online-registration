@@ -20,9 +20,12 @@ import {
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/context/ThemeContext';
+import { schoolService, DEFAULT_SCHOOL } from '@/services/schoolService';
+import { School } from '@/types/spmb';
 
 export const AdminLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [school, setSchool] = useState<School>(DEFAULT_SCHOOL);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, adminProfile, signOut } = useAuth();
@@ -51,6 +54,27 @@ export const AdminLayout: React.FC = () => {
     setSidebarOpen(false);
   }, [location.pathname]);
 
+  // Load school profile & listen to settings update
+  useEffect(() => {
+    const loadSchool = async () => {
+      try {
+        const profile = await schoolService.getSchoolProfile();
+        if (profile) setSchool(profile);
+      } catch (err) {
+        console.error('Error loading school profile in AdminLayout:', err);
+      }
+    };
+    loadSchool();
+
+    const handleSettingsUpdate = () => {
+      loadSchool();
+    };
+    window.addEventListener('school_settings_updated', handleSettingsUpdate);
+    return () => {
+      window.removeEventListener('school_settings_updated', handleSettingsUpdate);
+    };
+  }, []);
+
   const handleLogout = async () => {
     await signOut();
     navigate('/');
@@ -65,14 +89,21 @@ export const AdminLayout: React.FC = () => {
           {/* Logo & Brand */}
           <Link to="/admin" className="flex items-center gap-3 group shrink-0">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-xs p-1 overflow-hidden border border-slate-200 dark:border-slate-700/60 shrink-0">
-              <img src="/images/logo-icon.png" alt="Logo SPMB" className="h-full w-full object-contain" />
+              <img 
+                src={school?.logo_url || "/images/logo-icon.png"} 
+                alt="Logo SPMB" 
+                className="h-full w-full object-contain"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/logo-icon.png';
+                }}
+              />
             </div>
             <div>
               <span className="font-extrabold text-slate-900 dark:text-white text-base tracking-tight block leading-tight">
                 SPMB Panel
               </span>
-              <span className="text-[11px] text-teal-600 dark:text-teal-400 font-medium block">
-                SMK Negeri 1 Digital
+              <span className="text-[11px] text-teal-600 dark:text-teal-400 font-medium block truncate max-w-[140px]">
+                {school?.name || 'SMK Negeri 1 Digital'}
               </span>
             </div>
           </Link>
@@ -171,7 +202,14 @@ export const AdminLayout: React.FC = () => {
             {/* Mobile Brand Logo */}
             <div className="flex items-center gap-2 md:hidden">
               <div className="h-7 w-7 rounded-lg bg-white p-0.5 border border-slate-200 dark:border-slate-700/60 flex items-center justify-center shrink-0">
-                <img src="/images/logo-icon.png" alt="Logo SPMB" className="h-full w-full object-contain" />
+                <img 
+                  src={school?.logo_url || "/images/logo-icon.png"} 
+                  alt="Logo SPMB" 
+                  className="h-full w-full object-contain"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/logo-icon.png';
+                  }}
+                />
               </div>
               <span className="font-bold text-slate-900 dark:text-white text-xs sm:text-sm truncate">SPMB Admin</span>
             </div>
@@ -252,11 +290,20 @@ export const AdminLayout: React.FC = () => {
               <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800/80">
                 <div className="flex items-center gap-2.5">
                   <div className="h-8 w-8 rounded-lg bg-white p-0.5 border border-slate-200 dark:border-slate-700/60 flex items-center justify-center shrink-0">
-                    <img src="/images/logo-icon.png" alt="Logo SPMB" className="h-full w-full object-contain" />
+                    <img 
+                      src={school?.logo_url || "/images/logo-icon.png"} 
+                      alt="Logo SPMB" 
+                      className="h-full w-full object-contain"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/images/logo-icon.png';
+                      }}
+                    />
                   </div>
                   <div>
                     <span className="font-bold text-slate-900 dark:text-white text-sm block leading-tight">SPMB Panel</span>
-                    <span className="text-[10px] text-teal-600 dark:text-teal-400 font-medium">SMK Negeri 1 Digital</span>
+                    <span className="text-[10px] text-teal-600 dark:text-teal-400 font-medium truncate max-w-[140px] block">
+                      {school?.name || 'SMK Negeri 1 Digital'}
+                    </span>
                   </div>
                 </div>
                 <button

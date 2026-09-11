@@ -57,6 +57,14 @@ export const Footer: React.FC = () => {
       }
     };
     fetchFooterData();
+
+    const handleSettingsUpdate = () => {
+      fetchFooterData();
+    };
+    window.addEventListener('school_settings_updated', handleSettingsUpdate);
+    return () => {
+      window.removeEventListener('school_settings_updated', handleSettingsUpdate);
+    };
   }, []);
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
@@ -86,9 +94,12 @@ export const Footer: React.FC = () => {
             <div className="flex items-center gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white shadow-md p-1 overflow-hidden border border-slate-700/60 shrink-0">
                 <img 
-                  src="/images/logo-icon.png" 
+                  src={school.logo_url || "/images/logo-icon.png"} 
                   alt="Logo Sekolah" 
-                  className="h-full w-full object-contain" 
+                  className="h-full w-full object-contain"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/images/logo-icon.png';
+                  }}
                 />
               </div>
               <div>

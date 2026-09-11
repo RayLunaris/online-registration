@@ -30,6 +30,19 @@
       "source_location": "L14"
     },
     {
+      "id": "src_components_common_statusresultcard_props",
+      "label": "Props",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "utils.ts",
+      "file_type": "code",
+      "norm_label": "props",
+      "source_file": "src/components/common/StatusResultCard.tsx",
+      "source_location": "L28"
+    },
+    {
       "id": "src_components_ui_badge_badgeprops",
       "label": "BadgeProps",
       "_callable": true,
@@ -121,13 +134,78 @@
       "source_location": "L4"
     },
     {
+      "id": "src_components_home_aboutsection_aboutsectionprops",
+      "label": "AboutSectionProps",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "aboutsectionprops",
+      "source_file": "src/components/home/AboutSection.tsx",
+      "source_location": "L13"
+    },
+    {
+      "id": "src_components_home_herosection_herosectionprops",
+      "label": "HeroSectionProps",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "herosectionprops",
+      "source_file": "src/components/home/HeroSection.tsx",
+      "source_location": "L15"
+    },
+    {
+      "id": "src_components_registration_registrationcardpdf_props",
+      "label": "Props",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "props",
+      "source_file": "src/components/registration/RegistrationCardPDF.tsx",
+      "source_location": "L8"
+    },
+    {
+      "id": "src_components_registration_registrationsuccesscard_props",
+      "label": "Props",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "props",
+      "source_file": "src/components/registration/RegistrationSuccessCard.tsx",
+      "source_location": "L18"
+    },
+    {
+      "id": "src_lib_pdfgenerator_pdfexportoptions",
+      "label": "PDFExportOptions",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "pdfexportoptions",
+      "source_file": "src/lib/pdfGenerator.ts",
+      "source_location": "L4"
+    },
+    {
       "id": "src_pages_public_registrationclosedpage_registrationclosedpageprops",
       "label": "RegistrationClosedPageProps",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "registrationclosedpageprops",
       "source_file": "src/pages/public/RegistrationClosedPage.tsx",
@@ -140,7 +218,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "agreementinput",
       "source_file": "src/schemas/registrationSchema.ts",
@@ -153,7 +231,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "documentsinput",
       "source_file": "src/schemas/registrationSchema.ts",
@@ -166,7 +244,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "majorchoiceinput",
       "source_file": "src/schemas/registrationSchema.ts",
@@ -179,7 +257,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "parentdatainput",
       "source_file": "src/schemas/registrationSchema.ts",
@@ -192,7 +270,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "personaldatainput",
       "source_file": "src/schemas/registrationSchema.ts",
@@ -205,11 +283,102 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "reportscoresinput",
       "source_file": "src/schemas/registrationSchema.ts",
       "source_location": "L94"
+    },
+    {
+      "id": "src_services_studentservice_achievementinsert",
+      "label": "AchievementInsert",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "achievementinsert",
+      "source_file": "src/services/studentService.ts",
+      "source_location": "L199"
+    },
+    {
+      "id": "src_services_studentservice_documentinsert",
+      "label": "DocumentInsert",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "documentinsert",
+      "source_file": "src/services/studentService.ts",
+      "source_location": "L200"
+    },
+    {
+      "id": "src_services_studentservice_majorchoiceinsert",
+      "label": "MajorChoiceInsert",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "majorchoiceinsert",
+      "source_file": "src/services/studentService.ts",
+      "source_location": "L197"
+    },
+    {
+      "id": "src_services_studentservice_parentinsert",
+      "label": "ParentInsert",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "parentinsert",
+      "source_file": "src/services/studentService.ts",
+      "source_location": "L196"
+    },
+    {
+      "id": "src_services_studentservice_reportscoreinsert",
+      "label": "ReportScoreInsert",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "reportscoreinsert",
+      "source_file": "src/services/studentService.ts",
+      "source_location": "L198"
+    },
+    {
+      "id": "src_services_studentservice_studentinsert",
+      "label": "StudentInsert",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "studentinsert",
+      "source_file": "src/services/studentService.ts",
+      "source_location": "L195"
+    },
+    {
+      "id": "src_types_spmb_achievement",
+      "label": "Achievement",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "achievement",
+      "source_file": "src/types/spmb.ts",
+      "source_location": "L9"
     },
     {
       "id": "src_types_spmb_achievementlevel",
@@ -218,11 +387,154 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "achievementlevel",
       "source_file": "src/types/spmb.ts",
       "source_location": "L19"
+    },
+    {
+      "id": "src_types_spmb_documentitem",
+      "label": "DocumentItem",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "documentitem",
+      "source_file": "src/types/spmb.ts",
+      "source_location": "L10"
+    },
+    {
+      "id": "src_types_spmb_majorchoice",
+      "label": "MajorChoice",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "majorchoice",
+      "source_file": "src/types/spmb.ts",
+      "source_location": "L11"
+    },
+    {
+      "id": "src_types_spmb_parentdata",
+      "label": "ParentData",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "parentdata",
+      "source_file": "src/types/spmb.ts",
+      "source_location": "L7"
+    },
+    {
+      "id": "src_types_spmb_registrationformdata",
+      "label": "RegistrationFormData",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "registrationformdata",
+      "source_file": "src/types/spmb.ts",
+      "source_location": "L30"
+    },
+    {
+      "id": "src_types_spmb_reportscore",
+      "label": "ReportScore",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "reportscore",
+      "source_file": "src/types/spmb.ts",
+      "source_location": "L8"
+    },
+    {
+      "id": "src_types_spmb_school",
+      "label": "School",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "school",
+      "source_file": "src/types/spmb.ts",
+      "source_location": "L3"
+    },
+    {
+      "id": "src_types_spmb_selectionresult",
+      "label": "SelectionResult",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "selectionresult",
+      "source_file": "src/types/spmb.ts",
+      "source_location": "L12"
+    },
+    {
+      "id": "src_types_spmb_selectionstatus",
+      "label": "SelectionStatus",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "selectionstatus",
+      "source_file": "src/types/spmb.ts",
+      "source_location": "L18"
+    },
+    {
+      "id": "src_types_spmb_student",
+      "label": "Student",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "student",
+      "source_file": "src/types/spmb.ts",
+      "source_location": "L6"
+    },
+    {
+      "id": "src_types_spmb_studentcompletedetail",
+      "label": "StudentCompleteDetail",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "studentcompletedetail",
+      "source_file": "src/types/spmb.ts",
+      "source_location": "L21"
+    },
+    {
+      "id": "src_context_authcontext_authcontexttype",
+      "label": "AuthContextType",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "authcontexttype",
+      "source_file": "src/context/AuthContext.tsx",
+      "source_location": "L6"
     },
     {
       "id": "src_hooks_useregistrationstatus_registrationstatusresult",
@@ -251,6 +563,97 @@
       "source_location": "L15"
     },
     {
+      "id": "src_services_adminservice_dashboardstats",
+      "label": "DashboardStats",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "dashboardstats",
+      "source_file": "src/services/adminService.ts",
+      "source_location": "L24"
+    },
+    {
+      "id": "src_services_selectionservice_majorselectiongroup",
+      "label": "MajorSelectionGroup",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "majorselectiongroup",
+      "source_file": "src/services/selectionService.ts",
+      "source_location": "L47"
+    },
+    {
+      "id": "src_services_selectionservice_rankedcandidate",
+      "label": "RankedCandidate",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "rankedcandidate",
+      "source_file": "src/services/selectionService.ts",
+      "source_location": "L18"
+    },
+    {
+      "id": "src_services_selectionservice_selectionsummary",
+      "label": "SelectionSummary",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "selectionsummary",
+      "source_file": "src/services/selectionService.ts",
+      "source_location": "L10"
+    },
+    {
+      "id": "src_types_database_database",
+      "label": "Database",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "database",
+      "source_file": "src/types/database.ts",
+      "source_location": "L9"
+    },
+    {
+      "id": "src_types_database_json",
+      "label": "Json",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "json",
+      "source_file": "src/types/database.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_types_spmb_adminprofile",
+      "label": "AdminProfile",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "adminprofile",
+      "source_file": "src/types/spmb.ts",
+      "source_location": "L14"
+    },
+    {
       "id": "src_types_spmb_sourceschool",
       "label": "SourceSchool",
       "_callable": true,
@@ -264,290 +667,17 @@
       "source_location": "L5"
     },
     {
-      "id": "src_components_common_statusresultcard_props",
-      "label": "Props",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "props",
-      "source_file": "src/components/common/StatusResultCard.tsx",
-      "source_location": "L28"
-    },
-    {
-      "id": "src_services_adminservice_dashboardstats",
-      "label": "DashboardStats",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "dashboardstats",
-      "source_file": "src/services/adminService.ts",
-      "source_location": "L24"
-    },
-    {
-      "id": "src_services_selectionservice_majorselectiongroup",
-      "label": "MajorSelectionGroup",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "majorselectiongroup",
-      "source_file": "src/services/selectionService.ts",
-      "source_location": "L47"
-    },
-    {
-      "id": "src_services_selectionservice_rankedcandidate",
-      "label": "RankedCandidate",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "rankedcandidate",
-      "source_file": "src/services/selectionService.ts",
-      "source_location": "L18"
-    },
-    {
-      "id": "src_services_selectionservice_selectionsummary",
-      "label": "SelectionSummary",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "selectionsummary",
-      "source_file": "src/services/selectionService.ts",
-      "source_location": "L10"
-    },
-    {
-      "id": "src_types_spmb_achievement",
-      "label": "Achievement",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "achievement",
-      "source_file": "src/types/spmb.ts",
-      "source_location": "L9"
-    },
-    {
-      "id": "src_types_spmb_documentitem",
-      "label": "DocumentItem",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "documentitem",
-      "source_file": "src/types/spmb.ts",
-      "source_location": "L10"
-    },
-    {
-      "id": "src_types_spmb_majorchoice",
-      "label": "MajorChoice",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "majorchoice",
-      "source_file": "src/types/spmb.ts",
-      "source_location": "L11"
-    },
-    {
-      "id": "src_types_spmb_parentdata",
-      "label": "ParentData",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "parentdata",
-      "source_file": "src/types/spmb.ts",
-      "source_location": "L7"
-    },
-    {
-      "id": "src_types_spmb_reportscore",
-      "label": "ReportScore",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "reportscore",
-      "source_file": "src/types/spmb.ts",
-      "source_location": "L8"
-    },
-    {
-      "id": "src_types_spmb_selectionresult",
-      "label": "SelectionResult",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "selectionresult",
-      "source_file": "src/types/spmb.ts",
-      "source_location": "L12"
-    },
-    {
-      "id": "src_types_spmb_selectionstatus",
-      "label": "SelectionStatus",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "selectionstatus",
-      "source_file": "src/types/spmb.ts",
-      "source_location": "L18"
-    },
-    {
-      "id": "src_types_spmb_student",
-      "label": "Student",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "student",
-      "source_file": "src/types/spmb.ts",
-      "source_location": "L6"
-    },
-    {
-      "id": "src_types_spmb_studentcompletedetail",
-      "label": "StudentCompleteDetail",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "studentcompletedetail",
-      "source_file": "src/types/spmb.ts",
-      "source_location": "L21"
-    },
-    {
       "id": "src_types_spmb_studentstatus",
       "label": "StudentStatus",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
+      "community": 11,
+      "community_name": "adminService.ts",
       "file_type": "code",
       "norm_label": "studentstatus",
       "source_file": "src/types/spmb.ts",
       "source_location": "L17"
-    },
-    {
-      "id": "src_components_home_aboutsection_aboutsectionprops",
-      "label": "AboutSectionProps",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "School",
-      "file_type": "code",
-      "norm_label": "aboutsectionprops",
-      "source_file": "src/components/home/AboutSection.tsx",
-      "source_location": "L13"
-    },
-    {
-      "id": "src_components_home_herosection_herosectionprops",
-      "label": "HeroSectionProps",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "School",
-      "file_type": "code",
-      "norm_label": "herosectionprops",
-      "source_file": "src/components/home/HeroSection.tsx",
-      "source_location": "L15"
-    },
-    {
-      "id": "src_components_registration_registrationcardpdf_props",
-      "label": "Props",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "School",
-      "file_type": "code",
-      "norm_label": "props",
-      "source_file": "src/components/registration/RegistrationCardPDF.tsx",
-      "source_location": "L8"
-    },
-    {
-      "id": "src_components_registration_registrationsuccesscard_props",
-      "label": "Props",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "School",
-      "file_type": "code",
-      "norm_label": "props",
-      "source_file": "src/components/registration/RegistrationSuccessCard.tsx",
-      "source_location": "L18"
-    },
-    {
-      "id": "src_lib_pdfgenerator_pdfexportoptions",
-      "label": "PDFExportOptions",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "School",
-      "file_type": "code",
-      "norm_label": "pdfexportoptions",
-      "source_file": "src/lib/pdfGenerator.ts",
-      "source_location": "L4"
-    },
-    {
-      "id": "src_types_spmb_registrationformdata",
-      "label": "RegistrationFormData",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "School",
-      "file_type": "code",
-      "norm_label": "registrationformdata",
-      "source_file": "src/types/spmb.ts",
-      "source_location": "L30"
-    },
-    {
-      "id": "src_types_spmb_school",
-      "label": "School",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "School",
-      "file_type": "code",
-      "norm_label": "school",
-      "source_file": "src/types/spmb.ts",
-      "source_location": "L3"
     },
     {
       "id": "src_components_admin_studentdetail_majorchoicestab_props",
@@ -626,136 +756,6 @@
       "norm_label": "toastprops",
       "source_file": "src/components/ui/toast.tsx",
       "source_location": "L5"
-    },
-    {
-      "id": "src_services_studentservice_achievementinsert",
-      "label": "AchievementInsert",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "studentService.ts",
-      "file_type": "code",
-      "norm_label": "achievementinsert",
-      "source_file": "src/services/studentService.ts",
-      "source_location": "L199"
-    },
-    {
-      "id": "src_services_studentservice_documentinsert",
-      "label": "DocumentInsert",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "studentService.ts",
-      "file_type": "code",
-      "norm_label": "documentinsert",
-      "source_file": "src/services/studentService.ts",
-      "source_location": "L200"
-    },
-    {
-      "id": "src_services_studentservice_majorchoiceinsert",
-      "label": "MajorChoiceInsert",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "studentService.ts",
-      "file_type": "code",
-      "norm_label": "majorchoiceinsert",
-      "source_file": "src/services/studentService.ts",
-      "source_location": "L197"
-    },
-    {
-      "id": "src_services_studentservice_parentinsert",
-      "label": "ParentInsert",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "studentService.ts",
-      "file_type": "code",
-      "norm_label": "parentinsert",
-      "source_file": "src/services/studentService.ts",
-      "source_location": "L196"
-    },
-    {
-      "id": "src_services_studentservice_reportscoreinsert",
-      "label": "ReportScoreInsert",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "studentService.ts",
-      "file_type": "code",
-      "norm_label": "reportscoreinsert",
-      "source_file": "src/services/studentService.ts",
-      "source_location": "L198"
-    },
-    {
-      "id": "src_services_studentservice_studentinsert",
-      "label": "StudentInsert",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "studentService.ts",
-      "file_type": "code",
-      "norm_label": "studentinsert",
-      "source_file": "src/services/studentService.ts",
-      "source_location": "L195"
-    },
-    {
-      "id": "src_types_database_database",
-      "label": "Database",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "studentService.ts",
-      "file_type": "code",
-      "norm_label": "database",
-      "source_file": "src/types/database.ts",
-      "source_location": "L9"
-    },
-    {
-      "id": "src_types_database_json",
-      "label": "Json",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "studentService.ts",
-      "file_type": "code",
-      "norm_label": "json",
-      "source_file": "src/types/database.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_context_authcontext_authcontexttype",
-      "label": "AuthContextType",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "AuthContext.tsx",
-      "file_type": "code",
-      "norm_label": "authcontexttype",
-      "source_file": "src/context/AuthContext.tsx",
-      "source_location": "L6"
-    },
-    {
-      "id": "src_types_spmb_adminprofile",
-      "label": "AdminProfile",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "AuthContext.tsx",
-      "file_type": "code",
-      "norm_label": "adminprofile",
-      "source_file": "src/types/spmb.ts",
-      "source_location": "L14"
     },
     {
       "id": "src_components_common_errorboundary_props",
@@ -1146,18 +1146,6 @@
       "source_location": "L20"
     },
     {
-      "id": "src_pages_admin_admindashboardpage_admindashboardpage",
-      "label": "AdminDashboardPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "utils.ts",
-      "file_type": "code",
-      "norm_label": "admindashboardpage()",
-      "source_file": "src/pages/admin/AdminDashboardPage.tsx",
-      "source_location": "L23"
-    },
-    {
       "id": "src_pages_admin_adminmajorspage_adminmajorspage",
       "label": "AdminMajorsPage()",
       "_callable": true,
@@ -1179,7 +1167,7 @@
       "file_type": "code",
       "norm_label": "adminsettingspage()",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L61"
+      "source_location": "L56"
     },
     {
       "id": "src_pages_admin_adminsettingspage_formatindonesiandatetime",
@@ -1191,7 +1179,7 @@
       "file_type": "code",
       "norm_label": "formatindonesiandatetime()",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L44"
+      "source_location": "L39"
     },
     {
       "id": "src_pages_admin_adminsettingspage_fromdatetimelocal",
@@ -1203,7 +1191,7 @@
       "file_type": "code",
       "norm_label": "fromdatetimelocal()",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L38"
+      "source_location": "L33"
     },
     {
       "id": "src_pages_admin_adminsettingspage_todatetimelocal",
@@ -1215,7 +1203,7 @@
       "file_type": "code",
       "norm_label": "todatetimelocal()",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L30"
+      "source_location": "L25"
     },
     {
       "id": "src_pages_admin_adminsourceschoolspage_adminsourceschoolspage",
@@ -1470,16 +1458,124 @@
       "source_location": "L6"
     },
     {
+      "id": "src_components_registration_registrationcardpdf_registrationcardpdf",
+      "label": "RegistrationCardPDF()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "registrationcardpdf()",
+      "source_file": "src/components/registration/RegistrationCardPDF.tsx",
+      "source_location": "L16"
+    },
+    {
+      "id": "src_components_registration_registrationsuccesscard_registrationsuccesscard",
+      "label": "RegistrationSuccessCard()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "registrationsuccesscard()",
+      "source_file": "src/components/registration/RegistrationSuccessCard.tsx",
+      "source_location": "L25"
+    },
+    {
+      "id": "src_lib_pdfgenerator_exportelementtopdf",
+      "label": "exportElementToPdf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "exportelementtopdf()",
+      "source_file": "src/lib/pdfGenerator.ts",
+      "source_location": "L13"
+    },
+    {
       "id": "src_pages_public_registrationclosedpage_registrationclosedpage",
       "label": "RegistrationClosedPage()",
       "_callable": true,
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "registrationclosedpage()",
       "source_file": "src/pages/public/RegistrationClosedPage.tsx",
       "source_location": "L12"
+    },
+    {
+      "id": "src_pages_registrationcardpage_registrationcardpage",
+      "label": "RegistrationCardPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "registrationcardpage()",
+      "source_file": "src/pages/RegistrationCardPage.tsx",
+      "source_location": "L20"
+    },
+    {
+      "id": "src_components_admin_adminsecretloginmodal_adminsecretloginmodal",
+      "label": "AdminSecretLoginModal()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "adminsecretloginmodal()",
+      "source_file": "src/components/admin/AdminSecretLoginModal.tsx",
+      "source_location": "L17"
+    },
+    {
+      "id": "src_components_admin_protectedroute_protectedroute",
+      "label": "ProtectedRoute()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "protectedroute()",
+      "source_file": "src/components/admin/ProtectedRoute.tsx",
+      "source_location": "L6"
+    },
+    {
+      "id": "src_context_authcontext_authprovider",
+      "label": "AuthProvider()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "authprovider()",
+      "source_file": "src/context/AuthContext.tsx",
+      "source_location": "L18"
+    },
+    {
+      "id": "src_context_authcontext_useauth",
+      "label": "useAuth()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "useauth()",
+      "source_file": "src/context/AuthContext.tsx",
+      "source_location": "L275"
+    },
+    {
+      "id": "src_hooks_useregistrationstatus_useregistrationstatus",
+      "label": "useRegistrationStatus()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "useregistrationstatus()",
+      "source_file": "src/hooks/useRegistrationStatus.ts",
+      "source_location": "L15"
     },
     {
       "id": "src_lib_supabase_getstoragepublicurl",
@@ -1518,6 +1614,30 @@
       "source_location": "L34"
     },
     {
+      "id": "src_pages_admin_admindashboardpage_admindashboardpage",
+      "label": "AdminDashboardPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "admindashboardpage()",
+      "source_file": "src/pages/admin/AdminDashboardPage.tsx",
+      "source_location": "L23"
+    },
+    {
+      "id": "src_pages_admin_loginpage_loginpage",
+      "label": "LoginPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "loginpage()",
+      "source_file": "src/pages/admin/LoginPage.tsx",
+      "source_location": "L11"
+    },
+    {
       "id": "src_services_adminservice_calculatedailytrend",
       "label": "calculateDailyTrend()",
       "_callable": true,
@@ -1528,54 +1648,6 @@
       "norm_label": "calculatedailytrend()",
       "source_file": "src/services/adminService.ts",
       "source_location": "L50"
-    },
-    {
-      "id": "src_components_registration_registrationcardpdf_registrationcardpdf",
-      "label": "RegistrationCardPDF()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "School",
-      "file_type": "code",
-      "norm_label": "registrationcardpdf()",
-      "source_file": "src/components/registration/RegistrationCardPDF.tsx",
-      "source_location": "L16"
-    },
-    {
-      "id": "src_components_registration_registrationsuccesscard_registrationsuccesscard",
-      "label": "RegistrationSuccessCard()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "School",
-      "file_type": "code",
-      "norm_label": "registrationsuccesscard()",
-      "source_file": "src/components/registration/RegistrationSuccessCard.tsx",
-      "source_location": "L25"
-    },
-    {
-      "id": "src_lib_pdfgenerator_exportelementtopdf",
-      "label": "exportElementToPdf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "School",
-      "file_type": "code",
-      "norm_label": "exportelementtopdf()",
-      "source_file": "src/lib/pdfGenerator.ts",
-      "source_location": "L13"
-    },
-    {
-      "id": "src_pages_registrationcardpage_registrationcardpage",
-      "label": "RegistrationCardPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "School",
-      "file_type": "code",
-      "norm_label": "registrationcardpage()",
-      "source_file": "src/pages/RegistrationCardPage.tsx",
-      "source_location": "L20"
     },
     {
       "id": "src_components_admin_studentdetail_majorchoicestab_majorchoicestab",
@@ -1698,66 +1770,6 @@
       "source_location": "L4"
     },
     {
-      "id": "src_components_admin_adminsecretloginmodal_adminsecretloginmodal",
-      "label": "AdminSecretLoginModal()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "AuthContext.tsx",
-      "file_type": "code",
-      "norm_label": "adminsecretloginmodal()",
-      "source_file": "src/components/admin/AdminSecretLoginModal.tsx",
-      "source_location": "L17"
-    },
-    {
-      "id": "src_components_admin_protectedroute_protectedroute",
-      "label": "ProtectedRoute()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "AuthContext.tsx",
-      "file_type": "code",
-      "norm_label": "protectedroute()",
-      "source_file": "src/components/admin/ProtectedRoute.tsx",
-      "source_location": "L6"
-    },
-    {
-      "id": "src_context_authcontext_authprovider",
-      "label": "AuthProvider()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "AuthContext.tsx",
-      "file_type": "code",
-      "norm_label": "authprovider()",
-      "source_file": "src/context/AuthContext.tsx",
-      "source_location": "L18"
-    },
-    {
-      "id": "src_context_authcontext_useauth",
-      "label": "useAuth()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "AuthContext.tsx",
-      "file_type": "code",
-      "norm_label": "useauth()",
-      "source_file": "src/context/AuthContext.tsx",
-      "source_location": "L275"
-    },
-    {
-      "id": "src_pages_admin_loginpage_loginpage",
-      "label": "LoginPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "AuthContext.tsx",
-      "file_type": "code",
-      "norm_label": "loginpage()",
-      "source_file": "src/pages/admin/LoginPage.tsx",
-      "source_location": "L13"
-    },
-    {
       "id": "src_components_admin_adminlayout_adminlayout",
       "label": "AdminLayout()",
       "_callable": true,
@@ -1767,7 +1779,7 @@
       "file_type": "code",
       "norm_label": "adminlayout()",
       "source_file": "src/components/admin/AdminLayout.tsx",
-      "source_location": "L26"
+      "source_location": "L24"
     },
     {
       "id": "src_components_common_faqsection_faqsection",
@@ -1960,18 +1972,6 @@
       "norm_label": "usetheme()",
       "source_file": "src/context/ThemeContext.tsx",
       "source_location": "L48"
-    },
-    {
-      "id": "src_hooks_useregistrationstatus_useregistrationstatus",
-      "label": "useRegistrationStatus()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "button.tsx",
-      "file_type": "code",
-      "norm_label": "useregistrationstatus()",
-      "source_file": "src/hooks/useRegistrationStatus.ts",
-      "source_location": "L15"
     },
     {
       "id": "src_pages_homepage_homepage",
@@ -2334,17 +2334,6 @@
       "source_location": "L1"
     },
     {
-      "id": "src_pages_admin_admindashboardpage",
-      "label": "AdminDashboardPage.tsx",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "utils.ts",
-      "file_type": "code",
-      "norm_label": "admindashboardpage.tsx",
-      "source_file": "src/pages/admin/AdminDashboardPage.tsx",
-      "source_location": "L1"
-    },
-    {
       "id": "src_pages_admin_adminmajorspage",
       "label": "AdminMajorsPage.tsx",
       "_origin": "ast",
@@ -2486,17 +2475,6 @@
       "norm_label": "adminannouncementspage",
       "source_file": "src/App.tsx",
       "source_location": "L61"
-    },
-    {
-      "id": "src_app_admindashboardpage",
-      "label": "AdminDashboardPage",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "App.tsx",
-      "file_type": "code",
-      "norm_label": "admindashboardpage",
-      "source_file": "src/App.tsx",
-      "source_location": "L55"
     },
     {
       "id": "src_app_adminmajorspage",
@@ -2723,21 +2701,65 @@
       "label": "RegistrationPage",
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "registrationpage",
       "source_file": "src/App.tsx",
       "source_location": "L48"
     },
     {
+      "id": "src_components_registration_registrationcardpdf",
+      "label": "RegistrationCardPDF.tsx",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "registrationcardpdf.tsx",
+      "source_file": "src/components/registration/RegistrationCardPDF.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_components_registration_registrationsuccesscard",
+      "label": "RegistrationSuccessCard.tsx",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "registrationsuccesscard.tsx",
+      "source_file": "src/components/registration/RegistrationSuccessCard.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_lib_pdfgenerator",
+      "label": "pdfGenerator.ts",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "pdfgenerator.ts",
+      "source_file": "src/lib/pdfGenerator.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "src_pages_public_registrationclosedpage",
       "label": "RegistrationClosedPage.tsx",
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "registrationclosedpage.tsx",
       "source_file": "src/pages/public/RegistrationClosedPage.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_pages_registrationcardpage",
+      "label": "RegistrationCardPage.tsx",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "registrationcardpage.tsx",
+      "source_file": "src/pages/RegistrationCardPage.tsx",
       "source_location": "L1"
     },
     {
@@ -2745,7 +2767,7 @@
       "label": "RegistrationPage.tsx",
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "registrationpage.tsx",
       "source_file": "src/pages/RegistrationPage.tsx",
@@ -2756,7 +2778,7 @@
       "label": "INITIAL_REPORT_SCORES",
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "initial_report_scores",
       "source_file": "src/pages/RegistrationPage.tsx",
@@ -2767,7 +2789,7 @@
       "label": "WIZARD_STEPS",
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "wizard_steps",
       "source_file": "src/pages/RegistrationPage.tsx",
@@ -2778,7 +2800,7 @@
       "label": "registrationSchema.ts",
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "registrationschema.ts",
       "source_file": "src/schemas/registrationSchema.ts",
@@ -2789,7 +2811,7 @@
       "label": "achievementItemSchema",
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "achievementitemschema",
       "source_file": "src/schemas/registrationSchema.ts",
@@ -2800,7 +2822,7 @@
       "label": "agreementSchema",
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "agreementschema",
       "source_file": "src/schemas/registrationSchema.ts",
@@ -2811,7 +2833,7 @@
       "label": "documentsSchema",
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "documentsschema",
       "source_file": "src/schemas/registrationSchema.ts",
@@ -2822,7 +2844,7 @@
       "label": "majorChoiceSchema",
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "majorchoiceschema",
       "source_file": "src/schemas/registrationSchema.ts",
@@ -2833,7 +2855,7 @@
       "label": "parentDataSchema",
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "parentdataschema",
       "source_file": "src/schemas/registrationSchema.ts",
@@ -2844,7 +2866,7 @@
       "label": "personalDataSchema",
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "personaldataschema",
       "source_file": "src/schemas/registrationSchema.ts",
@@ -2855,7 +2877,7 @@
       "label": "reportScoreItemSchema",
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "reportscoreitemschema",
       "source_file": "src/schemas/registrationSchema.ts",
@@ -2866,22 +2888,121 @@
       "label": "reportScoresSchema",
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "reportscoresschema",
       "source_file": "src/schemas/registrationSchema.ts",
       "source_location": "L67"
     },
     {
+      "id": "src_services_studentservice",
+      "label": "studentService.ts",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "studentservice.ts",
+      "source_file": "src/services/studentService.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_services_studentservice_studentservice",
+      "label": "studentService",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "studentservice",
+      "source_file": "src/services/studentService.ts",
+      "source_location": "L202"
+    },
+    {
+      "id": "src_types_spmb",
+      "label": "spmb.ts",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "spmb.ts",
+      "source_file": "src/types/spmb.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_types_spmb_achievement_points",
+      "label": "ACHIEVEMENT_POINTS",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "spmb.ts",
+      "file_type": "code",
+      "norm_label": "achievement_points",
+      "source_file": "src/types/spmb.ts",
+      "source_location": "L88"
+    },
+    {
       "id": "src_types_spmb_subject_list",
       "label": "SUBJECT_LIST",
       "_origin": "ast",
       "community": 10,
-      "community_name": "RegistrationPage.tsx",
+      "community_name": "spmb.ts",
       "file_type": "code",
       "norm_label": "subject_list",
       "source_file": "src/types/spmb.ts",
       "source_location": "L80"
+    },
+    {
+      "id": "src_app_admindashboardpage",
+      "label": "AdminDashboardPage",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "admindashboardpage",
+      "source_file": "src/App.tsx",
+      "source_location": "L55"
+    },
+    {
+      "id": "src_components_admin_protectedroute",
+      "label": "ProtectedRoute.tsx",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "protectedroute.tsx",
+      "source_file": "src/components/admin/ProtectedRoute.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_context_authcontext",
+      "label": "AuthContext.tsx",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "authcontext.tsx",
+      "source_file": "src/context/AuthContext.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_context_authcontext_authcontext",
+      "label": "AuthContext",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "authcontext",
+      "source_file": "src/context/AuthContext.tsx",
+      "source_location": "L16"
+    },
+    {
+      "id": "src_hooks_useauth",
+      "label": "useAuth.ts",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "useauth.ts",
+      "source_file": "src/hooks/useAuth.ts",
+      "source_location": "L1"
     },
     {
       "id": "src_hooks_useregistrationstatus",
@@ -2915,6 +3036,17 @@
       "norm_label": "supabase",
       "source_file": "src/lib/supabase.ts",
       "source_location": "L15"
+    },
+    {
+      "id": "src_pages_admin_admindashboardpage",
+      "label": "AdminDashboardPage.tsx",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "admindashboardpage.tsx",
+      "source_file": "src/pages/admin/AdminDashboardPage.tsx",
+      "source_location": "L1"
     },
     {
       "id": "src_services_adminservice",
@@ -3019,8 +3151,8 @@
       "id": "src_services_selectionservice",
       "label": "selectionService.ts",
       "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
+      "community": 11,
+      "community_name": "adminService.ts",
       "file_type": "code",
       "norm_label": "selectionservice.ts",
       "source_file": "src/services/selectionService.ts",
@@ -3030,8 +3162,8 @@
       "id": "src_services_selectionservice_selectionservice",
       "label": "selectionService",
       "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
+      "community": 11,
+      "community_name": "adminService.ts",
       "file_type": "code",
       "norm_label": "selectionservice",
       "source_file": "src/services/selectionService.ts",
@@ -3041,23 +3173,71 @@
       "id": "src_services_studentservice_mockstudentstore",
       "label": "mockStudentStore",
       "_origin": "ast",
-      "community": 12,
-      "community_name": "spmb.ts",
+      "community": 11,
+      "community_name": "adminService.ts",
       "file_type": "code",
       "norm_label": "mockstudentstore",
       "source_file": "src/services/studentService.ts",
       "source_location": "L8"
     },
     {
-      "id": "src_types_spmb",
-      "label": "spmb.ts",
+      "id": "src_types_database",
+      "label": "database.ts",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "database.ts",
+      "source_file": "src/types/database.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "agents_skills_design_taste_frontend_skill_7_dial_definitions_technical_reference",
+      "label": "7. DIAL DEFINITIONS (Technical Reference)",
       "_origin": "ast",
       "community": 12,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "spmb.ts",
-      "source_file": "src/types/spmb.ts",
-      "source_location": "L1"
+      "community_name": "7. DIAL DEFINITIONS (Technical Reference)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "7. dial definitions (technical reference)",
+      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
+      "source_location": "L552"
+    },
+    {
+      "id": "agents_skills_design_taste_frontend_skill_design_variance_level_1_10",
+      "label": "DESIGN_VARIANCE (Level 1-10)",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "7. DIAL DEFINITIONS (Technical Reference)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "design_variance (level 1-10)",
+      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
+      "source_location": "L554"
+    },
+    {
+      "id": "agents_skills_design_taste_frontend_skill_motion_intensity_level_1_10",
+      "label": "MOTION_INTENSITY (Level 1-10)",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "7. DIAL DEFINITIONS (Technical Reference)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "motion_intensity (level 1-10)",
+      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
+      "source_location": "L560"
+    },
+    {
+      "id": "agents_skills_design_taste_frontend_skill_visual_density_level_1_10",
+      "label": "VISUAL_DENSITY (Level 1-10)",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "7. DIAL DEFINITIONS (Technical Reference)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "visual_density (level 1-10)",
+      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
+      "source_location": "L565"
     },
     {
       "id": "readme",
@@ -3463,50 +3643,6 @@
       "source_location": "L5"
     },
     {
-      "id": "src_components_registration_registrationcardpdf",
-      "label": "RegistrationCardPDF.tsx",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "School",
-      "file_type": "code",
-      "norm_label": "registrationcardpdf.tsx",
-      "source_file": "src/components/registration/RegistrationCardPDF.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_components_registration_registrationsuccesscard",
-      "label": "RegistrationSuccessCard.tsx",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "School",
-      "file_type": "code",
-      "norm_label": "registrationsuccesscard.tsx",
-      "source_file": "src/components/registration/RegistrationSuccessCard.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_lib_pdfgenerator",
-      "label": "pdfGenerator.ts",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "School",
-      "file_type": "code",
-      "norm_label": "pdfgenerator.ts",
-      "source_file": "src/lib/pdfGenerator.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_pages_registrationcardpage",
-      "label": "RegistrationCardPage.tsx",
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "School",
-      "file_type": "code",
-      "norm_label": "registrationcardpage.tsx",
-      "source_file": "src/pages/RegistrationCardPage.tsx",
-      "source_location": "L1"
-    },
-    {
       "id": "agents_skills_design_taste_frontend_skill_4_10_quotes_testimonials",
       "label": "4.10 Quotes & Testimonials",
       "_origin": "ast",
@@ -3795,6 +3931,54 @@
       "source_location": "L910"
     },
     {
+      "id": "agents_skills_design_taste_frontend_skill_1_a_dial_inference_design_read_dial_values",
+      "label": "1.A Dial Inference (design read \u2192 dial values)",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1.a dial inference (design read \u2192 dial values)",
+      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
+      "source_location": "L53"
+    },
+    {
+      "id": "agents_skills_design_taste_frontend_skill_1_b_use_case_presets",
+      "label": "1.B Use-Case Presets",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1.b use-case presets",
+      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
+      "source_location": "L64"
+    },
+    {
+      "id": "agents_skills_design_taste_frontend_skill_1_c_how_the_dials_drive_output",
+      "label": "1.C How the Dials Drive Output",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1.c how the dials drive output",
+      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
+      "source_location": "L77"
+    },
+    {
+      "id": "agents_skills_design_taste_frontend_skill_1_the_three_dials_core_configuration",
+      "label": "1. THE THREE DIALS (Core Configuration)",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. the three dials (core configuration)",
+      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
+      "source_location": "L43"
+    },
+    {
       "id": "agents_skills_design_taste_frontend_skill_2_a_when_to_reach_for_a_real_design_system_use_official_packages",
       "label": "2.A When to reach for a real design system (use official packages)",
       "_origin": "ast",
@@ -3831,42 +4015,6 @@
       "source_location": "L82"
     },
     {
-      "id": "agents_skills_design_taste_frontend_skill_7_dial_definitions_technical_reference",
-      "label": "7. DIAL DEFINITIONS (Technical Reference)",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "7. dial definitions (technical reference)",
-      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
-      "source_location": "L552"
-    },
-    {
-      "id": "agents_skills_design_taste_frontend_skill_design_variance_level_1_10",
-      "label": "DESIGN_VARIANCE (Level 1-10)",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "design_variance (level 1-10)",
-      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
-      "source_location": "L554"
-    },
-    {
-      "id": "agents_skills_design_taste_frontend_skill_motion_intensity_level_1_10",
-      "label": "MOTION_INTENSITY (Level 1-10)",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "motion_intensity (level 1-10)",
-      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
-      "source_location": "L560"
-    },
-    {
       "id": "agents_skills_design_taste_frontend_skill_tasteskill_anti_slop_frontend_skill",
       "label": "tasteskill: Anti-Slop Frontend Skill",
       "_origin": "ast",
@@ -3877,18 +4025,6 @@
       "norm_label": "tasteskill: anti-slop frontend skill",
       "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
       "source_location": "L6"
-    },
-    {
-      "id": "agents_skills_design_taste_frontend_skill_visual_density_level_1_10",
-      "label": "VISUAL_DENSITY (Level 1-10)",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "visual_density (level 1-10)",
-      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
-      "source_location": "L565"
     },
     {
       "id": "tsconfig_node",
@@ -4375,50 +4511,6 @@
       "source_location": "L1"
     },
     {
-      "id": "src_services_studentservice",
-      "label": "studentService.ts",
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "studentService.ts",
-      "file_type": "code",
-      "norm_label": "studentservice.ts",
-      "source_file": "src/services/studentService.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_services_studentservice_studentservice",
-      "label": "studentService",
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "studentService.ts",
-      "file_type": "code",
-      "norm_label": "studentservice",
-      "source_file": "src/services/studentService.ts",
-      "source_location": "L202"
-    },
-    {
-      "id": "src_types_database",
-      "label": "database.ts",
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "studentService.ts",
-      "file_type": "code",
-      "norm_label": "database.ts",
-      "source_file": "src/types/database.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_types_spmb_achievement_points",
-      "label": "ACHIEVEMENT_POINTS",
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "studentService.ts",
-      "file_type": "code",
-      "norm_label": "achievement_points",
-      "source_file": "src/types/spmb.ts",
-      "source_location": "L88"
-    },
-    {
       "id": "agents_skills_design_taste_frontend_skill_9_a_visual_css",
       "label": "9.A Visual & CSS",
       "_origin": "ast",
@@ -4765,50 +4857,6 @@
       "norm_label": "6. performance & accessibility guardrails",
       "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
       "source_location": "L519"
-    },
-    {
-      "id": "src_components_admin_protectedroute",
-      "label": "ProtectedRoute.tsx",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "AuthContext.tsx",
-      "file_type": "code",
-      "norm_label": "protectedroute.tsx",
-      "source_file": "src/components/admin/ProtectedRoute.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_context_authcontext",
-      "label": "AuthContext.tsx",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "AuthContext.tsx",
-      "file_type": "code",
-      "norm_label": "authcontext.tsx",
-      "source_file": "src/context/AuthContext.tsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_context_authcontext_authcontext",
-      "label": "AuthContext",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "AuthContext.tsx",
-      "file_type": "code",
-      "norm_label": "authcontext",
-      "source_file": "src/context/AuthContext.tsx",
-      "source_location": "L16"
-    },
-    {
-      "id": "src_hooks_useauth",
-      "label": "useAuth.ts",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "AuthContext.tsx",
-      "file_type": "code",
-      "norm_label": "useauth.ts",
-      "source_file": "src/hooks/useAuth.ts",
-      "source_location": "L1"
     },
     {
       "id": "agents_skills_design_taste_frontend_skill_0_a_read_these_signals_first",
@@ -5357,54 +5405,6 @@
       "norm_label": "schoolservice",
       "source_file": "src/services/schoolService.ts",
       "source_location": "L80"
-    },
-    {
-      "id": "agents_skills_design_taste_frontend_skill_1_a_dial_inference_design_read_dial_values",
-      "label": "1.A Dial Inference (design read \u2192 dial values)",
-      "_origin": "ast",
-      "community": 30,
-      "community_name": "1. THE THREE DIALS (Core Configuration)",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1.a dial inference (design read \u2192 dial values)",
-      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
-      "source_location": "L53"
-    },
-    {
-      "id": "agents_skills_design_taste_frontend_skill_1_b_use_case_presets",
-      "label": "1.B Use-Case Presets",
-      "_origin": "ast",
-      "community": 30,
-      "community_name": "1. THE THREE DIALS (Core Configuration)",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1.b use-case presets",
-      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
-      "source_location": "L64"
-    },
-    {
-      "id": "agents_skills_design_taste_frontend_skill_1_c_how_the_dials_drive_output",
-      "label": "1.C How the Dials Drive Output",
-      "_origin": "ast",
-      "community": 30,
-      "community_name": "1. THE THREE DIALS (Core Configuration)",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1.c how the dials drive output",
-      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
-      "source_location": "L77"
-    },
-    {
-      "id": "agents_skills_design_taste_frontend_skill_1_the_three_dials_core_configuration",
-      "label": "1. THE THREE DIALS (Core Configuration)",
-      "_origin": "ast",
-      "community": 30,
-      "community_name": "1. THE THREE DIALS (Core Configuration)",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1. the three dials (core configuration)",
-      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
-      "source_location": "L43"
     },
     {
       "id": "src_vite_env_d",
@@ -7410,7 +7410,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/components/admin/AdminLayout.tsx",
-      "source_location": "L31",
+      "source_location": "L28",
       "weight": 1.0
     },
     {
@@ -7422,7 +7422,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/components/admin/AdminLayout.tsx",
-      "source_location": "L32",
+      "source_location": "L29",
       "weight": 1.0
     },
     {
@@ -7782,7 +7782,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/components/registration/RegistrationCardPDF.tsx",
-      "source_location": "L263",
+      "source_location": "L260",
       "weight": 1.0
     },
     {
@@ -7794,7 +7794,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/components/registration/RegistrationCardPDF.tsx",
-      "source_location": "L312",
+      "source_location": "L309",
       "weight": 1.0
     },
     {
@@ -8531,18 +8531,6 @@
     },
     {
       "source": "src_pages_admin_adminsettingspage_adminsettingspage",
-      "target": "src_lib_supabase_uploadstoragefile",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L182",
-      "weight": 1.0
-    },
-    {
-      "source": "src_pages_admin_adminsettingspage_adminsettingspage",
       "target": "src_pages_admin_adminsettingspage_formatindonesiandatetime",
       "relation": "calls",
       "_origin": "ast",
@@ -8550,7 +8538,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L335",
+      "source_location": "L260",
       "weight": 1.0
     },
     {
@@ -8562,7 +8550,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L415",
+      "source_location": "L340",
       "weight": 1.0
     },
     {
@@ -8574,7 +8562,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L417",
+      "source_location": "L342",
       "weight": 1.0
     },
     {
@@ -8658,7 +8646,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/pages/admin/LoginPage.tsx",
-      "source_location": "L20",
+      "source_location": "L17",
       "weight": 1.0
     },
     {
@@ -8670,7 +8658,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/pages/admin/LoginPage.tsx",
-      "source_location": "L23",
+      "source_location": "L20",
       "weight": 1.0
     },
     {
@@ -9899,42 +9887,6 @@
       "context": "import",
       "source_file": "src/components/admin/AdminLayout.tsx",
       "source_location": "L22",
-      "weight": 1.0
-    },
-    {
-      "source": "src_components_admin_adminlayout",
-      "target": "src_services_schoolservice_default_school",
-      "relation": "imports",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "src/components/admin/AdminLayout.tsx",
-      "source_location": "L23",
-      "weight": 1.0
-    },
-    {
-      "source": "src_components_admin_adminlayout",
-      "target": "src_services_schoolservice_schoolservice",
-      "relation": "imports",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "src/components/admin/AdminLayout.tsx",
-      "source_location": "L23",
-      "weight": 1.0
-    },
-    {
-      "source": "src_components_admin_adminlayout",
-      "target": "src_types_spmb_school",
-      "relation": "imports",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "src/components/admin/AdminLayout.tsx",
-      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -12202,7 +12154,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L22",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
@@ -12214,7 +12166,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L22",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
@@ -12226,7 +12178,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L22",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
@@ -12238,7 +12190,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L22",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
@@ -12250,7 +12202,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L22",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
@@ -12262,7 +12214,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L23",
+      "source_location": "L19",
       "weight": 1.0
     },
     {
@@ -12274,7 +12226,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L24",
+      "source_location": "L20",
       "weight": 1.0
     },
     {
@@ -12286,7 +12238,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L25",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -12298,7 +12250,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L25",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -12310,7 +12262,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L25",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -12322,19 +12274,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L26",
-      "weight": 1.0
-    },
-    {
-      "source": "src_pages_admin_adminsettingspage",
-      "target": "src_lib_supabase_uploadstoragefile",
-      "relation": "imports",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L27",
+      "source_location": "L22",
       "weight": 1.0
     },
     {
@@ -12346,7 +12286,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L28",
+      "source_location": "L23",
       "weight": 1.0
     },
     {
@@ -12899,42 +12839,6 @@
       "context": "import",
       "source_file": "src/pages/admin/AdminStudentsPage.tsx",
       "source_location": "L26",
-      "weight": 1.0
-    },
-    {
-      "source": "src_pages_admin_loginpage",
-      "target": "src_services_schoolservice_default_school",
-      "relation": "imports",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "src/pages/admin/LoginPage.tsx",
-      "source_location": "L10",
-      "weight": 1.0
-    },
-    {
-      "source": "src_pages_admin_loginpage",
-      "target": "src_services_schoolservice_schoolservice",
-      "relation": "imports",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "src/pages/admin/LoginPage.tsx",
-      "source_location": "L10",
-      "weight": 1.0
-    },
-    {
-      "source": "src_pages_admin_loginpage",
-      "target": "src_types_spmb_school",
-      "relation": "imports",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "src/pages/admin/LoginPage.tsx",
-      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -14882,30 +14786,6 @@
       "weight": 1.0
     },
     {
-      "source": "src_components_admin_adminlayout",
-      "target": "src_services_schoolservice",
-      "relation": "imports_from",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "src/components/admin/AdminLayout.tsx",
-      "source_location": "L23",
-      "weight": 1.0
-    },
-    {
-      "source": "src_components_admin_adminlayout",
-      "target": "src_types_spmb",
-      "relation": "imports_from",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "src/components/admin/AdminLayout.tsx",
-      "source_location": "L24",
-      "weight": 1.0
-    },
-    {
       "source": "src_components_admin_adminsecretloginmodal",
       "target": "src_lib_supabase",
       "relation": "imports_from",
@@ -16618,7 +16498,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L22",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
@@ -16630,7 +16510,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L23",
+      "source_location": "L19",
       "weight": 1.0
     },
     {
@@ -16642,7 +16522,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L24",
+      "source_location": "L20",
       "weight": 1.0
     },
     {
@@ -16654,7 +16534,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L25",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -16666,19 +16546,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L26",
-      "weight": 1.0
-    },
-    {
-      "source": "src_pages_admin_adminsettingspage",
-      "target": "src_lib_supabase",
-      "relation": "imports_from",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L27",
+      "source_location": "L22",
       "weight": 1.0
     },
     {
@@ -16690,7 +16558,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L28",
+      "source_location": "L23",
       "weight": 1.0
     },
     {
@@ -17015,30 +16883,6 @@
       "context": "import",
       "source_file": "src/pages/admin/AdminStudentsPage.tsx",
       "source_location": "L26",
-      "weight": 1.0
-    },
-    {
-      "source": "src_pages_admin_loginpage",
-      "target": "src_services_schoolservice",
-      "relation": "imports_from",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "src/pages/admin/LoginPage.tsx",
-      "source_location": "L10",
-      "weight": 1.0
-    },
-    {
-      "source": "src_pages_admin_loginpage",
-      "target": "src_types_spmb",
-      "relation": "imports_from",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "import",
-      "source_file": "src/pages/admin/LoginPage.tsx",
-      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -20807,7 +20651,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/admin/AdminLayout.tsx",
-      "source_location": "L26",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -22402,7 +22246,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L30",
+      "source_location": "L25",
       "weight": 1.0
     },
     {
@@ -22413,7 +22257,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L38",
+      "source_location": "L33",
       "weight": 1.0
     },
     {
@@ -22424,7 +22268,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L44",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -22435,7 +22279,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/admin/AdminSettingsPage.tsx",
-      "source_location": "L61",
+      "source_location": "L56",
       "weight": 1.0
     },
     {
@@ -22479,7 +22323,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/pages/admin/LoginPage.tsx",
-      "source_location": "L13",
+      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -23862,5 +23706,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "6176f4dad4c1ec878deac91e85f64aeae3944de4"
+  "built_at_commit": "8bdf77690cfa00b611153af51a0eaa8106347d6f"
 }

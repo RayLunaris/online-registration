@@ -160,6 +160,9 @@ export const RegistrationCardPDF: React.FC<Props> = ({
               alt="Logo Sekolah" 
               className="h-full w-full object-contain"
               crossOrigin="anonymous"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = '/images/logo-icon.png';
+              }}
             />
           </div>
           <div>
