@@ -368,32 +368,6 @@
       "source_location": "L195"
     },
     {
-      "id": "src_types_database_database",
-      "label": "Database",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "database",
-      "source_file": "src/types/database.ts",
-      "source_location": "L9"
-    },
-    {
-      "id": "src_types_database_json",
-      "label": "Json",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "json",
-      "source_file": "src/types/database.ts",
-      "source_location": "L1"
-    },
-    {
       "id": "src_types_spmb_achievement",
       "label": "Achievement",
       "_callable": true,
@@ -586,7 +560,7 @@
       "file_type": "code",
       "norm_label": "dailyregistrationtrend",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L14"
+      "source_location": "L15"
     },
     {
       "id": "src_services_adminservice_dashboardstats",
@@ -599,7 +573,7 @@
       "file_type": "code",
       "norm_label": "dashboardstats",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L23"
+      "source_location": "L24"
     },
     {
       "id": "src_services_selectionservice_majorselectiongroup",
@@ -639,6 +613,32 @@
       "norm_label": "selectionsummary",
       "source_file": "src/services/selectionService.ts",
       "source_location": "L10"
+    },
+    {
+      "id": "src_types_database_database",
+      "label": "Database",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "database",
+      "source_file": "src/types/database.ts",
+      "source_location": "L9"
+    },
+    {
+      "id": "src_types_database_json",
+      "label": "Json",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "json",
+      "source_file": "src/types/database.ts",
+      "source_location": "L1"
     },
     {
       "id": "src_types_spmb_adminprofile",
@@ -1266,6 +1266,18 @@
       "source_location": "L22"
     },
     {
+      "id": "src_pages_registrationpage_registrationpage",
+      "label": "RegistrationPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "utils.ts",
+      "file_type": "code",
+      "norm_label": "registrationpage()",
+      "source_file": "src/pages/RegistrationPage.tsx",
+      "source_location": "L71"
+    },
+    {
       "id": "src_pages_statuscheckpage_statuscheckpage",
       "label": "StatusCheckPage()",
       "_callable": true,
@@ -1626,18 +1638,6 @@
       "source_location": "L11"
     },
     {
-      "id": "src_pages_registrationpage_registrationpage",
-      "label": "RegistrationPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "adminService.ts",
-      "file_type": "code",
-      "norm_label": "registrationpage()",
-      "source_file": "src/pages/RegistrationPage.tsx",
-      "source_location": "L71"
-    },
-    {
       "id": "src_services_adminservice_calculatedailytrend",
       "label": "calculateDailyTrend()",
       "_callable": true,
@@ -1647,7 +1647,7 @@
       "file_type": "code",
       "norm_label": "calculatedailytrend()",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L49"
+      "source_location": "L50"
     },
     {
       "id": "src_components_admin_studentdetail_majorchoicestab_majorchoicestab",
@@ -2441,7 +2441,7 @@
       "file_type": "code",
       "norm_label": "adminservice",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L87"
+      "source_location": "L88"
     },
     {
       "id": "src_services_announcementservice_announcementservice",
@@ -2917,17 +2917,6 @@
       "source_location": "L202"
     },
     {
-      "id": "src_types_database",
-      "label": "database.ts",
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "spmb.ts",
-      "file_type": "code",
-      "norm_label": "database.ts",
-      "source_file": "src/types/database.ts",
-      "source_location": "L1"
-    },
-    {
       "id": "src_types_spmb",
       "label": "spmb.ts",
       "_origin": "ast",
@@ -3079,7 +3068,7 @@
       "file_type": "code",
       "norm_label": "indonesian_day_names",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L43"
+      "source_location": "L44"
     },
     {
       "id": "src_services_adminservice_indonesian_full_day_names",
@@ -3090,7 +3079,7 @@
       "file_type": "code",
       "norm_label": "indonesian_full_day_names",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L44"
+      "source_location": "L45"
     },
     {
       "id": "src_services_announcementservice",
@@ -3190,6 +3179,65 @@
       "norm_label": "mockstudentstore",
       "source_file": "src/services/studentService.ts",
       "source_location": "L8"
+    },
+    {
+      "id": "src_types_database",
+      "label": "database.ts",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "adminService.ts",
+      "file_type": "code",
+      "norm_label": "database.ts",
+      "source_file": "src/types/database.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "agents_skills_design_taste_frontend_skill_7_dial_definitions_technical_reference",
+      "label": "7. DIAL DEFINITIONS (Technical Reference)",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "7. DIAL DEFINITIONS (Technical Reference)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "7. dial definitions (technical reference)",
+      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
+      "source_location": "L552"
+    },
+    {
+      "id": "agents_skills_design_taste_frontend_skill_design_variance_level_1_10",
+      "label": "DESIGN_VARIANCE (Level 1-10)",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "7. DIAL DEFINITIONS (Technical Reference)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "design_variance (level 1-10)",
+      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
+      "source_location": "L554"
+    },
+    {
+      "id": "agents_skills_design_taste_frontend_skill_motion_intensity_level_1_10",
+      "label": "MOTION_INTENSITY (Level 1-10)",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "7. DIAL DEFINITIONS (Technical Reference)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "motion_intensity (level 1-10)",
+      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
+      "source_location": "L560"
+    },
+    {
+      "id": "agents_skills_design_taste_frontend_skill_visual_density_level_1_10",
+      "label": "VISUAL_DENSITY (Level 1-10)",
+      "_origin": "ast",
+      "community": 12,
+      "community_name": "7. DIAL DEFINITIONS (Technical Reference)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "visual_density (level 1-10)",
+      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
+      "source_location": "L565"
     },
     {
       "id": "readme",
@@ -3883,6 +3931,54 @@
       "source_location": "L910"
     },
     {
+      "id": "agents_skills_design_taste_frontend_skill_1_a_dial_inference_design_read_dial_values",
+      "label": "1.A Dial Inference (design read \u2192 dial values)",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1.a dial inference (design read \u2192 dial values)",
+      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
+      "source_location": "L53"
+    },
+    {
+      "id": "agents_skills_design_taste_frontend_skill_1_b_use_case_presets",
+      "label": "1.B Use-Case Presets",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1.b use-case presets",
+      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
+      "source_location": "L64"
+    },
+    {
+      "id": "agents_skills_design_taste_frontend_skill_1_c_how_the_dials_drive_output",
+      "label": "1.C How the Dials Drive Output",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1.c how the dials drive output",
+      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
+      "source_location": "L77"
+    },
+    {
+      "id": "agents_skills_design_taste_frontend_skill_1_the_three_dials_core_configuration",
+      "label": "1. THE THREE DIALS (Core Configuration)",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "tasteskill: Anti-Slop Frontend Skill",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. the three dials (core configuration)",
+      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
+      "source_location": "L43"
+    },
+    {
       "id": "agents_skills_design_taste_frontend_skill_2_a_when_to_reach_for_a_real_design_system_use_official_packages",
       "label": "2.A When to reach for a real design system (use official packages)",
       "_origin": "ast",
@@ -3919,42 +4015,6 @@
       "source_location": "L82"
     },
     {
-      "id": "agents_skills_design_taste_frontend_skill_7_dial_definitions_technical_reference",
-      "label": "7. DIAL DEFINITIONS (Technical Reference)",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "7. dial definitions (technical reference)",
-      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
-      "source_location": "L552"
-    },
-    {
-      "id": "agents_skills_design_taste_frontend_skill_design_variance_level_1_10",
-      "label": "DESIGN_VARIANCE (Level 1-10)",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "design_variance (level 1-10)",
-      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
-      "source_location": "L554"
-    },
-    {
-      "id": "agents_skills_design_taste_frontend_skill_motion_intensity_level_1_10",
-      "label": "MOTION_INTENSITY (Level 1-10)",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "motion_intensity (level 1-10)",
-      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
-      "source_location": "L560"
-    },
-    {
       "id": "agents_skills_design_taste_frontend_skill_tasteskill_anti_slop_frontend_skill",
       "label": "tasteskill: Anti-Slop Frontend Skill",
       "_origin": "ast",
@@ -3965,18 +4025,6 @@
       "norm_label": "tasteskill: anti-slop frontend skill",
       "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
       "source_location": "L6"
-    },
-    {
-      "id": "agents_skills_design_taste_frontend_skill_visual_density_level_1_10",
-      "label": "VISUAL_DENSITY (Level 1-10)",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "tasteskill: Anti-Slop Frontend Skill",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "visual_density (level 1-10)",
-      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
-      "source_location": "L565"
     },
     {
       "id": "tsconfig_node",
@@ -5357,54 +5405,6 @@
       "norm_label": "schoolservice",
       "source_file": "src/services/schoolService.ts",
       "source_location": "L80"
-    },
-    {
-      "id": "agents_skills_design_taste_frontend_skill_1_a_dial_inference_design_read_dial_values",
-      "label": "1.A Dial Inference (design read \u2192 dial values)",
-      "_origin": "ast",
-      "community": 30,
-      "community_name": "1. THE THREE DIALS (Core Configuration)",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1.a dial inference (design read \u2192 dial values)",
-      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
-      "source_location": "L53"
-    },
-    {
-      "id": "agents_skills_design_taste_frontend_skill_1_b_use_case_presets",
-      "label": "1.B Use-Case Presets",
-      "_origin": "ast",
-      "community": 30,
-      "community_name": "1. THE THREE DIALS (Core Configuration)",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1.b use-case presets",
-      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
-      "source_location": "L64"
-    },
-    {
-      "id": "agents_skills_design_taste_frontend_skill_1_c_how_the_dials_drive_output",
-      "label": "1.C How the Dials Drive Output",
-      "_origin": "ast",
-      "community": 30,
-      "community_name": "1. THE THREE DIALS (Core Configuration)",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1.c how the dials drive output",
-      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
-      "source_location": "L77"
-    },
-    {
-      "id": "agents_skills_design_taste_frontend_skill_1_the_three_dials_core_configuration",
-      "label": "1. THE THREE DIALS (Core Configuration)",
-      "_origin": "ast",
-      "community": 30,
-      "community_name": "1. THE THREE DIALS (Core Configuration)",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1. the three dials (core configuration)",
-      "source_file": ".agents/skills/design-taste-frontend/SKILL.md",
-      "source_location": "L43"
     },
     {
       "id": "src_vite_env_d",
@@ -9090,7 +9090,7 @@
       "confidence_score": 1.0,
       "context": "field",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L39",
+      "source_location": "L40",
       "weight": 1.0
     },
     {
@@ -14230,7 +14230,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -14242,7 +14242,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -14254,7 +14254,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -14266,7 +14266,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0
     },
     {
@@ -14278,7 +14278,19 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L12",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "src_services_adminservice",
+      "target": "src_types_database_database",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/services/adminService.ts",
+      "source_location": "L2",
       "weight": 1.0
     },
     {
@@ -14290,7 +14302,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L2",
+      "source_location": "L3",
       "weight": 1.0
     },
     {
@@ -14302,7 +14314,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L2",
+      "source_location": "L3",
       "weight": 1.0
     },
     {
@@ -14314,7 +14326,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L2",
+      "source_location": "L3",
       "weight": 1.0
     },
     {
@@ -14326,7 +14338,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L2",
+      "source_location": "L3",
       "weight": 1.0
     },
     {
@@ -14338,7 +14350,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L2",
+      "source_location": "L3",
       "weight": 1.0
     },
     {
@@ -14350,7 +14362,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L2",
+      "source_location": "L3",
       "weight": 1.0
     },
     {
@@ -17758,7 +17770,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -17770,7 +17782,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0
     },
     {
@@ -17782,7 +17794,19 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L12",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "src_services_adminservice",
+      "target": "src_types_database",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "src/services/adminService.ts",
+      "source_location": "L2",
       "weight": 1.0
     },
     {
@@ -17794,7 +17818,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "src/services/adminService.ts",
-      "source_location": "L2",
+      "source_location": "L3",
       "weight": 1.0
     },
     {
@@ -22607,7 +22631,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/services/adminService.ts",
-      "source_location": "L14",
+      "source_location": "L15",
       "weight": 1.0
     },
     {
@@ -22618,7 +22642,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/services/adminService.ts",
-      "source_location": "L23",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -22629,7 +22653,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/services/adminService.ts",
-      "source_location": "L43",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -22640,7 +22664,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/services/adminService.ts",
-      "source_location": "L44",
+      "source_location": "L45",
       "weight": 1.0
     },
     {
@@ -22651,7 +22675,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/services/adminService.ts",
-      "source_location": "L49",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -22662,7 +22686,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/services/adminService.ts",
-      "source_location": "L87",
+      "source_location": "L88",
       "weight": 1.0
     },
     {

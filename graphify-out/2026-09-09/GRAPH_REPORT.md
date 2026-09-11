@@ -1,11 +1,11 @@
 # Graph Report - Pendaftaran  (2026-09-09)
 
 ## Corpus Check
-- 111 files · ~185,238 words
+- 111 files · ~185,296 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 634 nodes · 1401 edges · 35 communities (31 shown, 4 thin omitted)
+- 634 nodes · 1403 edges · 35 communities (31 shown, 4 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
@@ -27,6 +27,7 @@
 - Major
 - spmb.ts
 - adminService.ts
+- 7. DIAL DEFINITIONS (Technical Reference)
 - 🎓 SPMB Online — Sistem Penerimaan Murid Baru Terpadu
 - components.json
 - 4. DESIGN ENGINEERING DIRECTIVES (Bias Correction)
@@ -41,7 +42,6 @@
 - 12. THE BLOCK LIBRARY (Contract - Implementations Land Here Iteratively)
 - 5. CONTEXT-AWARE PROACTIVITY
 - 8. DARK MODE PROTOCOL
-- 1. THE THREE DIALS (Core Configuration)
 - vite-env.d.ts
 - vercel.json
 - rules/graphify.md
@@ -77,8 +77,8 @@
 ## Communities (35 total, 4 thin omitted)
 
 ### Community 0 - "utils.ts"
-Cohesion: 0.11
-Nodes (43): AdminSecretLoginModalProps, SelectionPanel(), Props, StudentTable(), Props, StatusResultCard(), Alert, AlertDescription (+35 more)
+Cohesion: 0.10
+Nodes (44): AdminSecretLoginModalProps, SelectionPanel(), Props, StudentTable(), Props, StatusResultCard(), Alert, AlertDescription (+36 more)
 
 ### Community 1 - "App.tsx"
 Cohesion: 0.06
@@ -118,11 +118,15 @@ Nodes (14): MajorsSectionProps, RankingSection(), LeaderboardTable(), Leaderboar
 
 ### Community 10 - "spmb.ts"
 Cohesion: 0.06
-Nodes (51): RegistrationPage, AboutSectionProps, HeroSectionProps, Props, RegistrationCardPDF(), Props, RegistrationSuccessCard(), exportElementToPdf() (+43 more)
+Nodes (49): RegistrationPage, AboutSectionProps, HeroSectionProps, Props, RegistrationCardPDF(), Props, RegistrationSuccessCard(), exportElementToPdf() (+41 more)
 
 ### Community 11 - "adminService.ts"
 Cohesion: 0.09
-Nodes (32): AdminDashboardPage, AdminSecretLoginModal(), ProtectedRoute(), AuthContext, AuthContextType, AuthProvider(), useAuth(), RegistrationStatusResult (+24 more)
+Nodes (33): AdminDashboardPage, AdminSecretLoginModal(), ProtectedRoute(), AuthContext, AuthContextType, AuthProvider(), useAuth(), RegistrationStatusResult (+25 more)
+
+### Community 12 - "7. DIAL DEFINITIONS (Technical Reference)"
+Cohesion: 0.50
+Nodes (4): 7. DIAL DEFINITIONS (Technical Reference), DESIGN_VARIANCE (Level 1-10), MOTION_INTENSITY (Level 1-10), VISUAL_DENSITY (Level 1-10)
 
 ### Community 13 - "🎓 SPMB Online — Sistem Penerimaan Murid Baru Terpadu"
 Cohesion: 0.11
@@ -142,7 +146,7 @@ Nodes (10): 10. REFERENCE VOCABULARY (Pattern Names the Agent Should Know), Anim
 
 ### Community 18 - "tasteskill: Anti-Slop Frontend Skill"
 Cohesion: 0.20
-Nodes (10): 13. OUT OF SCOPE, 14. FINAL PRE-FLIGHT CHECK, 2.A When to reach for a real design system (use official packages), 2.B When the brief is an aesthetic, not a system, 2. BRIEF → DESIGN SYSTEM MAP, 7. DIAL DEFINITIONS (Technical Reference), DESIGN_VARIANCE (Level 1-10), MOTION_INTENSITY (Level 1-10) (+2 more)
+Nodes (10): 13. OUT OF SCOPE, 14. FINAL PRE-FLIGHT CHECK, 1.A Dial Inference (design read → dial values), 1.B Use-Case Presets, 1.C How the Dials Drive Output, 1. THE THREE DIALS (Core Configuration), 2.A When to reach for a real design system (use official packages), 2.B When the brief is an aesthetic, not a system (+2 more)
 
 ### Community 19 - "compilerOptions"
 Cohesion: 0.20
@@ -180,10 +184,6 @@ Nodes (5): 5.A Sticky-Stack - Canonical Skeleton, 5.B Horizontal-Pan - Canonical
 Cohesion: 0.40
 Nodes (5): 8.A Token Strategy (pick one, stick to it), 8.B Do Not Prescribe Specific Colors Here, 8.C Default Mode, 8.D Test in Both Modes Before Finishing, 8. DARK MODE PROTOCOL
 
-### Community 30 - "1. THE THREE DIALS (Core Configuration)"
-Cohesion: 0.50
-Nodes (4): 1.A Dial Inference (design read → dial values), 1.B Use-Case Presets, 1.C How the Dials Drive Output, 1. THE THREE DIALS (Core Configuration)
-
 ## Knowledge Gaps
 - **273 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+268 more)
   These have ≤1 connection - possible missing edges or undocumented components.
@@ -194,14 +194,14 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `cn()` connect `cn` to `utils.ts`, `Major`, `button.tsx`?**
   _High betweenness centrality (0.048) - this node is a cross-community bridge._
-- **Why does `tasteskill: Anti-Slop Frontend Skill` connect `tasteskill: Anti-Slop Frontend Skill` to `Appendix B - Canonical Sources (read these before reinventing)`, `4. DESIGN ENGINEERING DIRECTIVES (Bias Correction)`, `10. REFERENCE VOCABULARY (Pattern Names the Agent Should Know)`, `9. AI TELLS (Forbidden Patterns)`, `11. REDESIGN PROTOCOL`, `3. DEFAULT ARCHITECTURE & CONVENTIONS`, `6. PERFORMANCE & ACCESSIBILITY GUARDRAILS`, `0. BRIEF INFERENCE (Read the Room Before Anything Else)`, `12. THE BLOCK LIBRARY (Contract - Implementations Land Here Iteratively)`, `5. CONTEXT-AWARE PROACTIVITY`, `8. DARK MODE PROTOCOL`, `1. THE THREE DIALS (Core Configuration)`?**
+- **Why does `tasteskill: Anti-Slop Frontend Skill` connect `tasteskill: Anti-Slop Frontend Skill` to `Appendix B - Canonical Sources (read these before reinventing)`, `7. DIAL DEFINITIONS (Technical Reference)`, `4. DESIGN ENGINEERING DIRECTIVES (Bias Correction)`, `10. REFERENCE VOCABULARY (Pattern Names the Agent Should Know)`, `9. AI TELLS (Forbidden Patterns)`, `11. REDESIGN PROTOCOL`, `3. DEFAULT ARCHITECTURE & CONVENTIONS`, `6. PERFORMANCE & ACCESSIBILITY GUARDRAILS`, `0. BRIEF INFERENCE (Read the Room Before Anything Else)`, `12. THE BLOCK LIBRARY (Contract - Implementations Land Here Iteratively)`, `5. CONTEXT-AWARE PROACTIVITY`, `8. DARK MODE PROTOCOL`?**
   _High betweenness centrality (0.025) - this node is a cross-community bridge._
 - **Why does `Button` connect `button.tsx` to `utils.ts`, `App.tsx`, `cn`, `Major`, `spmb.ts`, `adminService.ts`?**
   _High betweenness centrality (0.016) - this node is a cross-community bridge._
 - **What connects `$schema`, `style`, `rsc` to the rest of the system?**
   _273 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `utils.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.10583446404341927 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.10316066725197541 - nodes in this community are weakly interconnected._
 - **Should `App.tsx` be split into smaller, more focused modules?**
   _Cohesion score 0.057692307692307696 - nodes in this community are weakly interconnected._
 - **Should `cn` be split into smaller, more focused modules?**

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { Lock, Mail, AlertCircle, ArrowLeft, ShieldCheck } from 'lucide-react';
+import { Lock, Mail, AlertCircle, ArrowLeft, ShieldCheck, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,7 +14,7 @@ export const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   
-  const { user, signIn } = useAuth();
+  const { user, isAdmin, signIn } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const configured = isSupabaseConfigured();
@@ -22,10 +22,10 @@ export const LoginPage: React.FC = () => {
   const from = (location.state as any)?.from?.pathname || '/admin';
 
   useEffect(() => {
-    if (user) {
+    if (user && isAdmin) {
       navigate(from, { replace: true });
     }
-  }, [user, navigate, from]);
+  }, [user, isAdmin, navigate, from]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,8 +85,9 @@ export const LoginPage: React.FC = () => {
 
           <CardContent className="space-y-4">
             {!configured && (
-              <div className="p-3 rounded-lg bg-teal-50 dark:bg-teal-950/60 border border-teal-200 dark:border-teal-800/60 text-xs text-teal-800 dark:text-teal-300">
-                💡 <strong>Mode Demo:</strong> Anda dapat memasukkan sembarang email & password untuk masuk ke mode simulasi admin.
+              <div className="p-3 rounded-lg bg-teal-50 dark:bg-teal-950/60 border border-teal-200 dark:border-teal-800/60 text-xs text-teal-800 dark:text-teal-300 flex items-start gap-2">
+                <Info className="h-4 w-4 text-teal-600 dark:text-teal-400 shrink-0 mt-0.5" />
+                <span><strong>Mode Demo:</strong> Anda dapat memasukkan sembarang email & password untuk masuk ke mode simulasi admin.</span>
               </div>
             )}
 

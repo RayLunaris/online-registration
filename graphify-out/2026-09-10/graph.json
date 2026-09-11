@@ -1539,7 +1539,7 @@
       "file_type": "code",
       "norm_label": "protectedroute()",
       "source_file": "src/components/admin/ProtectedRoute.tsx",
-      "source_location": "L6"
+      "source_location": "L5"
     },
     {
       "id": "src_context_authcontext_authprovider",
@@ -1563,7 +1563,7 @@
       "file_type": "code",
       "norm_label": "useauth()",
       "source_file": "src/context/AuthContext.tsx",
-      "source_location": "L275"
+      "source_location": "L250"
     },
     {
       "id": "src_hooks_useregistrationstatus_useregistrationstatus",
@@ -7458,7 +7458,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "src/components/admin/ProtectedRoute.tsx",
-      "source_location": "L7",
+      "source_location": "L6",
       "weight": 1.0
     },
     {
@@ -20684,7 +20684,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/components/admin/ProtectedRoute.tsx",
-      "source_location": "L6",
+      "source_location": "L5",
       "weight": 1.0
     },
     {
@@ -21850,7 +21850,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/context/AuthContext.tsx",
-      "source_location": "L275",
+      "source_location": "L250",
       "weight": 1.0
     },
     {

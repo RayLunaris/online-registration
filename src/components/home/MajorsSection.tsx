@@ -10,7 +10,8 @@ import {
   Building2, 
   BookOpen,
   Sparkles,
-  Briefcase
+  Briefcase,
+  X
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog } from '@/components/ui/dialog';
@@ -298,9 +299,10 @@ export const MajorsSection: React.FC<MajorsSectionProps> = ({ majors }) => {
                 <button 
                   type="button"
                   onClick={() => setSelectedMajorModal(null)}
-                  className="text-slate-400 hover:text-slate-700 dark:hover:text-white p-1 text-base font-bold rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                  className="text-slate-400 hover:text-slate-700 dark:hover:text-white p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                  aria-label="Tutup detail jurusan"
                 >
-                  ✕
+                  <X className="h-5 w-5" />
                 </button>
               </div>
 

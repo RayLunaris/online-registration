@@ -328,13 +328,16 @@ CREATE TRIGGER trg_recalc_score_achievement AFTER INSERT OR UPDATE OR DELETE ON 
 CREATE OR REPLACE FUNCTION public.fn_handle_new_admin_user()
 RETURNS TRIGGER AS $$
 BEGIN
-    INSERT INTO public.admin_profiles (user_id, full_name, role)
-    VALUES (
-        NEW.id,
-        COALESCE(NEW.raw_user_meta_data->>'full_name', 'Admin SPMB'),
-        COALESCE(NEW.raw_user_meta_data->>'role', 'admin')
-    )
-    ON CONFLICT (user_id) DO NOTHING;
+    -- Hanya buat profil admin jika user memiliki metadata role admin / super_admin / operator
+    IF NEW.raw_user_meta_data->>'role' IN ('super_admin', 'admin', 'operator') THEN
+        INSERT INTO public.admin_profiles (user_id, full_name, role)
+        VALUES (
+            NEW.id,
+            COALESCE(NEW.raw_user_meta_data->>'full_name', 'Admin SPMB'),
+            (NEW.raw_user_meta_data->>'role')::varchar
+        )
+        ON CONFLICT (user_id) DO NOTHING;
+    END IF;
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
@@ -782,7 +785,7 @@ BEGIN
         t.final_accepted_major_id,
         t.final_accepted_from_priority,
         t.total_score,
-        CASE WHEN t.final_accepted_from_priority = 1 THEN t.choice1_rank ELSE t.choice2_rank END,
+        CASE WHEN t.final_accepted_from_priority = 2 THEN t.choice2_rank ELSE t.choice1_rank END,
         t.final_status,
         CASE 
             WHEN t.final_accepted_from_priority = 1 THEN 'Diterima pada Pilihan 1 (Utama)'

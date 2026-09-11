@@ -21,8 +21,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [adminProfile, setAdminProfile] = useState<AdminProfile | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const fetchAdminProfile = async (userId: string, currentUser?: User | null) => {
-    if (!isSupabaseConfigured()) return;
+  const fetchAdminProfile = async (userId: string, currentUser?: User | null): Promise<AdminProfile | null> => {
+    if (!isSupabaseConfigured()) return null;
     try {
       const { data, error } = await supabase
         .from('admin_profiles')
@@ -49,31 +49,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setUser(null);
           setSession(null);
           setAdminProfile(null);
-          return;
+          return null;
         }
 
         console.error('Failed to fetch admin profile:', error.message);
-        return;
+        setAdminProfile(null);
+        return null;
       }
 
       if (data) {
-        setAdminProfile(data as AdminProfile);
-      } else {
-        // Fallback for valid authenticated users whose admin profile row hasn't been created yet
-        const activeUser = currentUser || user;
-        if (activeUser) {
-          setAdminProfile({
+        const profile = data as AdminProfile;
+        setAdminProfile(profile);
+        return profile;
+      }
+
+      // Check PostgreSQL is_admin() function as fallback verification
+      try {
+        const { data: isRpcAdmin } = await supabase.rpc('is_admin');
+        if (isRpcAdmin) {
+          const activeUser = currentUser || user;
+          const fallbackProfile: AdminProfile = {
             id: `profile-${userId}`,
             user_id: userId,
-            full_name: activeUser.user_metadata?.full_name || activeUser.email?.split('@')[0] || 'Admin SPMB',
-            role: (activeUser.user_metadata?.role as any) || 'admin',
+            full_name: activeUser?.user_metadata?.full_name || activeUser?.email?.split('@')[0] || 'Admin SPMB',
+            role: (activeUser?.user_metadata?.role as any) || 'admin',
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
-          });
+          };
+          setAdminProfile(fallbackProfile);
+          return fallbackProfile;
         }
+      } catch {
+        // is_admin RPC not available or failed
       }
+
+      // User does not exist in admin_profiles and is_admin() returned false
+      setAdminProfile(null);
+      return null;
     } catch (err) {
       console.error('Failed to fetch admin profile:', err);
+      setAdminProfile(null);
+      return null;
     }
   };
 
@@ -200,9 +216,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       if (data.session && data.user) {
+        const profile = await fetchAdminProfile(data.user.id, data.user);
+        if (!profile) {
+          // Reject login for non-admin accounts to protect admin portal
+          await supabase.auth.signOut();
+          setUser(null);
+          setSession(null);
+          setAdminProfile(null);
+          return { error: new Error('Akun ini tidak memiliki hak akses sebagai administrator.') };
+        }
+
         setSession(data.session);
         setUser(data.user);
-        await fetchAdminProfile(data.user.id, data.user);
       }
 
       return { error: null };
@@ -227,7 +252,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const isAdmin = Boolean(
     (!isSupabaseConfigured() && user) ||
-    (adminProfile && user)
+    (adminProfile && user && ['super_admin', 'admin', 'operator'].includes(adminProfile.role))
   );
 
   return (

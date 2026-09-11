@@ -36,9 +36,9 @@
     "semantic_hash": ""
   },
   "src/components/admin/AdminSecretLoginModal.tsx": {
-    "mtime": 1788435613.7527115,
-    "seen": 1788917049.5023835,
-    "ast_hash": "51ada04af28fe87dc6fc11cc2f022c10",
+    "mtime": 1788929828.1761332,
+    "seen": 1788929995.6995254,
+    "ast_hash": "73c58b68633e8b05154c62db49d97ccb",
     "semantic_hash": ""
   },
   "src/components/admin/ProtectedRoute.tsx": {
@@ -78,9 +78,9 @@
     "semantic_hash": ""
   },
   "src/components/common/Footer.tsx": {
-    "mtime": 1788435596.0184517,
-    "seen": 1788917049.502426,
-    "ast_hash": "fa2386e4925b13f06b263e22c3762a60",
+    "mtime": 1788929667.8426824,
+    "seen": 1788929995.7001595,
+    "ast_hash": "b0eecda6e0136b65cbc43f30e3833fcb",
     "semantic_hash": ""
   },
   "src/components/common/Navbar.tsx": {
@@ -96,9 +96,9 @@
     "semantic_hash": ""
   },
   "src/components/common/StatusResultCard.tsx": {
-    "mtime": 1788228754.7482293,
-    "seen": 1788917049.5024366,
-    "ast_hash": "1dc92c704f6a85ddd2cffc97ee376b5d",
+    "mtime": 1788929696.4442978,
+    "seen": 1788929995.7003682,
+    "ast_hash": "9743aeb061aa94aad9c7d8fb7f04ea39",
     "semantic_hash": ""
   },
   "src/components/home/AboutSection.tsx": {
@@ -150,9 +150,9 @@
     "semantic_hash": ""
   },
   "src/components/home/MajorsSection.tsx": {
-    "mtime": 1788401547.0882003,
-    "seen": 1788917049.5024679,
-    "ast_hash": "c7b521ef3bb2367a2440588e546f2d4d",
+    "mtime": 1788929719.2317882,
+    "seen": 1788929995.7012057,
+    "ast_hash": "b6c12fdb852dfecb431768ac52452755",
     "semantic_hash": ""
   },
   "src/components/home/RankingSection.tsx": {
@@ -450,9 +450,9 @@
     "semantic_hash": ""
   },
   "src/pages/admin/AdminSettingsPage.tsx": {
-    "mtime": 1788924510.8229847,
-    "seen": 1788924555.3538225,
-    "ast_hash": "2c41053f1b53ef0ca51b3a150c5ab2d3",
+    "mtime": 1788929747.4343953,
+    "seen": 1788929995.704366,
+    "ast_hash": "8e13221eec086d99f40377d033e8fb17",
     "semantic_hash": ""
   },
   "src/pages/admin/AdminSourceSchoolsPage.tsx": {
@@ -474,9 +474,9 @@
     "semantic_hash": ""
   },
   "src/pages/admin/LoginPage.tsx": {
-    "mtime": 1788224942.568951,
-    "seen": 1788917049.502646,
-    "ast_hash": "786b67cd629c6354d83b7afb0c02ab62",
+    "mtime": 1788929787.8692656,
+    "seen": 1788929995.7045088,
+    "ast_hash": "5d6ba6fdf53782ee9713de10508c4333",
     "semantic_hash": ""
   },
   "src/pages/public/LeaderboardPage.tsx": {

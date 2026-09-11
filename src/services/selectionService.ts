@@ -29,8 +29,8 @@ export interface RankedCandidate {
 
   // Choice 2 Evaluation
   choice2Major: Major | null;
-  choice2Rank: number | null; // Peringkat di antara seluruh siswa yang memilih jurusan ini sebagai Pilihan 2
-  choice2Stage2Rank: number | null; // Peringkat aktif pada tahap seleksi limpahan kuota
+  choice2Rank: number | null; // Peringkat aktif pada tahap seleksi limpahan sisa kuota (Stage-2 Runoff)
+  choice2Stage2Rank: number | null; // Alias kompatibilitas peringkat tahap 2
   choice2Status: 'accepted' | 'rejected' | 'not_applicable' | 'pending';
 
   // Final Decision
@@ -146,34 +146,26 @@ export const selectionService = {
       ch1AcceptedCounts.set(major.id, acceptedCount);
     });
 
-    // 3. TAHAP 2: Ranking seluruh pemilih Pilihan 2 dan alokasi sisa kuota
+    // 3. TAHAP 2: Ranking siswa Pilihan 2 yang tergeser dari Pilihan 1 (Stage 2 Runoff / Alokasi Sisa Kuota)
     activeMajors.forEach((major) => {
       const acceptedFromCh1 = ch1AcceptedCounts.get(major.id) || 0;
       const sisaKuota = Math.max(0, major.quota - acceptedFromCh1);
 
-      // A. Berikan peringkat Pilihan 2 kepada SELURUH siswa yang memilih jurusan ini sebagai Pilihan 2
-      const allChoice2Applicants = evaluatedPool.filter(
-        (item) => item.ch2Major && item.ch2Major.id === major.id
+      // Siswa yang qualify untuk alokasi sisa kuota (choice1_status = 'rejected')
+      const stage2Candidates = evaluatedPool.filter(
+        (item) => item.ch2Major && item.ch2Major.id === major.id && item.choice1Status === 'rejected'
       );
 
-      allChoice2Applicants.sort((a, b) => {
+      stage2Candidates.sort((a, b) => {
         if (b.totalScore !== a.totalScore) return b.totalScore - a.totalScore;
         if (b.avgReport !== a.avgReport) return b.avgReport - a.avgReport;
         if (b.achPoints !== a.achPoints) return b.achPoints - a.achPoints;
         return new Date(a.student.created_at).getTime() - new Date(b.student.created_at).getTime();
       });
 
-      allChoice2Applicants.forEach((app, idx) => {
-        app.choice2Rank = idx + 1;
-      });
-
-      // B. Siswa yang qualify untuk alokasi sisa kuota (choice1_status = 'rejected')
-      const stage2Candidates = allChoice2Applicants.filter(
-        (item) => item.choice1Status === 'rejected'
-      );
-
       stage2Candidates.forEach((app, idx) => {
         const stage2Rank = idx + 1;
+        app.choice2Rank = stage2Rank;
         app.choice2Stage2Rank = stage2Rank;
         if (sisaKuota > 0 && stage2Rank <= sisaKuota) {
           app.choice2Status = 'accepted';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Mail, AlertCircle, ShieldCheck, ExternalLink, ArrowRight } from 'lucide-react';
+import { Lock, Mail, AlertCircle, ShieldCheck, ExternalLink, ArrowRight, Info } from 'lucide-react';
 import { Dialog, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -70,8 +70,9 @@ export const AdminSecretLoginModal: React.FC<AdminSecretLoginModalProps> = ({
         </DialogHeader>
 
         {!configured && (
-          <div className="mb-4 p-2.5 rounded-lg bg-teal-50 border border-teal-200 text-xs text-teal-800">
-            💡 <strong>Mode Demo:</strong> Masukkan sembarang email & password untuk masuk mode simulasi.
+          <div className="mb-4 p-2.5 rounded-lg bg-teal-50 border border-teal-200 text-xs text-teal-800 flex items-start gap-2">
+            <Info className="h-4 w-4 text-teal-600 shrink-0 mt-0.5" />
+            <span><strong>Mode Demo:</strong> Masukkan sembarang email & password untuk masuk mode simulasi.</span>
           </div>
         )}
 

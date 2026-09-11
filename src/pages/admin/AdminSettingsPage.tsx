@@ -12,7 +12,8 @@ import {
   Power,
   CalendarClock,
   CalendarX,
-  AlertTriangle
+  AlertTriangle,
+  Info
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -351,7 +352,10 @@ export const AdminSettingsPage: React.FC = () => {
                 </div>
 
                 <div className="text-[11px] text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/40 p-3 rounded-lg border border-slate-100 dark:border-slate-800/60 leading-relaxed">
-                  <span className="font-semibold text-slate-700 dark:text-slate-300 block mb-0.5">💡 Logika Override:</span>
+                  <span className="font-semibold text-slate-700 dark:text-slate-300 block mb-0.5">
+                    <Info className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400 inline mr-1 -mt-0.5" />
+                    Logika Override:
+                  </span>
                   Admin tetap bisa membuka lagi meski tanggal otomatis sudah lewat, cukup dengan mengaktifkan toggle switch di atas.
                 </div>
               </div>

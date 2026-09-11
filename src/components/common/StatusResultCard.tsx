@@ -13,7 +13,10 @@ import {
   Clock,
   ShieldCheck,
   TrendingUp,
-  School as SchoolIcon
+  School as SchoolIcon,
+  BarChart3,
+  Check,
+  X
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -40,7 +43,7 @@ export const StatusResultCard: React.FC<Props> = ({ student, onResetSearch }) =>
 
   // Resolve Choice 1 & 2 Evaluations
   const ch1Quota = ch1Major?.quota || 72;
-  const ch1Rank = selRes?.choice1_rank || selRes?.rank || 1;
+  const ch1Rank = selRes?.choice1_rank || selRes?.rank || null;
   let ch1Status: 'accepted' | 'rejected' | 'pending' = selRes?.choice1_status || 'pending';
 
   if (!selRes?.choice1_status) {
@@ -230,7 +233,7 @@ export const StatusResultCard: React.FC<Props> = ({ student, onResetSearch }) =>
           >
             <div className="flex items-center gap-2.5">
               <div className="h-7 w-7 rounded-lg bg-teal-100 dark:bg-teal-950 text-teal-700 dark:text-teal-400 flex items-center justify-center font-bold text-xs">
-                📊
+                <BarChart3 className="h-4 w-4" />
               </div>
               <div>
                 <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
@@ -281,7 +284,11 @@ export const StatusResultCard: React.FC<Props> = ({ student, onResetSearch }) =>
                     <div className="flex justify-between text-slate-600 dark:text-slate-400">
                       <span>Posisi Peringkat:</span>
                       <span className="font-mono font-bold text-slate-900 dark:text-white">
-                        #{ch1Rank} <span className="text-slate-400 font-normal">dari {ch1Quota} kuota</span>
+                        {ch1Rank ? (
+                          <>#{ch1Rank} <span className="text-slate-400 font-normal">dari {ch1Quota} kuota</span></>
+                        ) : (
+                          <span className="text-slate-400 font-normal">—</span>
+                        )}
                       </span>
                     </div>
                   </div>
@@ -289,12 +296,14 @@ export const StatusResultCard: React.FC<Props> = ({ student, onResetSearch }) =>
                   <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between">
                     <span className="text-[11px] text-slate-500">Status Pilihan 1:</span>
                     {ch1Status === 'accepted' ? (
-                      <Badge className="bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold">
-                        ✓ Masuk Kuota Pilihan 1
+                      <Badge className="bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold gap-1">
+                        <Check className="h-3 w-3 inline" />
+                        <span>Masuk Kuota Pilihan 1</span>
                       </Badge>
                     ) : ch1Status === 'rejected' ? (
-                      <Badge className="bg-red-100 text-red-800 border-red-300 dark:bg-red-950 dark:text-red-300 text-[10px] font-bold">
-                        ✕ Tergeser (Melebihi Kuota)
+                      <Badge className="bg-red-100 text-red-800 border-red-300 dark:bg-red-950 dark:text-red-300 text-[10px] font-bold gap-1">
+                        <X className="h-3 w-3 inline" />
+                        <span>Tergeser (Melebihi Kuota)</span>
                       </Badge>
                     ) : (
                       <Badge className="bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 text-[10px]">
@@ -344,7 +353,7 @@ export const StatusResultCard: React.FC<Props> = ({ student, onResetSearch }) =>
                         <div className="flex justify-between text-slate-600 dark:text-slate-400">
                           <span>Peringkat Limpahan:</span>
                           <span className="font-mono font-bold text-slate-900 dark:text-white">
-                            #{ch2Rank || 1}
+                            {ch2Rank ? `#${ch2Rank}` : '—'}
                           </span>
                         </div>
                       </div>
@@ -352,12 +361,14 @@ export const StatusResultCard: React.FC<Props> = ({ student, onResetSearch }) =>
                       <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between">
                         <span className="text-[11px] text-slate-500">Status Pilihan 2:</span>
                         {ch2Status === 'accepted' ? (
-                          <Badge className="bg-indigo-100 text-indigo-800 border-indigo-300 dark:bg-indigo-950 dark:text-indigo-300 text-[10px] font-bold">
-                            ✓ Masuk Sisa Kuota Pilihan 2
+                          <Badge className="bg-indigo-100 text-indigo-800 border-indigo-300 dark:bg-indigo-950 dark:text-indigo-300 text-[10px] font-bold gap-1">
+                            <Check className="h-3 w-3 inline" />
+                            <span>Masuk Sisa Kuota Pilihan 2</span>
                           </Badge>
                         ) : ch2Status === 'rejected' ? (
-                          <Badge className="bg-red-100 text-red-800 border-red-300 dark:bg-red-950 dark:text-red-300 text-[10px] font-bold">
-                            ✕ Tidak Masuk Sisa Kuota
+                          <Badge className="bg-red-100 text-red-800 border-red-300 dark:bg-red-950 dark:text-red-300 text-[10px] font-bold gap-1">
+                            <X className="h-3 w-3 inline" />
+                            <span>Tidak Masuk Sisa Kuota</span>
                           </Badge>
                         ) : (
                           <Badge className="bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 text-[10px]">

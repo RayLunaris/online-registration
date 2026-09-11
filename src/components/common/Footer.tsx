@@ -19,7 +19,13 @@ import {
   Youtube,
   Twitter,
   MessageCircle,
-  Check
+  Check,
+  Zap,
+  Search,
+  Megaphone,
+  Calendar,
+  FileText,
+  Calculator
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -185,9 +191,9 @@ export const Footer: React.FC = () => {
               <li>
                 <Link 
                   to="/daftar" 
-                  className="hover:text-teal-400 transition-colors inline-flex items-center gap-1.5 font-bold text-white group"
+                  className="hover:text-teal-400 transition-colors inline-flex items-center gap-2 font-bold text-white group"
                 >
-                  <span className="text-teal-400">⚡</span>
+                  <Zap className="h-3.5 w-3.5 text-teal-400 shrink-0" />
                   <span>{language === 'id' ? 'Formulir Pendaftaran Online' : 'Online Application Form'}</span>
                   <ArrowUpRight className="h-3 w-3 text-teal-400 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
@@ -195,45 +201,45 @@ export const Footer: React.FC = () => {
               <li>
                 <Link 
                   to="/cek-status" 
-                  className="hover:text-teal-300 transition-colors inline-flex items-center gap-1.5"
+                  className="hover:text-teal-300 transition-colors inline-flex items-center gap-2"
                 >
-                  <span>🔍</span>
+                  <Search className="h-3.5 w-3.5 text-teal-400 shrink-0" />
                   <span>{language === 'id' ? 'Cek Status & Hasil Seleksi' : 'Check Admission Status'}</span>
                 </Link>
               </li>
               <li>
                 <Link 
                   to="/pengumuman" 
-                  className="hover:text-teal-300 transition-colors inline-flex items-center gap-1.5"
+                  className="hover:text-teal-300 transition-colors inline-flex items-center gap-2"
                 >
-                  <span>📢</span>
+                  <Megaphone className="h-3.5 w-3.5 text-teal-400 shrink-0" />
                   <span>{language === 'id' ? 'Berita & Pengumuman Resmi' : 'Official Announcements'}</span>
                 </Link>
               </li>
               <li>
                 <a 
                   href="/#alur" 
-                  className="hover:text-teal-300 transition-colors inline-flex items-center gap-1.5"
+                  className="hover:text-teal-300 transition-colors inline-flex items-center gap-2"
                 >
-                  <span>📋</span>
+                  <Calendar className="h-3.5 w-3.5 text-teal-400 shrink-0" />
                   <span>{language === 'id' ? 'Jadwal & Alur Seleksi' : 'Admission Steps & Flow'}</span>
                 </a>
               </li>
               <li>
                 <a 
                   href="/#syarat" 
-                  className="hover:text-teal-300 transition-colors inline-flex items-center gap-1.5"
+                  className="hover:text-teal-300 transition-colors inline-flex items-center gap-2"
                 >
-                  <span>📁</span>
+                  <FileText className="h-3.5 w-3.5 text-teal-400 shrink-0" />
                   <span>{language === 'id' ? 'Persyaratan Dokumen' : 'Document Requirements'}</span>
                 </a>
               </li>
               <li>
                 <a 
                   href="/#simulator" 
-                  className="hover:text-teal-300 transition-colors inline-flex items-center gap-1.5"
+                  className="hover:text-teal-300 transition-colors inline-flex items-center gap-2"
                 >
-                  <span>🧮</span>
+                  <Calculator className="h-3.5 w-3.5 text-teal-400 shrink-0" />
                   <span>{language === 'id' ? 'Simulator Skor Seleksi' : 'Scoring Engine Simulator'}</span>
                 </a>
               </li>
