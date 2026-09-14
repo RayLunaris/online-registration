@@ -154,6 +154,7 @@ CREATE TABLE IF NOT EXISTS public.selection_results (
     score NUMERIC(6,2) NOT NULL,
     rank INT,
     status VARCHAR(50) NOT NULL DEFAULT 'Belum Diproses' CHECK (status IN ('Diterima', 'Tidak Diterima', 'Belum Diproses')),
+    is_manual_override BOOLEAN NOT NULL DEFAULT false,
     published_at TIMESTAMPTZ,
     notes TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),

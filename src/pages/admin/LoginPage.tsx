@@ -1,22 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { Lock, Mail, AlertCircle, ArrowLeft, ShieldCheck, Info } from 'lucide-react';
+import { Lock, Mail, AlertCircle, ArrowLeft, ShieldCheck, Info, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Dialog, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { useAuth } from '@/hooks/useAuth';
-import { isSupabaseConfigured } from '@/lib/supabase';
-import { schoolService, DEFAULT_SCHOOL } from '@/services/schoolService';
-import { School } from '@/types/spmb';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { DEFAULT_SCHOOL } from '@/services/schoolService';
+import { useSchool } from '@/context/SchoolContext';
 
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  const [school, setSchool] = useState<School>(DEFAULT_SCHOOL);
-  
+  const { school = DEFAULT_SCHOOL } = useSchool();
+  const [showResetModal, setShowResetModal] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetMsg, setResetMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
   const { user, isAdmin, signIn } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -29,10 +34,6 @@ export const LoginPage: React.FC = () => {
       navigate(from, { replace: true });
     }
   }, [user, isAdmin, navigate, from]);
-
-  useEffect(() => {
-    schoolService.getSchoolProfile().then(setSchool).catch(console.error);
-  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,6 +52,42 @@ export const LoginPage: React.FC = () => {
       setErrorMsg(error.message || 'Login gagal. Periksa kembali email dan password.');
     } else {
       navigate(from, { replace: true });
+    }
+  };
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!resetEmail.trim()) return;
+    setResetLoading(true);
+    setResetMsg(null);
+
+    if (!configured) {
+      setTimeout(() => {
+        setResetLoading(false);
+        setResetMsg({
+          type: 'success',
+          text: `[Mode Demo] Tautan reset kata sandi simulasi berhasil dikirim ke ${resetEmail}.`,
+        });
+      }, 500);
+      return;
+    }
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(resetEmail.trim(), {
+        redirectTo: `${window.location.origin}/admin/login`,
+      });
+      setResetLoading(false);
+      if (error) throw error;
+      setResetMsg({
+        type: 'success',
+        text: `Tautan reset kata sandi telah dikirim ke ${resetEmail}. Silakan periksa inbox email Anda.`,
+      });
+    } catch (err: any) {
+      setResetLoading(false);
+      setResetMsg({
+        type: 'error',
+        text: err.message || 'Gagal mengirim email reset kata sandi.',
+      });
     }
   };
 
@@ -135,6 +172,17 @@ export const LoginPage: React.FC = () => {
               <div className="space-y-1">
                 <div className="flex items-center justify-between">
                   <label htmlFor="admin-password" className="text-xs font-medium text-slate-700 dark:text-slate-300">Kata Sandi</label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setResetEmail(email || '');
+                      setResetMsg(null);
+                      setShowResetModal(true);
+                    }}
+                    className="text-xs text-teal-600 dark:text-teal-400 hover:underline font-medium"
+                  >
+                    Lupa kata sandi?
+                  </button>
                 </div>
                 <div className="relative">
                   <Lock className="absolute left-3 top-2.5 h-4 w-4 text-slate-400 dark:text-slate-500" />
@@ -163,6 +211,71 @@ export const LoginPage: React.FC = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Dialog Reset Password */}
+      <Dialog open={showResetModal} onOpenChange={setShowResetModal}>
+        <DialogHeader>
+          <DialogTitle>Reset Kata Sandi Admin</DialogTitle>
+          <DialogDescription className="text-xs text-slate-500 dark:text-slate-400">
+            Masukkan alamat email admin terdaftar. Tautan untuk menyetel ulang kata sandi akan dikirimkan ke email Anda.
+          </DialogDescription>
+        </DialogHeader>
+
+        {resetMsg && (
+          <Alert
+            variant={resetMsg.type === 'error' ? 'destructive' : 'default'}
+            className={`mb-4 text-xs ${
+              resetMsg.type === 'success'
+                ? 'bg-emerald-50 text-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-200 border-emerald-300 dark:border-emerald-800'
+                : 'bg-red-50 text-red-900 dark:bg-red-950/80 dark:text-red-200 border-red-200 dark:border-red-800'
+            }`}
+          >
+            {resetMsg.type === 'success' ? (
+              <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            ) : (
+              <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400 shrink-0" />
+            )}
+            <AlertTitle>{resetMsg.type === 'success' ? 'Email Terkirim' : 'Gagal'}</AlertTitle>
+            <AlertDescription className="text-xs">{resetMsg.text}</AlertDescription>
+          </Alert>
+        )}
+
+        <form onSubmit={handleResetPassword} className="space-y-4">
+          <div className="space-y-1">
+            <label htmlFor="reset-email" className="text-xs font-medium text-slate-700 dark:text-slate-300">
+              Email Admin
+            </label>
+            <Input
+              id="reset-email"
+              type="email"
+              required
+              placeholder="admin@smkn1digital.sch.id"
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+              className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white"
+            />
+          </div>
+
+          <div className="flex justify-end gap-2 pt-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setShowResetModal(false)}
+            >
+              Batal
+            </Button>
+            <Button
+              type="submit"
+              size="sm"
+              disabled={resetLoading}
+              className="bg-teal-600 hover:bg-teal-700 text-white"
+            >
+              {resetLoading ? 'Mengirim...' : 'Kirim Tautan Reset'}
+            </Button>
+          </div>
+        </form>
+      </Dialog>
     </div>
   );
 };

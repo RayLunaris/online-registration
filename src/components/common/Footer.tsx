@@ -32,39 +32,23 @@ import { Input } from '@/components/ui/input';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
 import { schoolService, DEFAULT_SCHOOL, DEFAULT_MAJORS } from '@/services/schoolService';
-import { School, Major } from '@/types/spmb';
+import { Major } from '@/types/spmb';
+import { useSchool } from '@/context/SchoolContext';
 
 export const Footer: React.FC = () => {
   const { language, setLanguage } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   
-  const [school, setSchool] = useState<School>(DEFAULT_SCHOOL);
+  const { school: contextSchool } = useSchool();
+  const school = contextSchool || DEFAULT_SCHOOL;
   const [majors, setMajors] = useState<Major[]>(DEFAULT_MAJORS);
   const [emailInput, setEmailInput] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
 
   useEffect(() => {
-    const fetchFooterData = async () => {
-      try {
-        const [schoolData, majorsData] = await Promise.all([
-          schoolService.getSchoolProfile(),
-          schoolService.getMajors(),
-        ]);
-        if (schoolData) setSchool(schoolData);
-        if (majorsData && majorsData.length > 0) setMajors(majorsData.filter(m => m.is_active));
-      } catch (err) {
-        console.error('Error fetching footer data:', err);
-      }
-    };
-    fetchFooterData();
-
-    const handleSettingsUpdate = () => {
-      fetchFooterData();
-    };
-    window.addEventListener('school_settings_updated', handleSettingsUpdate);
-    return () => {
-      window.removeEventListener('school_settings_updated', handleSettingsUpdate);
-    };
+    schoolService.getMajors()
+      .then((data) => { if (data?.length) setMajors(data.filter(m => m.is_active)); })
+      .catch((err) => console.error('Footer: failed to load majors:', err));
   }, []);
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {

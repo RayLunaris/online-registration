@@ -1,5 +1,6 @@
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { School, Major, SourceSchool } from '@/types/spmb';
+import { fetchRegistrationStatus } from '@/lib/registrationStatus';
 
 // Default Fallback Data (Digunakan saat Supabase belum terhubung)
 export const DEFAULT_SCHOOL: School = {
@@ -101,25 +102,8 @@ export const schoolService = {
   },
 
   async getRegistrationStatus(): Promise<boolean> {
-    if (isSupabaseConfigured()) {
-      try {
-        const { data, error } = await supabase.rpc('get_registration_status');
-        if (!error && typeof data === 'boolean') {
-          return data;
-        }
-      } catch (err) {
-        console.warn('RPC get_registration_status failed, calculating locally:', err);
-      }
-    }
-    const school = await this.getSchoolProfile();
-    if (school.registration_status === 'closed') return false;
-    if (school.registration_close_date) {
-      const closeTime = new Date(school.registration_close_date).getTime();
-      if (!isNaN(closeTime) && Date.now() > closeTime) {
-        return false;
-      }
-    }
-    return true;
+    const result = await fetchRegistrationStatus(() => this.getSchoolProfile());
+    return result.isOpen;
   },
 
   async getMajors(): Promise<Major[]> {

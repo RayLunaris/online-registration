@@ -30,9 +30,9 @@
     "semantic_hash": ""
   },
   "src/components/admin/AdminLayout.tsx": {
-    "mtime": 1788176362.5140302,
-    "seen": 1788917049.5023787,
-    "ast_hash": "860df55a0e8647b4c1796425c96bfd2e",
+    "mtime": 1789093455.7687514,
+    "seen": 1789093512.0847924,
+    "ast_hash": "2c991bc9e22d1645a51cb30730fd8df5",
     "semantic_hash": ""
   },
   "src/components/admin/AdminSecretLoginModal.tsx": {
@@ -78,15 +78,15 @@
     "semantic_hash": ""
   },
   "src/components/common/Footer.tsx": {
-    "mtime": 1788929667.8426824,
-    "seen": 1788929995.7001595,
-    "ast_hash": "b0eecda6e0136b65cbc43f30e3833fcb",
+    "mtime": 1789093434.198759,
+    "seen": 1789093512.0855472,
+    "ast_hash": "d18afaf1cb2aa2c4d1c7a38addd0d31b",
     "semantic_hash": ""
   },
   "src/components/common/Navbar.tsx": {
-    "mtime": 1788922504.8680325,
-    "seen": 1788922949.844574,
-    "ast_hash": "903502d3117376e9c5a1b52921e55403",
+    "mtime": 1789093419.903764,
+    "seen": 1789093512.0855541,
+    "ast_hash": "1d0242123a7311d3230de1df40653de7",
     "semantic_hash": ""
   },
   "src/components/common/PublicLayout.tsx": {
@@ -192,9 +192,9 @@
     "semantic_hash": ""
   },
   "src/components/registration/RegistrationCardPDF.tsx": {
-    "mtime": 1787799068.3010945,
-    "seen": 1788917049.5024903,
-    "ast_hash": "b1ddd97cdd1106e175e4ebc5ef8fe81d",
+    "mtime": 1789093476.5927436,
+    "seen": 1789093512.0873084,
+    "ast_hash": "7485791d81990325db4421ca0f967308",
     "semantic_hash": ""
   },
   "src/components/registration/RegistrationSuccessCard.tsx": {
@@ -414,9 +414,9 @@
     "semantic_hash": ""
   },
   "src/pages/RegistrationPage.tsx": {
-    "mtime": 1788922483.3342261,
-    "seen": 1788922949.850041,
-    "ast_hash": "e5aee8041f725c2e2c111e42dbc247d6",
+    "mtime": 1789127847.5891037,
+    "seen": 1789127895.3304331,
+    "ast_hash": "ce52f95257b8e596bb423dbdedbd2f0a",
     "semantic_hash": ""
   },
   "src/pages/StatusCheckPage.tsx": {
@@ -450,9 +450,9 @@
     "semantic_hash": ""
   },
   "src/pages/admin/AdminSettingsPage.tsx": {
-    "mtime": 1788929747.4343953,
-    "seen": 1788929995.704366,
-    "ast_hash": "8e13221eec086d99f40377d033e8fb17",
+    "mtime": 1789093406.9517684,
+    "seen": 1789093512.0895467,
+    "ast_hash": "855a5025894dfacd8924f98bf986a024",
     "semantic_hash": ""
   },
   "src/pages/admin/AdminSourceSchoolsPage.tsx": {
@@ -474,9 +474,9 @@
     "semantic_hash": ""
   },
   "src/pages/admin/LoginPage.tsx": {
-    "mtime": 1789002871.3435085,
-    "seen": 1789002970.8240204,
-    "ast_hash": "0bc7a974b7293fe405c6915456d089ce",
+    "mtime": 1789093468.1407468,
+    "seen": 1789093512.0896773,
+    "ast_hash": "46f232e791193fe1b4dd6dc66e685856",
     "semantic_hash": ""
   },
   "src/pages/public/LeaderboardPage.tsx": {
@@ -486,15 +486,15 @@
     "semantic_hash": ""
   },
   "src/schemas/registrationSchema.ts": {
-    "mtime": 1787582743.2454193,
-    "seen": 1788917049.5026522,
-    "ast_hash": "60ea075ece2b1367e8be673d743820ff",
+    "mtime": 1789127837.9020567,
+    "seen": 1789127895.330932,
+    "ast_hash": "76797ebe30efcace18e77f13ebb332a5",
     "semantic_hash": ""
   },
   "src/services/adminService.ts": {
-    "mtime": 1788924842.1280885,
-    "seen": 1788924925.2017107,
-    "ast_hash": "133f66a8cf15b76a12fa2f9147a8faa4",
+    "mtime": 1789127520.0084748,
+    "seen": 1789127594.34555,
+    "ast_hash": "bc7cdf607b6688aefcbdc2fa4caa5c96",
     "semantic_hash": ""
   },
   "src/services/announcementService.ts": {
@@ -504,21 +504,21 @@
     "semantic_hash": ""
   },
   "src/services/schoolService.ts": {
-    "mtime": 1788922416.547827,
-    "seen": 1788922949.8512142,
-    "ast_hash": "20756b5df3fbe70d10f05b843c9448e3",
+    "mtime": 1789093367.605781,
+    "seen": 1789093512.0898867,
+    "ast_hash": "e4b2da9d21d062beb0502c7f9fcca659",
     "semantic_hash": ""
   },
   "src/services/selectionService.ts": {
-    "mtime": 1789002815.439473,
-    "seen": 1789002970.8244011,
-    "ast_hash": "275091d95346cabd1d9637b9f515475f",
+    "mtime": 1789127510.1626601,
+    "seen": 1789127594.3456416,
+    "ast_hash": "4342a3c9deef89c4894acbad50ccfe20",
     "semantic_hash": ""
   },
   "src/services/studentService.ts": {
-    "mtime": 1788228775.6265635,
-    "seen": 1788917049.5026698,
-    "ast_hash": "f47381278b4525649587e4b09cb4a634",
+    "mtime": 1789127498.281901,
+    "seen": 1789127594.3456442,
+    "ast_hash": "cfb5a16e8039bd33c365b494ce90b88a",
     "semantic_hash": ""
   },
   "src/types/database.ts": {
@@ -663,6 +663,12 @@
     "mtime": 1788922457.781456,
     "seen": 1788922949.8509996,
     "ast_hash": "9846dac563b49ba7688bf5b5a3c68752",
+    "semantic_hash": ""
+  },
+  "src/lib/asyncLock.ts": {
+    "mtime": 1789127478.8393369,
+    "seen": 1789127594.342601,
+    "ast_hash": "000575bde7fa8569f68704886ceac872",
     "semantic_hash": ""
   }
 }

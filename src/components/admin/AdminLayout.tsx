@@ -20,12 +20,12 @@ import {
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/context/ThemeContext';
-import { schoolService, DEFAULT_SCHOOL } from '@/services/schoolService';
-import { School } from '@/types/spmb';
+import { DEFAULT_SCHOOL } from '@/services/schoolService';
+import { useSchool } from '@/context/SchoolContext';
 
 export const AdminLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [school, setSchool] = useState<School>(DEFAULT_SCHOOL);
+  const { school = DEFAULT_SCHOOL } = useSchool();
   const location = useLocation();
   const navigate = useNavigate();
   const { user, adminProfile, signOut } = useAuth();
@@ -53,27 +53,6 @@ export const AdminLayout: React.FC = () => {
   useEffect(() => {
     setSidebarOpen(false);
   }, [location.pathname]);
-
-  // Load school profile & listen to settings update
-  useEffect(() => {
-    const loadSchool = async () => {
-      try {
-        const profile = await schoolService.getSchoolProfile();
-        if (profile) setSchool(profile);
-      } catch (err) {
-        console.error('Error loading school profile in AdminLayout:', err);
-      }
-    };
-    loadSchool();
-
-    const handleSettingsUpdate = () => {
-      loadSchool();
-    };
-    window.addEventListener('school_settings_updated', handleSettingsUpdate);
-    return () => {
-      window.removeEventListener('school_settings_updated', handleSettingsUpdate);
-    };
-  }, []);
 
   const handleLogout = async () => {
     await signOut();

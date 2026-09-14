@@ -3,6 +3,7 @@ import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { schoolService } from '@/services/schoolService';
 import { Major, PublicLeaderboardEntry } from '@/types/spmb';
 import { mockStudentStore } from '@/services/studentService';
+import { useSchool } from '@/context/SchoolContext';
 
 /**
  * Utility to mask names on client-side:
@@ -21,10 +22,11 @@ export function maskName(fullName: string): string {
 }
 
 export function useLeaderboard() {
+  const { school } = useSchool();
   const [majors, setMajors] = useState<Major[]>([]);
   const [selectedMajorId, setSelectedMajorId] = useState<string>('');
   const [allEntries, setAllEntries] = useState<PublicLeaderboardEntry[]>([]);
-  const [isLeaderboardEnabled, setIsLeaderboardEnabled] = useState<boolean>(true);
+  const isLeaderboardEnabled = school ? school.show_public_leaderboard !== false : true;
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,11 +35,7 @@ export function useLeaderboard() {
     setError(null);
 
     try {
-      // 1. Ambil Pengaturan Profil Sekolah
-      const schoolProfile = await schoolService.getSchoolProfile();
-      setIsLeaderboardEnabled(schoolProfile.show_public_leaderboard !== false);
-
-      // 2. Ambil Daftar Jurusan Aktif
+      // 1. Ambil Daftar Jurusan Aktif
       const fetchedMajors = await schoolService.getMajors();
       const activeMajors = fetchedMajors.filter(m => m.is_active);
       setMajors(activeMajors);

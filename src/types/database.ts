@@ -376,6 +376,7 @@ export interface Database {
           score: number;
           rank: number | null;
           status: 'Diterima' | 'Tidak Diterima' | 'Belum Diproses';
+          is_manual_override: boolean;
           published_at: string | null;
           notes: string | null;
           created_at: string;
@@ -396,6 +397,7 @@ export interface Database {
           score: number;
           rank?: number | null;
           status?: 'Diterima' | 'Tidak Diterima' | 'Belum Diproses';
+          is_manual_override?: boolean;
           published_at?: string | null;
           notes?: string | null;
           created_at?: string;
@@ -416,6 +418,7 @@ export interface Database {
           score?: number;
           rank?: number | null;
           status?: 'Diterima' | 'Tidak Diterima' | 'Belum Diproses';
+          is_manual_override?: boolean;
           published_at?: string | null;
           notes?: string | null;
           created_at?: string;
@@ -535,6 +538,14 @@ export interface Database {
       is_admin: {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
+      };
+      register_student_atomic: {
+        Args: { p_data: Record<string, unknown> };
+        Returns: {
+          success?: boolean;
+          student_id?: string;
+          registration_number?: string;
+        };
       };
     };
     Enums: Record<string, never>;

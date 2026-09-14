@@ -39,11 +39,15 @@ export const AdminDashboardPage: React.FC = () => {
   };
 
   const handleQuickToggle = async () => {
+    const isExpired = Boolean(
+      regStatus.closeDate && new Date(regStatus.closeDate).getTime() < Date.now()
+    );
+
     if (regStatus.isOpen) {
       // Currently active -> ask confirmation before closing
       const result = await Swal.fire({
         title: 'Konfirmasi Tutup Pendaftaran',
-        text: 'Pendaftaran akan langsung ditutup untuk publik. Lanjutkan?',
+        text: 'Pendaftaran akan langsung ditutup untuk publik. Calon siswa tidak dapat mengisi formulir pendaftaran baru. Lanjutkan?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#dc2626',
@@ -55,7 +59,8 @@ export const AdminDashboardPage: React.FC = () => {
       if (result.isConfirmed) {
         setToggling(true);
         try {
-          const res = await adminService.updateRegistrationStatus('closed');
+          const newCloseDate = isExpired ? null : regStatus.closeDate;
+          const res = await adminService.updateRegistrationStatus('closed', newCloseDate);
           if (res.success) {
             window.dispatchEvent(new CustomEvent('school_settings_updated'));
             await regStatus.refetch();
@@ -76,28 +81,44 @@ export const AdminDashboardPage: React.FC = () => {
         }
       }
     } else {
-      // Currently closed -> reopen registration
-      setToggling(true);
-      try {
-        // If closed by date, clearing the date so manual reopen takes effect
-        const res = await adminService.updateRegistrationStatus('open', regStatus.isClosedByDate ? null : undefined);
-        if (res.success) {
-          window.dispatchEvent(new CustomEvent('school_settings_updated'));
-          await regStatus.refetch();
-          Swal.fire({
-            title: 'Pendaftaran Dibuka',
-            text: 'Status pendaftaran berhasil diubah menjadi AKTIF untuk publik.',
-            icon: 'success',
-            timer: 2000,
-            showConfirmButton: false,
-          });
-        } else {
-          Swal.fire('Gagal', res.error || 'Gagal mengubah status pendaftaran', 'error');
+      // Currently closed -> ask confirmation before reopening
+      const result = await Swal.fire({
+        title: 'Konfirmasi Buka Pendaftaran',
+        text: isExpired
+          ? 'Pendaftaran akan dibuka kembali untuk publik dan jadwal tutup otomatis yang telah lewat akan direset. Lanjutkan?'
+          : 'Pendaftaran akan dibuka kembali untuk publik. Calon siswa dapat mengisi formulir pendaftaran. Lanjutkan?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#0d9488',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Ya, Buka Pendaftaran',
+        cancelButtonText: 'Batal',
+      });
+
+      if (result.isConfirmed) {
+        setToggling(true);
+        try {
+          // If closed by date or date is expired, clear the date so manual reopen takes effect immediately
+          const newCloseDate = isExpired ? null : regStatus.closeDate;
+          const res = await adminService.updateRegistrationStatus('open', newCloseDate);
+          if (res.success) {
+            window.dispatchEvent(new CustomEvent('school_settings_updated'));
+            await regStatus.refetch();
+            Swal.fire({
+              title: 'Pendaftaran Dibuka',
+              text: 'Status pendaftaran berhasil diubah menjadi AKTIF untuk publik.',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false,
+            });
+          } else {
+            Swal.fire('Gagal', res.error || 'Gagal mengubah status pendaftaran', 'error');
+          }
+        } catch (err: any) {
+          Swal.fire('Error', err.message || 'Terjadi kesalahan sistem', 'error');
+        } finally {
+          setToggling(false);
         }
-      } catch (err: any) {
-        Swal.fire('Error', err.message || 'Terjadi kesalahan sistem', 'error');
-      } finally {
-        setToggling(false);
       }
     }
   };
@@ -137,14 +158,14 @@ export const AdminDashboardPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Pojok Kanan Atas: Quick Toggle Pill + Actions */}
-        <div className="flex flex-wrap items-center gap-2.5">
+        {/* Pojok Kanan Atas: Quick Toggle Pill + Actions (Touch & Mobile Friendly) */}
+        <div className="grid grid-cols-1 sm:flex sm:flex-wrap items-stretch sm:items-center gap-2 w-full sm:w-auto">
           {/* Quick Toggle Status Pill */}
           <button
             type="button"
             onClick={handleQuickToggle}
             disabled={toggling}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-2xs border cursor-pointer select-none active:scale-95 ${
+            className={`flex items-center justify-center gap-2 px-4 min-h-[44px] sm:min-h-[36px] h-11 sm:h-9 rounded-xl sm:rounded-full text-xs font-bold transition-all shadow-2xs border cursor-pointer select-none active:scale-98 ${
               regStatus.isOpen
                 ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-700'
                 : 'bg-red-50 hover:bg-red-100 text-red-800 border-red-300 dark:bg-red-950/80 dark:text-red-300 dark:border-red-700'
@@ -160,22 +181,24 @@ export const AdminDashboardPage: React.FC = () => {
             <span>{regStatus.isOpen ? 'Pendaftaran Aktif' : 'Pendaftaran Ditutup'}</span>
           </button>
 
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={loadDashboard}
-            className="text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 gap-1.5 shadow-2xs"
-          >
-            <RefreshCw className="h-3.5 w-3.5" />
-            <span>Perbarui Data</span>
-          </Button>
-
-          <Link to="/admin/pendaftar">
-            <Button size="sm" className="bg-teal-600 hover:bg-teal-700 text-white text-xs gap-1.5 font-semibold shadow-xs">
-              <Users className="h-3.5 w-3.5" />
-              <span>Kelola Pendaftar</span>
+          <div className="grid grid-cols-2 sm:flex items-center gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={loadDashboard}
+              className="min-h-[44px] sm:min-h-[36px] h-11 sm:h-9 text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 gap-1.5 shadow-2xs justify-center cursor-pointer active:scale-98 transition-transform"
+            >
+              <RefreshCw className="h-3.5 w-3.5" />
+              <span>Perbarui</span>
             </Button>
-          </Link>
+
+            <Link to="/admin/pendaftar" className="w-full sm:w-auto">
+              <Button size="sm" className="w-full min-h-[44px] sm:min-h-[36px] h-11 sm:h-9 bg-teal-600 hover:bg-teal-700 text-white text-xs gap-1.5 font-semibold shadow-xs justify-center cursor-pointer active:scale-98 transition-transform">
+                <Users className="h-3.5 w-3.5" />
+                <span>Pendaftar</span>
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -296,7 +319,7 @@ export const AdminDashboardPage: React.FC = () => {
                 (() => {
                   const maxCount = Math.max(...stats.dailyTrend.map((d) => d.count), 1);
                   return stats.dailyTrend.map((item) => {
-                    const heightPct = item.count === 0 ? 4 : Math.max(16, Math.round((item.count / maxCount) * 100));
+                    const heightPct = item.count === 0 ? 0 : Math.max(16, Math.round((item.count / maxCount) * 100));
 
                     return (
                       <div key={item.date} className="flex-1 flex flex-col items-center gap-1.5 group relative">
@@ -543,50 +566,102 @@ export const AdminDashboardPage: React.FC = () => {
         </CardHeader>
         <CardContent className="p-0">
           {stats.recentStudents.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs text-left text-slate-600 dark:text-slate-300">
-                <thead className="bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-100 dark:border-slate-800">
-                  <tr>
-                    <th className="py-3 px-4">No. Registrasi</th>
-                    <th className="py-3 px-4">Nama Siswa</th>
-                    <th className="py-3 px-4">Asal SMP/MTs</th>
-                    <th className="py-3 px-4">Pilihan 1</th>
-                    <th className="py-3 px-4">Status</th>
-                    <th className="py-3 px-4">Waktu Daftar</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
-                  {stats.recentStudents.map((st) => (
-                    <tr key={st.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-900/50 transition-colors">
-                      <td className="py-3 px-4 font-mono text-teal-600 dark:text-teal-400 font-bold">
+            <>
+              {/* 1. Mobile Cards View (Visible on <md) */}
+              <div className="block md:hidden p-3 space-y-2.5">
+                {stats.recentStudents.map((st) => (
+                  <Link
+                    key={st.id}
+                    to="/admin/pendaftar"
+                    className="block p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 hover:border-teal-500/50 shadow-2xs space-y-2 transition-all active:scale-98 cursor-pointer"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-mono text-xs text-teal-600 dark:text-teal-400 font-bold bg-teal-50 dark:bg-teal-950/60 px-2 py-0.5 rounded border border-teal-100 dark:border-teal-900">
                         {st.registration_number}
-                      </td>
-                      <td className="py-3 px-4 text-slate-900 dark:text-white font-semibold">{st.full_name}</td>
-                      <td className="py-3 px-4 text-slate-500 dark:text-slate-400">{st.source_school_name}</td>
-                      <td className="py-3 px-4">
-                        <Badge variant="outline" className="text-[10px] bg-slate-50 text-slate-700 border-slate-200 dark:bg-slate-900 dark:text-slate-300 dark:border-slate-700">
+                      </span>
+                      <span
+                        className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold ${
+                          st.status === 'Diterima'
+                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-800'
+                            : st.status === 'Terverifikasi'
+                            ? 'bg-teal-50 text-teal-700 border border-teal-200 dark:bg-teal-950 dark:text-teal-400 dark:border-teal-800'
+                            : 'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950 dark:text-amber-400 dark:border-amber-800'
+                        }`}
+                      >
+                        {st.status}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h4 className="text-sm font-bold text-slate-900 dark:text-white leading-snug">
+                        {st.full_name}
+                      </h4>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                        {st.source_school_name || 'Asal Sekolah -'}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-1 border-t border-slate-100 dark:border-slate-800/80 text-xs">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[11px] text-slate-400">Pilihan 1:</span>
+                        <Badge variant="outline" className="text-[10px] bg-slate-50 text-slate-700 border-slate-200 dark:bg-slate-900 dark:text-slate-300 dark:border-slate-700 font-mono">
                           {st.major_choices?.find((c) => c.choice_order === 1)?.major?.code || '-'}
                         </Badge>
-                      </td>
-                      <td className="py-3 px-4">
-                        <span
-                          className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold ${
-                            st.status === 'Diterima'
-                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-800'
-                              : st.status === 'Terverifikasi'
-                              ? 'bg-teal-50 text-teal-700 border border-teal-200 dark:bg-teal-950 dark:text-teal-400 dark:border-teal-800'
-                              : 'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950 dark:text-amber-400 dark:border-amber-800'
-                          }`}
-                        >
-                          {st.status}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 text-slate-400 dark:text-slate-500">{formatDate(st.created_at)}</td>
+                      </div>
+                      <span className="text-[11px] text-slate-400 font-mono">
+                        {formatDate(st.created_at)}
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              {/* 2. Desktop Full Table (Visible on >=md) */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full text-xs text-left text-slate-600 dark:text-slate-300">
+                  <thead className="bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-100 dark:border-slate-800">
+                    <tr>
+                      <th className="py-3 px-4">No. Registrasi</th>
+                      <th className="py-3 px-4">Nama Siswa</th>
+                      <th className="py-3 px-4">Asal SMP/MTs</th>
+                      <th className="py-3 px-4">Pilihan 1</th>
+                      <th className="py-3 px-4">Status</th>
+                      <th className="py-3 px-4">Waktu Daftar</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium">
+                    {stats.recentStudents.map((st) => (
+                      <tr key={st.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-900/50 transition-colors">
+                        <td className="py-3 px-4 font-mono text-teal-600 dark:text-teal-400 font-bold">
+                          {st.registration_number}
+                        </td>
+                        <td className="py-3 px-4 text-slate-900 dark:text-white font-semibold">{st.full_name}</td>
+                        <td className="py-3 px-4 text-slate-500 dark:text-slate-400">{st.source_school_name}</td>
+                        <td className="py-3 px-4">
+                          <Badge variant="outline" className="text-[10px] bg-slate-50 text-slate-700 border-slate-200 dark:bg-slate-900 dark:text-slate-300 dark:border-slate-700 font-mono">
+                            {st.major_choices?.find((c) => c.choice_order === 1)?.major?.code || '-'}
+                          </Badge>
+                        </td>
+                        <td className="py-3 px-4">
+                          <span
+                            className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold ${
+                              st.status === 'Diterima'
+                                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-800'
+                                : st.status === 'Terverifikasi'
+                                ? 'bg-teal-50 text-teal-700 border border-teal-200 dark:bg-teal-950 dark:text-teal-400 dark:border-teal-800'
+                                : 'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950 dark:text-amber-400 dark:border-amber-800'
+                            }`}
+                          >
+                            {st.status}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 text-slate-400 dark:text-slate-500">{formatDate(st.created_at)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
           ) : (
             <div className="p-8 text-center text-xs text-slate-400 dark:text-slate-500">
               Belum ada data pendaftar baru yang masuk.

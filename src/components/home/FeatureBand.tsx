@@ -29,7 +29,7 @@ export const FeatureBand: React.FC = () => {
   const items = language === 'en' ? HIGHLIGHTS_EN : HIGHLIGHTS_ID;
 
   return (
-    <section className="bg-[#0D9488] text-white py-3.5 sm:py-4 overflow-hidden shadow-inner border-y border-teal-600/80 relative z-20">
+    <section className="bg-[#0D9488] dark:bg-teal-950 text-white py-3.5 sm:py-4 overflow-hidden shadow-inner border-y border-teal-600/80 dark:border-teal-800/60 relative z-20 transition-colors">
       <div className="flex select-none whitespace-nowrap overflow-x-hidden">
         {/* Repeating text strip for ticker/banner feel */}
         <div className="flex items-center gap-6 sm:gap-10 text-xs sm:text-sm font-extrabold tracking-widest uppercase animate-marquee">

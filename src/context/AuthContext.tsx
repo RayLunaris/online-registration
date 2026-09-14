@@ -8,6 +8,7 @@ interface AuthContextType {
   session: Session | null;
   adminProfile: AdminProfile | null;
   isAdmin: boolean;
+  /** True while auth session OR admin profile is still being resolved. */
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
@@ -20,9 +21,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [session, setSession] = useState<Session | null>(null);
   const [adminProfile, setAdminProfile] = useState<AdminProfile | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  // Tracks whether a fetchAdminProfile call is currently in-flight.
+  // Kept separate from isLoading so mid-session token refreshes don't
+  // briefly expose isLoading=false while the profile is still pending.
+  const [isProfileLoading, setIsProfileLoading] = useState<boolean>(false);
 
   const fetchAdminProfile = async (userId: string, currentUser?: User | null): Promise<AdminProfile | null> => {
     if (!isSupabaseConfigured()) return null;
+    setIsProfileLoading(true);
     try {
       const { data, error } = await supabase
         .from('admin_profiles')
@@ -90,6 +96,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('Failed to fetch admin profile:', err);
       setAdminProfile(null);
       return null;
+    } finally {
+      setIsProfileLoading(false);
     }
   };
 
@@ -255,6 +263,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     (adminProfile && user && ['super_admin', 'admin', 'operator'].includes(adminProfile.role))
   );
 
+  // Merge isProfileLoading into the public isLoading flag so consumers (e.g.
+  // ProtectedRoute) never see isLoading=false while the admin profile fetch is
+  // still in-flight — preventing the transient "Akses Ditolak" flash.
+  const effectiveIsLoading = isLoading || isProfileLoading;
+
   return (
     <AuthContext.Provider
       value={{
@@ -262,7 +275,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         session,
         adminProfile,
         isAdmin,
-        isLoading,
+        isLoading: effectiveIsLoading,
         signIn,
         signOut,
       }}

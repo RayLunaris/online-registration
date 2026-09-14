@@ -86,6 +86,7 @@ export const SelectionPanel: React.FC = () => {
     if (!targetCandidate) return;
 
     targetCandidate.status = newStatus;
+    targetCandidate.isManualOverride = true;
     setAllCandidates(updated);
 
     // Recalculate summary & groups
@@ -442,24 +443,34 @@ export const SelectionPanel: React.FC = () => {
 
                         {/* STATUS OVERRIDE */}
                         <td className="py-2.5 px-3">
-                          <label htmlFor={`candidate-status-${cand.student.id || candidateGlobalIndex}`} className="sr-only">
-                            {`Ubah status untuk ${cand.student.full_name}`}
-                          </label>
-                          <select
-                            id={`candidate-status-${cand.student.id || candidateGlobalIndex}`}
-                            name={`candidate_status_${cand.student.id || candidateGlobalIndex}`}
-                            value={cand.status}
-                            onChange={(e) =>
-                              handleStatusOverride(candidateGlobalIndex, e.target.value as StudentStatus)
-                            }
-                            aria-label={`Ubah status untuk ${cand.student.full_name}`}
-                            className="h-6 px-1.5 text-[11px] rounded border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-medium focus:outline-hidden cursor-pointer"
-                          >
-                            <option value="Diterima">Diterima</option>
-                            <option value="Tidak Diterima">Tidak Diterima</option>
-                            <option value="Terverifikasi">Terverifikasi</option>
-                            <option value="Menunggu Verifikasi">Menunggu</option>
-                          </select>
+                          <div className="flex items-center gap-1.5">
+                            <label htmlFor={`candidate-status-${cand.student.id || candidateGlobalIndex}`} className="sr-only">
+                              {`Ubah status untuk ${cand.student.full_name}`}
+                            </label>
+                            <select
+                              id={`candidate-status-${cand.student.id || candidateGlobalIndex}`}
+                              name={`candidate_status_${cand.student.id || candidateGlobalIndex}`}
+                              value={cand.status}
+                              onChange={(e) =>
+                                handleStatusOverride(candidateGlobalIndex, e.target.value as StudentStatus)
+                              }
+                              aria-label={`Ubah status untuk ${cand.student.full_name}`}
+                              className="h-6 px-1.5 text-[11px] rounded border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-medium focus:outline-hidden cursor-pointer"
+                            >
+                              <option value="Diterima">Diterima</option>
+                              <option value="Tidak Diterima">Tidak Diterima</option>
+                              <option value="Terverifikasi">Terverifikasi</option>
+                              <option value="Menunggu Verifikasi">Menunggu</option>
+                            </select>
+                            {cand.isManualOverride && (
+                              <span 
+                                title="Status telah di-override manual oleh admin (tidak akan tertimpa seleksi otomatis)"
+                                className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-300/60 dark:border-amber-700/60"
+                              >
+                                Manual
+                              </span>
+                            )}
+                          </div>
                         </td>
 
                         <td className="py-2.5 px-3 text-right">

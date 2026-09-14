@@ -11,6 +11,7 @@ import {
 import { DEFAULT_SCHOOL, DEFAULT_MAJORS, DEFAULT_SOURCE_SCHOOLS } from './schoolService';
 import { DEFAULT_ANNOUNCEMENTS } from './announcementService';
 import { mockStudentStore } from './studentService';
+import { mockStoreLock } from '@/lib/asyncLock';
 
 export interface DailyRegistrationTrend {
   date: string;
@@ -307,13 +308,19 @@ export const adminService = {
     notes?: string
   ): Promise<{ success: boolean; error?: string }> {
     if (!isSupabaseConfigured()) {
-      const idx = mockStudentStore.findIndex((s) => s.id === studentId);
-      if (idx !== -1) {
-        mockStudentStore[idx].status = status;
-        if (notes !== undefined) mockStudentStore[idx].notes = notes;
-        mockStudentStore[idx].updated_at = new Date().toISOString();
-      }
-      return { success: true };
+      return await mockStoreLock.acquire(async () => {
+        const idx = mockStudentStore.findIndex((s) => s.id === studentId);
+        if (idx !== -1) {
+          mockStudentStore[idx].status = status;
+          if (notes !== undefined) mockStudentStore[idx].notes = notes;
+          mockStudentStore[idx].updated_at = new Date().toISOString();
+          if (mockStudentStore[idx].selection_results) {
+            mockStudentStore[idx].selection_results!.is_manual_override = true;
+            mockStudentStore[idx].selection_results!.status = (status === 'Diterima' || status === 'Tidak Diterima') ? status : 'Belum Diproses';
+          }
+        }
+        return { success: true };
+      });
     }
 
     try {
@@ -327,6 +334,17 @@ export const adminService = {
         .eq('id', studentId);
 
       if (error) throw error;
+
+      // PRD 5.4.2: Tandai override manual agar tidak tertimpa seleksi otomatis ulang
+      await supabase
+        .from('selection_results')
+        .update({
+          status: (status === 'Diterima' || status === 'Tidak Diterima') ? status : 'Belum Diproses',
+          is_manual_override: true,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('student_id', studentId);
+
       return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message || 'Gagal memperbarui status siswa.' };
@@ -335,11 +353,13 @@ export const adminService = {
 
   async deleteStudent(studentId: string): Promise<{ success: boolean; error?: string }> {
     if (!isSupabaseConfigured()) {
-      const idx = mockStudentStore.findIndex((s) => s.id === studentId);
-      if (idx !== -1) {
-        mockStudentStore.splice(idx, 1);
-      }
-      return { success: true };
+      return await mockStoreLock.acquire(async () => {
+        const idx = mockStudentStore.findIndex((s) => s.id === studentId);
+        if (idx !== -1) {
+          mockStudentStore.splice(idx, 1);
+        }
+        return { success: true };
+      });
     }
 
     try {
@@ -590,6 +610,18 @@ export const adminService = {
     const payload: Partial<School> = { registration_status: status };
     if (closeDate !== undefined) {
       payload.registration_close_date = closeDate;
+    } else if (status === 'open') {
+      // Safety guarantee: If reopening and closeDate was not explicitly specified,
+      // verify whether the existing close date has already expired. If so, reset it to null
+      // so the reopening takes effect immediately without getting blocked by an old schedule.
+      try {
+        const current = await this.getSchoolSettings();
+        if (current.registration_close_date && new Date(current.registration_close_date).getTime() < Date.now()) {
+          payload.registration_close_date = null;
+        }
+      } catch {
+        // Continue with manual open status
+      }
     }
     return this.updateSchoolSettings(payload);
   },

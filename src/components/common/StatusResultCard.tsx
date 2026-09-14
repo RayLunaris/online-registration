@@ -16,7 +16,9 @@ import {
   School as SchoolIcon,
   BarChart3,
   Check,
-  X
+  X,
+  Copy,
+  Share2
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -24,6 +26,7 @@ import { Button } from '@/components/ui/button';
 import { StudentCompleteDetail } from '@/types/spmb';
 import { DEFAULT_MAJORS } from '@/services/schoolService';
 import { formatScore } from '@/lib/utils';
+import { resolveChoiceStatuses } from '@/lib/resolveChoiceStatuses';
 
 interface Props {
   student: StudentCompleteDetail;
@@ -32,66 +35,78 @@ interface Props {
 
 export const StatusResultCard: React.FC<Props> = ({ student, onResetSearch }) => {
   const [isTransparansiOpen, setIsTransparansiOpen] = useState(true);
+  const [copied, setCopied] = useState(false);
 
-  const ch1 = student.major_choices?.find((c) => c.choice_order === 1);
-  const ch2 = student.major_choices?.find((c) => c.choice_order === 2);
-
-  const ch1Major = ch1?.major || (ch1?.major_id ? DEFAULT_MAJORS.find(m => m.id === ch1.major_id) : undefined) || DEFAULT_MAJORS[0];
-  const ch2Major = ch2?.major || (ch2?.major_id ? DEFAULT_MAJORS.find(m => m.id === ch2.major_id) : undefined);
-
-  const selRes = student.selection_results;
-
-  // Resolve Choice 1 & 2 Evaluations
-  const ch1Quota = ch1Major?.quota || 72;
-  const ch1Rank = selRes?.choice1_rank || selRes?.rank || null;
-  let ch1Status: 'accepted' | 'rejected' | 'pending' = selRes?.choice1_status || 'pending';
-
-  if (!selRes?.choice1_status) {
-    if (student.status === 'Diterima') {
-      if (selRes?.final_accepted_from_priority === 2) {
-        ch1Status = 'rejected';
+  const handleCopyLink = async () => {
+    const url = `${window.location.origin}${window.location.pathname}?reg=${encodeURIComponent(student.registration_number)}`;
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(url);
       } else {
-        ch1Status = 'accepted';
+        const textArea = document.createElement('textarea');
+        textArea.value = url;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
       }
-    } else if (student.status === 'Tidak Diterima') {
-      ch1Status = 'rejected';
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch (err) {
+      console.error('Failed to copy link:', err);
     }
-  }
+  };
 
-  const hasChoice2 = Boolean(ch2Major);
-  const ch2Quota = ch2Major?.quota || 36;
-  const ch2Rank = selRes?.choice2_rank || null;
-  let ch2Status: 'accepted' | 'rejected' | 'not_applicable' | 'pending' = 
-    selRes?.choice2_status || (hasChoice2 ? 'pending' : 'not_applicable');
+  // DEFAULT_MAJORS is used as a fallback map for the mock/offline environment
+  // where major_choices[].major may not be pre-joined.
+  const defaultMajorMap = new Map(DEFAULT_MAJORS.map((m) => [m.id, m]));
 
-  if (!selRes?.choice2_status && hasChoice2) {
-    if (ch1Status === 'accepted') {
-      ch2Status = 'not_applicable';
-    } else if (student.status === 'Diterima' && selRes?.final_accepted_from_priority === 2) {
-      ch2Status = 'accepted';
-    } else if (student.status === 'Tidak Diterima') {
-      ch2Status = 'rejected';
-    }
-  }
+  const {
+    ch1Major,
+    ch2Major,
+    hasChoice2,
+    ch1Rank,
+    ch1Quota,
+    ch1Status,
+    ch2Rank,
+    ch2Quota,
+    ch2Status,
+    isAcceptedChoice1,
+    isAcceptedChoice2,
+  } = resolveChoiceStatuses(student, defaultMajorMap);
 
-  const isAcceptedChoice1 = student.status === 'Diterima' && (
-    selRes?.final_accepted_from_priority === 1 || 
-    (!selRes?.final_accepted_from_priority && ch1Status === 'accepted')
-  );
-
-  const isAcceptedChoice2 = student.status === 'Diterima' && (
-    selRes?.final_accepted_from_priority === 2 || 
-    ch2Status === 'accepted'
-  );
 
   return (
     <Card className="border-slate-200 dark:border-slate-800 overflow-hidden shadow-lg bg-white dark:bg-slate-950">
       {/* HEADER: NOMOR PENDAFTARAN & NAMA SISWA */}
       <div className="bg-slate-900 p-6 sm:p-8 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <span className="text-xs text-teal-400 font-mono tracking-wider block mb-1">
-            NOMOR PENDAFTARAN: {student.registration_number}
-          </span>
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
+            <span className="text-xs text-teal-400 font-mono tracking-wider">
+              NOMOR PENDAFTARAN: {student.registration_number}
+            </span>
+            <button
+              type="button"
+              onClick={handleCopyLink}
+              className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 transition-colors cursor-pointer"
+              title="Salin tautan langsung hasil cek status ini"
+            >
+              {copied ? (
+                <>
+                  <Check className="h-3 w-3 text-emerald-400" />
+                  <span className="text-emerald-300 font-medium">Tersalin!</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="h-3 w-3" />
+                  <span>Salin Tautan</span>
+                </>
+              )}
+            </button>
+          </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white">{student.full_name}</h2>
           <p className="text-xs sm:text-sm text-slate-300 mt-1 flex items-center gap-2">
             <SchoolIcon className="h-4 w-4 text-teal-400" />
@@ -294,7 +309,7 @@ export const StatusResultCard: React.FC<Props> = ({ student, onResetSearch }) =>
                   </div>
 
                   <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between">
-                    <span className="text-[11px] text-slate-500">Status Pilihan 1:</span>
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400">Status Pilihan 1:</span>
                     {ch1Status === 'accepted' ? (
                       <Badge className="bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold gap-1">
                         <Check className="h-3 w-3 inline" />
@@ -329,14 +344,14 @@ export const StatusResultCard: React.FC<Props> = ({ student, onResetSearch }) =>
                       </span>
                     </div>
                     {ch2Major && (
-                      <Badge variant="outline" className="font-mono text-[10px]">
+                      <Badge variant="outline" className="font-mono text-[10px] dark:border-slate-700 dark:text-slate-300">
                         {ch2Major.code}
                       </Badge>
                     )}
                   </div>
 
                   {!hasChoice2 ? (
-                    <div className="py-3 text-center text-xs text-slate-400 italic">
+                    <div className="py-3 text-center text-xs text-slate-400 dark:text-slate-500 italic">
                       — Siswa tidak memilih jurusan alternatif
                     </div>
                   ) : ch1Status === 'accepted' ? (
@@ -359,7 +374,7 @@ export const StatusResultCard: React.FC<Props> = ({ student, onResetSearch }) =>
                       </div>
 
                       <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between">
-                        <span className="text-[11px] text-slate-500">Status Pilihan 2:</span>
+                        <span className="text-[11px] text-slate-500 dark:text-slate-400">Status Pilihan 2:</span>
                         {ch2Status === 'accepted' ? (
                           <Badge className="bg-indigo-100 text-indigo-800 border-indigo-300 dark:bg-indigo-950 dark:text-indigo-300 text-[10px] font-bold gap-1">
                             <Check className="h-3 w-3 inline" />
@@ -396,17 +411,38 @@ export const StatusResultCard: React.FC<Props> = ({ student, onResetSearch }) =>
         <div className="pt-2 print:hidden flex flex-col sm:flex-row gap-3">
           <Link to={`/kartu-peserta/${student.registration_number}`} className="flex-1">
             <Button
-              className="w-full bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold h-11 gap-2 shadow-xs rounded-xl"
+              className="w-full bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold h-11 gap-2 shadow-xs rounded-xl cursor-pointer"
             >
               <Printer className="h-4 w-4" />
               <span>Kartu Peserta Resmi (PDF & QR)</span>
             </Button>
           </Link>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleCopyLink}
+            className={`text-xs font-semibold h-11 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-700 dark:text-slate-200 rounded-xl px-4 gap-2 transition-colors cursor-pointer ${
+              copied ? 'text-emerald-600 dark:text-emerald-400 border-emerald-400 dark:border-emerald-600 bg-emerald-50 dark:bg-emerald-950/40' : ''
+            }`}
+            title="Salin tautan hasil pengecekan status ini"
+          >
+            {copied ? (
+              <>
+                <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                <span>Tautan Disalin!</span>
+              </>
+            ) : (
+              <>
+                <Share2 className="h-4 w-4" />
+                <span>Salin Tautan</span>
+              </>
+            )}
+          </Button>
           {onResetSearch && (
             <Button
               variant="outline"
               onClick={onResetSearch}
-              className="text-xs font-semibold h-11 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-xl px-5"
+              className="text-xs font-semibold h-11 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-700 dark:text-slate-200 rounded-xl px-5 cursor-pointer"
             >
               Cek Nomor Lain
             </Button>

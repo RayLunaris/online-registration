@@ -15,12 +15,13 @@ import { RegistrationCardPDF } from '@/components/registration/RegistrationCardP
 import { exportElementToPdf } from '@/lib/pdfGenerator';
 import { studentService } from '@/services/studentService';
 import { schoolService } from '@/services/schoolService';
-import { StudentCompleteDetail, School, Major } from '@/types/spmb';
+import { StudentCompleteDetail, Major } from '@/types/spmb';
+import { useSchool } from '@/context/SchoolContext';
 
 export const RegistrationCardPage: React.FC = () => {
   const { regNumber } = useParams<{ regNumber: string }>();
+  const { school } = useSchool();
   const [student, setStudent] = useState<StudentCompleteDetail | null>(null);
-  const [school, setSchool] = useState<School | null>(null);
   const [majors, setMajors] = useState<Major[]>([]);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
@@ -34,9 +35,8 @@ export const RegistrationCardPage: React.FC = () => {
       setErrorMsg(null);
 
       try {
-        const [studentData, schoolData, majorsData] = await Promise.all([
+        const [studentData, majorsData] = await Promise.all([
           studentService.getStudentByRegistrationNumber(regNumber),
-          schoolService.getSchoolProfile(),
           schoolService.getMajors(),
         ]);
 
@@ -45,7 +45,6 @@ export const RegistrationCardPage: React.FC = () => {
         } else {
           setStudent(studentData);
         }
-        setSchool(schoolData);
         setMajors(majorsData);
       } catch (err: any) {
         setErrorMsg(err.message || 'Gagal memuat kartu pendaftaran.');
@@ -73,10 +72,10 @@ export const RegistrationCardPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 py-16 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 py-16 flex items-center justify-center transition-colors duration-200">
         <div className="text-center space-y-3">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-teal-600 border-t-transparent mx-auto" />
-          <p className="text-sm text-slate-600 font-medium">Memuat kartu pendaftaran...</p>
+          <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">Memuat kartu pendaftaran...</p>
         </div>
       </div>
     );
@@ -84,16 +83,16 @@ export const RegistrationCardPage: React.FC = () => {
 
   if (errorMsg || !student) {
     return (
-      <div className="min-h-screen bg-slate-50 py-16">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 py-16 transition-colors duration-200">
         <div className="container mx-auto px-4 max-w-md text-center space-y-4">
-          <div className="h-14 w-14 bg-red-100 rounded-full flex items-center justify-center text-red-600 mx-auto">
+          <div className="h-14 w-14 bg-red-100 dark:bg-red-950/60 rounded-full flex items-center justify-center text-red-600 dark:text-red-400 mx-auto">
             <AlertCircle className="h-8 w-8" />
           </div>
-          <h2 className="text-xl font-bold text-slate-900">Kartu Tidak Ditemukan</h2>
-          <p className="text-xs text-slate-600">{errorMsg}</p>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Kartu Tidak Ditemukan</h2>
+          <p className="text-xs text-slate-600 dark:text-slate-400">{errorMsg}</p>
           <div className="pt-2 flex justify-center gap-2">
             <Link to="/cek-status">
-              <Button size="sm" variant="outline" className="text-xs gap-1.5">
+              <Button size="sm" variant="outline" className="text-xs gap-1.5 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800">
                 <Search className="h-3.5 w-3.5" />
                 Cek Status Lain
               </Button>
@@ -110,13 +109,13 @@ export const RegistrationCardPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100/70 py-10">
+    <div className="min-h-screen bg-slate-100/70 dark:bg-slate-900 text-slate-900 dark:text-slate-100 py-10 transition-colors duration-200">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl space-y-6">
         {/* Top Navigation & Action Buttons */}
         <div className="flex flex-wrap items-center justify-between gap-4 print:hidden">
           <Link
             to={`/cek-status?reg=${student.registration_number}`}
-            className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-teal-600 gap-1.5 transition-colors"
+            className="inline-flex items-center text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 gap-1.5 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Kembali ke Status Pendaftaran
@@ -128,12 +127,12 @@ export const RegistrationCardPage: React.FC = () => {
               variant="outline"
               size="sm"
               onClick={handleCopyLink}
-              className="text-xs h-9 gap-1.5 bg-white border-slate-200 hover:bg-slate-50"
+              className="text-xs h-9 gap-1.5 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 cursor-pointer"
             >
               {copied ? (
                 <>
-                  <Check className="h-3.5 w-3.5 text-emerald-600" />
-                  <span className="text-emerald-600 font-semibold">Tersalin!</span>
+                  <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Tersalin!</span>
                 </>
               ) : (
                 <>
@@ -148,7 +147,7 @@ export const RegistrationCardPage: React.FC = () => {
               variant="outline"
               size="sm"
               onClick={() => window.print()}
-              className="text-xs h-9 gap-1.5 bg-white border-slate-200 hover:bg-slate-50"
+              className="text-xs h-9 gap-1.5 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 cursor-pointer"
             >
               <Printer className="h-3.5 w-3.5" />
               <span>Cetak</span>
@@ -159,7 +158,7 @@ export const RegistrationCardPage: React.FC = () => {
               size="sm"
               disabled={exporting}
               onClick={handleDownloadPDF}
-              className="bg-teal-600 hover:bg-teal-700 text-white text-xs h-9 gap-1.5 font-semibold shadow-xs"
+              className="bg-teal-600 hover:bg-teal-700 text-white text-xs h-9 gap-1.5 font-semibold shadow-xs cursor-pointer"
             >
               {exporting ? (
                 <>

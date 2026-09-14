@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { 
   Building2, 
@@ -59,20 +60,24 @@ function formatIndonesianDateTime(isoString?: string | null): string {
 }
 
 export const AdminSettingsPage: React.FC = () => {
+  const navigate = useNavigate();
   const [settings, setSettings] = useState<Partial<School>>({});
+  const [initialSettings, setInitialSettings] = useState<Partial<School>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [isUploadingLogo, setIsUploadingLogo] = useState(false);
   const [logoInputMode, setLogoInputMode] = useState<'upload' | 'url'>('upload');
-  const logoFileInputRef = React.useRef<HTMLInputElement>(null);
+  const logoFileInputRef = useRef<HTMLInputElement>(null);
+  const bypassBlockerRef = useRef(false);
 
   const loadSettings = async () => {
     setLoading(true);
     try {
       const data = await adminService.getSchoolSettings();
       setSettings(data);
+      setInitialSettings(data);
     } catch (err) {
       console.error('Error loading school settings:', err);
     } finally {
@@ -84,6 +89,214 @@ export const AdminSettingsPage: React.FC = () => {
     loadSettings();
   }, []);
 
+  // Determine if form has unsaved modifications
+  const isDirty = useMemo(() => {
+    if (loading || !initialSettings || Object.keys(initialSettings).length === 0) {
+      return false;
+    }
+    const normalize = (s: Partial<School>) => ({
+      name: s.name ?? '',
+      npsn: s.npsn ?? '',
+      academic_year: s.academic_year ?? '',
+      target_students: Number(s.target_students ?? 0),
+      logo_url: s.logo_url ?? '',
+      address: s.address ?? '',
+      phone: s.phone ?? '',
+      email: s.email ?? '',
+      hero_tagline: s.hero_tagline ?? '',
+      hero_description: s.hero_description ?? '',
+      show_public_leaderboard: Boolean(s.show_public_leaderboard),
+      registration_status: s.registration_status ?? 'open',
+      registration_close_date: s.registration_close_date
+        ? new Date(s.registration_close_date).getTime()
+        : null,
+    });
+
+    return JSON.stringify(normalize(settings)) !== JSON.stringify(normalize(initialSettings));
+  }, [settings, initialSettings, loading]);
+
+  // 1. Browser unload / refresh / close tab warning
+  useEffect(() => {
+    if (!isDirty) return;
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (bypassBlockerRef.current) return;
+      e.preventDefault();
+      e.returnValue = '';
+      return '';
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isDirty]);
+
+  // 2. In-app navigation blocking (Sidebar links, Header links, Logout)
+  useEffect(() => {
+    if (!isDirty) return;
+
+    const handleClickCapture = async (e: MouseEvent) => {
+      if (bypassBlockerRef.current) return;
+
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+
+      const anchor = target.closest('a');
+      const button = target.closest('button');
+
+      if (anchor) {
+        const href = anchor.getAttribute('href');
+        if (!href || href === '#' || href.startsWith('javascript:')) return;
+        if (anchor.target === '_blank') return;
+
+        try {
+          const targetUrl = new URL(anchor.href, window.location.origin);
+          if (
+            targetUrl.origin === window.location.origin &&
+            targetUrl.pathname === window.location.pathname &&
+            targetUrl.search === window.location.search
+          ) {
+            return;
+          }
+
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+
+          const result = await Swal.fire({
+            title: 'Perubahan Belum Disimpan!',
+            text: 'Ada perubahan pengaturan yang belum disimpan. Yakin ingin meninggalkan halaman ini? Perubahan Anda akan hilang.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'Ya, Tinggalkan',
+            cancelButtonText: 'Tetap di Halaman',
+            reverseButtons: true,
+          });
+
+          if (result.isConfirmed) {
+            bypassBlockerRef.current = true;
+            if (targetUrl.origin === window.location.origin) {
+              navigate(targetUrl.pathname + targetUrl.search + targetUrl.hash);
+            } else {
+              window.location.href = anchor.href;
+            }
+          }
+        } catch {
+          // Ignore URL parse error
+        }
+        return;
+      }
+
+      if (button) {
+        const text = button.textContent?.toLowerCase() || '';
+        const isLogout = text.includes('keluar sesi') || text.includes('logout');
+        if (isLogout) {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+
+          const result = await Swal.fire({
+            title: 'Perubahan Belum Disimpan!',
+            text: 'Ada perubahan pengaturan yang belum disimpan. Yakin ingin keluar sesi? Perubahan Anda akan hilang.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'Ya, Tetap Keluar',
+            cancelButtonText: 'Batal',
+            reverseButtons: true,
+          });
+
+          if (result.isConfirmed) {
+            bypassBlockerRef.current = true;
+            button.click();
+          }
+        }
+      }
+    };
+
+    window.addEventListener('click', handleClickCapture, true);
+    return () => {
+      window.removeEventListener('click', handleClickCapture, true);
+    };
+  }, [isDirty, navigate]);
+
+  // 3. Browser Back/Forward buttons interception
+  useEffect(() => {
+    if (!isDirty) return;
+
+    window.history.pushState({ unsavedChangesBlocker: true }, '', window.location.href);
+
+    const handlePopState = async () => {
+      if (bypassBlockerRef.current) return;
+
+      window.history.pushState({ unsavedChangesBlocker: true }, '', window.location.href);
+
+      const result = await Swal.fire({
+        title: 'Perubahan Belum Disimpan!',
+        text: 'Ada perubahan pengaturan yang belum disimpan. Yakin ingin meninggalkan halaman ini? Perubahan Anda akan hilang.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Ya, Tinggalkan',
+        cancelButtonText: 'Tetap di Halaman',
+        reverseButtons: true,
+      });
+
+      if (result.isConfirmed) {
+        bypassBlockerRef.current = true;
+        window.history.back();
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [isDirty]);
+
+  const handleResetForm = async () => {
+    if (!isDirty) return;
+    const result = await Swal.fire({
+      title: 'Batalkan Perubahan?',
+      text: 'Semua perubahan yang belum disimpan akan dikembalikan ke data awal.',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#64748b',
+      cancelButtonColor: '#0d9488',
+      confirmButtonText: 'Ya, Batalkan Perubahan',
+      cancelButtonText: 'Lanjutkan Mengedit',
+      reverseButtons: true,
+    });
+    if (result.isConfirmed) {
+      setSettings({ ...initialSettings });
+      setSuccessMsg('Perubahan berhasil dibatalkan dan dikembalikan ke data awal.');
+      setTimeout(() => setSuccessMsg(''), 3000);
+    }
+  };
+
+  const handleHeaderReset = async () => {
+    if (isDirty) {
+      const result = await Swal.fire({
+        title: 'Muat Ulang Pengaturan?',
+        text: 'Perubahan yang belum disimpan akan hilang jika data dimuat ulang dari server.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Ya, Muat Ulang',
+        cancelButtonText: 'Batal',
+        reverseButtons: true,
+      });
+      if (!result.isConfirmed) return;
+    }
+    loadSettings();
+  };
+
   const isManualClosed = settings.registration_status === 'closed';
   const isDateExpired = Boolean(
     settings.registration_close_date && 
@@ -94,58 +307,105 @@ export const AdminSettingsPage: React.FC = () => {
 
   const handleToggleClick = async () => {
     if (!isEffectiveOpen) {
-      // Currently effectively closed (by manual OR by date) -> reopen registration
-      // If closed by expired date, clear the date so manual override takes effect
-      const newCloseDate = isDateExpired ? null : settings.registration_close_date;
-      const updated = {
-        ...settings,
-        registration_status: 'open' as const,
-        registration_close_date: newCloseDate
-      };
-      setSettings(updated);
-      try {
-        await adminService.updateRegistrationStatus('open', newCloseDate);
-        window.dispatchEvent(new CustomEvent('school_settings_updated'));
-        setSuccessMsg('Pendaftaran berhasil DIBUKA kembali untuk publik.');
-        setTimeout(() => setSuccessMsg(''), 4000);
-      } catch (err: any) {
-        setErrorMsg(err.message || 'Gagal mengubah status pendaftaran.');
+      // Currently effectively closed (by manual OR by date) -> ask confirmation before reopening
+      const result = await Swal.fire({
+        title: 'Konfirmasi Buka Pendaftaran',
+        text: isDateExpired
+          ? 'Pendaftaran akan dibuka kembali untuk publik dan jadwal tutup otomatis yang telah lewat akan direset. Lanjutkan?'
+          : 'Pendaftaran akan dibuka kembali untuk publik. Calon siswa dapat mengisi formulir pendaftaran. Lanjutkan?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#0d9488',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Ya, Buka Pendaftaran',
+        cancelButtonText: 'Batal',
+      });
+
+      if (result.isConfirmed) {
+        // If closed by expired date, clear the date so manual override takes effect
+        const newCloseDate = isDateExpired ? null : settings.registration_close_date;
+        const updated = {
+          ...settings,
+          registration_status: 'open' as const,
+          registration_close_date: newCloseDate,
+        };
+        setSettings(updated);
+        try {
+          const res = await adminService.updateRegistrationStatus('open', newCloseDate);
+          if (res.success) {
+            setInitialSettings(prev => ({ ...prev, ...updated }));
+            window.dispatchEvent(new CustomEvent('school_settings_updated'));
+            setSuccessMsg('Pendaftaran berhasil DIBUKA kembali untuk publik.');
+            setTimeout(() => setSuccessMsg(''), 4000);
+            Swal.fire({
+              title: 'Pendaftaran Dibuka',
+              text: 'Status pendaftaran berhasil diubah menjadi AKTIF untuk publik.',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false,
+            });
+          } else {
+            setErrorMsg(res.error || 'Gagal mengubah status pendaftaran.');
+            Swal.fire('Gagal', res.error || 'Gagal mengubah status pendaftaran', 'error');
+          }
+        } catch (err: any) {
+          setErrorMsg(err.message || 'Gagal mengubah status pendaftaran.');
+          Swal.fire('Error', err.message || 'Terjadi kesalahan sistem', 'error');
+        }
       }
     } else {
       // Currently effectively open -> ask confirmation before closing
       const result = await Swal.fire({
         title: 'Konfirmasi Tutup Pendaftaran',
-        text: 'Pendaftaran akan langsung ditutup untuk publik. Lanjutkan?',
+        text: 'Pendaftaran akan langsung ditutup untuk publik. Calon siswa tidak dapat mengisi formulir pendaftaran baru. Lanjutkan?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#dc2626',
         cancelButtonColor: '#64748b',
         confirmButtonText: 'Ya, Tutup Pendaftaran',
-        cancelButtonText: 'Batal'
+        cancelButtonText: 'Batal',
       });
 
       if (result.isConfirmed) {
+        const newCloseDate = isDateExpired ? null : settings.registration_close_date;
         const updated = {
           ...settings,
-          registration_status: 'closed' as const
+          registration_status: 'closed' as const,
+          registration_close_date: newCloseDate,
         };
         setSettings(updated);
         try {
-          await adminService.updateRegistrationStatus('closed', settings.registration_close_date);
-          window.dispatchEvent(new CustomEvent('school_settings_updated'));
-          setSuccessMsg('Pendaftaran berhasil DITUTUP untuk publik.');
-          setTimeout(() => setSuccessMsg(''), 4000);
+          const res = await adminService.updateRegistrationStatus('closed', newCloseDate);
+          if (res.success) {
+            setInitialSettings(prev => ({ ...prev, ...updated }));
+            window.dispatchEvent(new CustomEvent('school_settings_updated'));
+            setSuccessMsg('Pendaftaran berhasil DITUTUP untuk publik.');
+            setTimeout(() => setSuccessMsg(''), 4000);
+            Swal.fire({
+              title: 'Pendaftaran Ditutup',
+              text: 'Status pendaftaran berhasil diubah menjadi DITUTUP untuk publik.',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false,
+            });
+          } else {
+            setErrorMsg(res.error || 'Gagal mengubah status pendaftaran.');
+            Swal.fire('Gagal', res.error || 'Gagal mengubah status pendaftaran', 'error');
+          }
         } catch (err: any) {
           setErrorMsg(err.message || 'Gagal mengubah status pendaftaran.');
+          Swal.fire('Error', err.message || 'Terjadi kesalahan sistem', 'error');
         }
       }
     }
   };
 
   const handleClearCloseDate = async () => {
-    setSettings(prev => ({ ...prev, registration_close_date: null }));
+    const updated = { ...settings, registration_close_date: null };
+    setSettings(updated);
     try {
       await adminService.updateSchoolSettings({ registration_close_date: null });
+      setInitialSettings(prev => ({ ...prev, registration_close_date: null }));
       window.dispatchEvent(new CustomEvent('school_settings_updated'));
       setSuccessMsg('Jadwal tutup otomatis berhasil dihapus.');
       setTimeout(() => setSuccessMsg(''), 3000);
@@ -182,7 +442,8 @@ export const AdminSettingsPage: React.FC = () => {
       const { data, error } = await uploadStorageFile('school-assets', fileName, file);
 
       if (error || !data?.publicUrl) {
-        // Fallback to Base64 data URL for offline or mock environment
+        // Fallback: read as Base64 data URL (offline / mock env).
+        // The URL only lives in local state until the user clicks "Simpan Perubahan".
         const reader = new FileReader();
         reader.onloadend = () => {
           const base64Url = reader.result as string;
@@ -193,25 +454,41 @@ export const AdminSettingsPage: React.FC = () => {
         };
         reader.readAsDataURL(file);
       } else {
-        setSettings(prev => ({ ...prev, logo_url: data.publicUrl }));
-        setSuccessMsg('Logo sekolah berhasil diunggah ke storage! Klik "Simpan Perubahan" untuk menerapkan.');
-        setTimeout(() => setSuccessMsg(''), 4000);
-        setIsUploadingLogo(false);
+        // File is already persisted in Supabase storage — auto-save the URL to the DB
+        // immediately so the pointer is never lost even if the admin navigates away
+        // without clicking "Simpan Perubahan".
+        const publicUrl = data.publicUrl;
+        setSettings(prev => ({ ...prev, logo_url: publicUrl }));
+
+        const saveRes = await adminService.updateSchoolSettings({ logo_url: publicUrl });
+        if (saveRes.success) {
+          setInitialSettings(prev => ({ ...prev, logo_url: publicUrl }));
+          window.dispatchEvent(new CustomEvent('school_settings_updated'));
+          setSuccessMsg('Logo sekolah berhasil diunggah dan disimpan otomatis!');
+        } else {
+          // Storage upload succeeded but DB update failed — keep local state dirty so
+          // the unsaved-changes blocker still fires on navigation.
+          setSuccessMsg('Logo diunggah ke storage. Klik "Simpan Perubahan" untuk menerapkan ke profil sekolah.');
+        }
+        setTimeout(() => setSuccessMsg(''), 5000);
       }
     } catch (err: any) {
       console.error('Error uploading logo:', err);
-      // Fallback to FileReader
+      // Fallback to FileReader on any unexpected error
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64Url = reader.result as string;
         setSettings(prev => ({ ...prev, logo_url: base64Url }));
-        setSuccessMsg('Logo sekolah berhasil dipilih.');
+        setSuccessMsg('Logo sekolah berhasil dipilih. Klik "Simpan Perubahan" untuk menerapkan.');
         setTimeout(() => setSuccessMsg(''), 4000);
         setIsUploadingLogo(false);
       };
       reader.readAsDataURL(file);
     } finally {
+      // Always reset the file input and spinner (for the synchronous success path;
+      // FileReader paths reset isUploadingLogo inside their own onloadend callbacks).
       if (logoFileInputRef.current) logoFileInputRef.current.value = '';
+      setIsUploadingLogo(false);
     }
   };
 
@@ -230,6 +507,7 @@ export const AdminSettingsPage: React.FC = () => {
     try {
       const res = await adminService.updateSchoolSettings(settings);
       if (res.success) {
+        setInitialSettings({ ...settings });
         setSuccessMsg('Pengaturan profil sekolah dan konfigurasi SPMB berhasil diperbarui!');
         window.dispatchEvent(new CustomEvent('school_settings_updated'));
         setTimeout(() => setSuccessMsg(''), 4000);
@@ -253,13 +531,21 @@ export const AdminSettingsPage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className={`space-y-6 max-w-4xl ${isDirty ? 'pb-24' : ''}`}>
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            Pengaturan & Konfigurasi Sekolah
-          </h1>
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              Pengaturan & Konfigurasi Sekolah
+            </h1>
+            {isDirty && (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-950/80 border border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-300 font-semibold text-[11px] animate-pulse shadow-2xs">
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+                Belum Disimpan
+              </span>
+            )}
+          </div>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Atur identitas resmi sekolah, tahun pelajaran aktif, kontak sekretariat, dan teks landing page.
           </p>
@@ -267,7 +553,7 @@ export const AdminSettingsPage: React.FC = () => {
         <Button
           size="sm"
           variant="outline"
-          onClick={loadSettings}
+          onClick={handleHeaderReset}
           className="text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 gap-1.5 shadow-2xs"
         >
           <RefreshCw className="h-3.5 w-3.5" />
@@ -343,7 +629,7 @@ export const AdminSettingsPage: React.FC = () => {
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <span className="font-bold text-sm text-slate-900 dark:text-white">
-                    {isEffectiveOpen ? 'Buka Pendaftaran' : 'Tutup Pendaftaran'}
+                    {isEffectiveOpen ? 'Pendaftaran Terbuka (Aktif)' : 'Pendaftaran Ditutup'}
                   </span>
                   <span className={`text-[10px] px-2 py-0.5 rounded-md font-semibold ${
                     settings.registration_status === 'closed' 
@@ -356,8 +642,8 @@ export const AdminSettingsPage: React.FC = () => {
                 <p className="text-slate-500 dark:text-slate-400 text-xs">
                   {!isEffectiveOpen
                     ? (isClosedByDate 
-                        ? 'Pendaftaran tertutup otomatis karena tanggal tutup telah lewat. Aktifkan toggle untuk membuka kembali.'
-                        : 'Pendaftaran sedang ditutup manual oleh admin. Calon siswa baru tidak dapat mengisi formulir.')
+                        ? 'Pendaftaran tertutup otomatis karena jadwal tutup telah lewat. Klik toggle switch untuk membuka kembali.'
+                        : 'Pendaftaran sedang ditutup manual oleh panitia. Calon siswa baru tidak dapat mengisi formulir.')
                     : 'Pendaftaran aktif menerima berkas pendaftaran calon siswa baru.'}
                 </p>
               </div>
@@ -780,6 +1066,60 @@ export const AdminSettingsPage: React.FC = () => {
           </Button>
         </div>
       </form>
+
+      {/* STICKY BOTTOM UNSAVED CHANGES BANNER */}
+      {isDirty && (
+        <div className="fixed bottom-4 left-4 right-4 md:left-72 md:right-8 z-40 animate-in fade-in slide-in-from-bottom-5 duration-300">
+          <div className="bg-slate-900/95 dark:bg-slate-950/95 text-white p-3.5 sm:p-4 rounded-2xl shadow-2xl border border-amber-500/40 backdrop-blur-md flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <div className="h-9 w-9 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+                <AlertTriangle className="h-5 w-5 animate-pulse" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-xs sm:text-sm text-white">Ada Perubahan Belum Disimpan</span>
+                  <span className="h-2 w-2 rounded-full bg-amber-400 animate-ping inline-block" />
+                </div>
+                <p className="text-[11px] text-slate-300">
+                  Pengaturan profil sekolah belum disimpan ke database.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleResetForm}
+                className="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700 hover:text-white h-9 px-3.5 gap-1.5"
+              >
+                <RotateCcw className="h-3.5 w-3.5" />
+                <span>Batalkan</span>
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                disabled={saving}
+                onClick={(e) => handleSave(e as any)}
+                className="text-xs bg-teal-600 hover:bg-teal-700 text-white font-semibold h-9 px-5 gap-1.5 shadow-md shadow-teal-600/30"
+              >
+                {saving ? (
+                  <>
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    <span>Menyimpan...</span>
+                  </>
+                ) : (
+                  <>
+                    <Save className="h-3.5 w-3.5" />
+                    <span>Simpan Perubahan</span>
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

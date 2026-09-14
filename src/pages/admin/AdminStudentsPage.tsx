@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Search, 
@@ -11,7 +11,9 @@ import {
   RefreshCw, 
   X,
   FileSpreadsheet, 
-  Download 
+  Download,
+  ChevronDown,
+  RotateCcw
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -45,7 +47,7 @@ export const AdminStudentsPage: React.FC = () => {
   const [studentToDelete, setStudentToDelete] = useState<StudentCompleteDetail | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setLoading(true);
     try {
       const [studentsData, majorsData] = await Promise.all([
@@ -63,11 +65,11 @@ export const AdminStudentsPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedStatus, selectedMajorId, searchQuery]);
 
   useEffect(() => {
     loadData();
-  }, [selectedStatus, selectedMajorId, searchQuery]);
+  }, [loadData]);
 
   const handleOpenDetail = (student: StudentCompleteDetail) => {
     setSelectedStudent(student);
@@ -134,28 +136,29 @@ export const AdminStudentsPage: React.FC = () => {
             Kelola verifikasi berkas nilai rapor, prestasi, dan status kelulusan seleksi siswa (Pilihan 1 & Pilihan 2).
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
+        {/* Responsive Actions: 2x2 grid on phone, inline on tablet/desktop */}
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 w-full sm:w-auto">
           <Button
             size="sm"
             variant="outline"
             onClick={() => exportStudentsToExcel(students)}
-            className="text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 gap-1.5 font-semibold shadow-2xs"
+            className="min-h-[42px] sm:min-h-[36px] h-11 sm:h-9 text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 gap-1.5 font-semibold shadow-2xs justify-center cursor-pointer active:scale-98 transition-transform"
           >
-            <FileSpreadsheet className="h-3.5 w-3.5" />
-            <span>Ekspor Excel (.xlsx)</span>
+            <FileSpreadsheet className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
+            <span>Ekspor Excel</span>
           </Button>
           <Button
             size="sm"
             variant="outline"
             onClick={() => exportStudentsToCSV(students)}
-            className="text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-slate-800 gap-1.5 font-semibold shadow-2xs"
+            className="min-h-[42px] sm:min-h-[36px] h-11 sm:h-9 text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-slate-800 gap-1.5 font-semibold shadow-2xs justify-center cursor-pointer active:scale-98 transition-transform"
           >
-            <Download className="h-3.5 w-3.5" />
+            <Download className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
             <span>Ekspor CSV</span>
           </Button>
-          <Link to="/admin/seleksi">
-            <Button size="sm" className="bg-purple-600 hover:bg-purple-700 text-white text-xs gap-1.5 font-semibold shadow-xs">
-              <Award className="h-3.5 w-3.5" />
+          <Link to="/admin/seleksi" className="w-full sm:w-auto">
+            <Button size="sm" className="w-full min-h-[42px] sm:min-h-[36px] h-11 sm:h-9 bg-purple-600 hover:bg-purple-700 text-white text-xs gap-1.5 font-semibold shadow-xs justify-center cursor-pointer active:scale-98 transition-transform">
+              <Award className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
               <span>Scoring Seleksi</span>
             </Button>
           </Link>
@@ -163,69 +166,123 @@ export const AdminStudentsPage: React.FC = () => {
             size="sm"
             variant="outline"
             onClick={loadData}
-            className="text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 gap-1.5 shadow-2xs"
+            className="min-h-[42px] sm:min-h-[36px] h-11 sm:h-9 text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 gap-1.5 shadow-2xs justify-center cursor-pointer active:scale-98 transition-transform"
           >
-            <RefreshCw className="h-3.5 w-3.5" />
+            <RefreshCw className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
             <span>Refresh</span>
           </Button>
         </div>
       </div>
 
-      {/* FILTER & SEARCH CARD */}
+      {/* FILTER & SEARCH CARD (Mobile Optimized) */}
       <Card className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 shadow-xs">
-        <CardContent className="p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-          {/* Live Search Input */}
-          <div className="relative flex-1">
-            <label htmlFor="student-search-input" className="sr-only">Cari Nama, No. Reg, atau SMP</label>
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400 pointer-events-none" />
-            <Input
-              id="student-search-input"
-              name="studentSearch"
-              placeholder="Cari Nama / No. Reg / SMP..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              aria-label="Cari Nama, Nomor Registrasi, atau SMP"
-              className="pl-9 h-9 text-xs bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 focus-visible:ring-teal-500"
-            />
+        <CardContent className="p-3.5 sm:p-4 space-y-3">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5">
+            {/* Live Search Input with Clear Button */}
+            <div className="relative flex-1">
+              <label htmlFor="student-search-input" className="sr-only">Cari Nama, No. Reg, atau SMP</label>
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+              <Input
+                id="student-search-input"
+                name="studentSearch"
+                placeholder="Cari Nama / No. Reg / SMP..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                aria-label="Cari Nama, Nomor Registrasi, atau SMP"
+                className="pl-10 pr-9 min-h-[44px] sm:min-h-[38px] h-11 sm:h-9.5 text-sm sm:text-xs bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 focus-visible:ring-teal-500 rounded-xl"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-md cursor-pointer"
+                  aria-label="Hapus kata kunci pencarian"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+
+            {/* Status & Major Filters in a responsive grid on mobile */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:flex items-center gap-2 w-full md:w-auto">
+              {/* Filter Status */}
+              <div className="relative w-full md:w-48">
+                <label htmlFor="filter-status-select" className="sr-only">Filter Status Pendaftaran</label>
+                <select
+                  id="filter-status-select"
+                  name="statusFilter"
+                  value={selectedStatus}
+                  onChange={(e) => setSelectedStatus(e.target.value)}
+                  aria-label="Filter Status Pendaftaran"
+                  className="w-full min-h-[44px] sm:min-h-[38px] h-11 sm:h-9.5 pl-3 pr-8 text-xs font-medium rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-teal-500 appearance-none cursor-pointer"
+                >
+                  <option value="Semua">Semua Status</option>
+                  <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
+                  <option value="Terverifikasi">Terverifikasi</option>
+                  <option value="Diterima">Diterima</option>
+                  <option value="Tidak Diterima">Tidak Diterima</option>
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+              </div>
+
+              {/* Filter Jurusan */}
+              <div className="relative w-full md:w-56">
+                <label htmlFor="filter-major-select" className="sr-only">Filter Pilihan Jurusan</label>
+                <select
+                  id="filter-major-select"
+                  name="majorFilter"
+                  value={selectedMajorId}
+                  onChange={(e) => setSelectedMajorId(e.target.value)}
+                  aria-label="Filter Pilihan Jurusan"
+                  className="w-full min-h-[44px] sm:min-h-[38px] h-11 sm:h-9.5 pl-3 pr-8 text-xs font-medium rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-teal-500 appearance-none cursor-pointer"
+                >
+                  <option value="Semua">Semua Jurusan Pilihan 1</option>
+                  {majors.map((m) => (
+                    <option key={m.id} value={m.id}>
+                      {m.code} - {m.name}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+              </div>
+            </div>
           </div>
 
-          {/* Status & Major Filters */}
-          <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
-            {/* Filter Status */}
-            <label htmlFor="filter-status-select" className="sr-only">Filter Status Pendaftaran</label>
-            <select
-              id="filter-status-select"
-              name="statusFilter"
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
-              aria-label="Filter Status Pendaftaran"
-              className="h-9 px-3 text-xs rounded-md bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 focus:ring-1 focus:ring-teal-500"
-            >
-              <option value="Semua">Semua Status</option>
-              <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
-              <option value="Terverifikasi">Terverifikasi</option>
-              <option value="Diterima">Diterima</option>
-              <option value="Tidak Diterima">Tidak Diterima</option>
-            </select>
-
-            {/* Filter Jurusan */}
-            <label htmlFor="filter-major-select" className="sr-only">Filter Pilihan Jurusan</label>
-            <select
-              id="filter-major-select"
-              name="majorFilter"
-              value={selectedMajorId}
-              onChange={(e) => setSelectedMajorId(e.target.value)}
-              aria-label="Filter Pilihan Jurusan"
-              className="h-9 px-3 text-xs rounded-md bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 focus:ring-1 focus:ring-teal-500"
-            >
-              <option value="Semua">Semua Jurusan Pilihan 1</option>
-              {majors.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {m.code} - {m.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          {/* Active filter summary & Quick Reset button */}
+          {(selectedStatus !== 'Semua' || selectedMajorId !== 'Semua' || searchQuery) && (
+            <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 dark:border-slate-800/80 text-xs">
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span className="text-slate-400 text-[11px]">Filter Aktif:</span>
+                {searchQuery && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-teal-50 dark:bg-teal-950/80 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-800 text-[11px] font-medium">
+                    Cari: "{searchQuery}"
+                  </span>
+                )}
+                {selectedStatus !== 'Semua' && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-[11px] font-medium">
+                    Status: {selectedStatus}
+                  </span>
+                )}
+                {selectedMajorId !== 'Semua' && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-[11px] font-medium">
+                    Jurusan: {majors.find((m) => m.id === selectedMajorId)?.code || selectedMajorId}
+                  </span>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedStatus('Semua');
+                  setSelectedMajorId('Semua');
+                  setSearchQuery('');
+                }}
+                className="text-xs text-teal-600 hover:text-teal-800 dark:text-teal-400 dark:hover:text-teal-300 flex items-center gap-1 font-semibold py-1 px-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer min-h-[36px]"
+              >
+                <RotateCcw className="h-3 w-3" />
+                <span>Reset Filter</span>
+              </button>
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -306,30 +363,33 @@ export const AdminStudentsPage: React.FC = () => {
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="space-y-1">
-                    <label htmlFor="student-status-select" className="text-[10px] text-slate-500 dark:text-slate-400 cursor-pointer">Status Seleksi</label>
-                    <select
-                      id="student-status-select"
-                      name="editingStatus"
-                      value={editingStatus}
-                      onChange={(e) => setEditingStatus(e.target.value as StudentStatus)}
-                      className="w-full h-9 px-2.5 text-xs rounded bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white"
-                    >
-                      <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
-                      <option value="Terverifikasi">Terverifikasi</option>
-                      <option value="Diterima">Diterima (Lulus)</option>
-                      <option value="Tidak Diterima">Tidak Diterima</option>
-                    </select>
+                    <label htmlFor="student-status-select" className="text-xs sm:text-[10px] text-slate-500 dark:text-slate-400 font-medium cursor-pointer">Status Seleksi</label>
+                    <div className="relative">
+                      <select
+                        id="student-status-select"
+                        name="editingStatus"
+                        value={editingStatus}
+                        onChange={(e) => setEditingStatus(e.target.value as StudentStatus)}
+                        className="w-full min-h-[44px] sm:min-h-[38px] h-11 sm:h-9.5 pl-3 pr-8 text-xs font-medium rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white appearance-none cursor-pointer"
+                      >
+                        <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
+                        <option value="Terverifikasi">Terverifikasi</option>
+                        <option value="Diterima">Diterima (Lulus)</option>
+                        <option value="Tidak Diterima">Tidak Diterima</option>
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                    </div>
                   </div>
 
                   <div className="sm:col-span-2 space-y-1">
-                    <label htmlFor="student-notes-input" className="text-[10px] text-slate-500 dark:text-slate-400 cursor-pointer">Catatan Panitia (Opsional)</label>
+                    <label htmlFor="student-notes-input" className="text-xs sm:text-[10px] text-slate-500 dark:text-slate-400 font-medium cursor-pointer">Catatan Panitia (Opsional)</label>
                     <Input
                       id="student-notes-input"
                       name="editingNotes"
                       placeholder="Catatan verifikasi berkas atau instruksi daftar ulang"
                       value={editingNotes}
                       onChange={(e) => setEditingNotes(e.target.value)}
-                      className="h-9 text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white"
+                      className="min-h-[44px] sm:min-h-[38px] h-11 sm:h-9.5 text-xs bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white rounded-xl"
                     />
                   </div>
                 </div>
@@ -339,9 +399,9 @@ export const AdminStudentsPage: React.FC = () => {
                     size="sm"
                     disabled={savingStatus}
                     onClick={handleSaveStatus}
-                    className="bg-teal-600 hover:bg-teal-700 text-white text-xs h-8 px-4 gap-1.5 font-semibold"
+                    className="w-full sm:w-auto min-h-[44px] sm:min-h-[36px] h-11 sm:h-9 bg-teal-600 hover:bg-teal-700 text-white text-xs px-5 gap-1.5 font-semibold rounded-xl cursor-pointer active:scale-98 transition-transform"
                   >
-                    <CheckCircle2 className="h-3.5 w-3.5" />
+                    <CheckCircle2 className="h-4 w-4 sm:h-3.5 sm:w-3.5" />
                     <span>{savingStatus ? 'Menyimpan...' : 'Simpan Status'}</span>
                   </Button>
                 </div>

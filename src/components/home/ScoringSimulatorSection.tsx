@@ -12,19 +12,19 @@ export const ScoringSimulatorSection: React.FC = () => {
   const calculatedTotal = (calcRapor * 0.7) + (calcPrestasi * 0.3);
 
   return (
-    <section id="simulasi" className="py-14 sm:py-20 bg-white border-b border-slate-200/70 relative scroll-mt-16">
+    <section id="simulasi" className="py-14 sm:py-20 bg-white dark:bg-slate-900 border-b border-slate-200/70 dark:border-slate-800/70 relative scroll-mt-16 transition-colors">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1440px] space-y-10">
         
         {/* Header */}
         <div className="max-w-3xl space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-200/70 text-[#0D9488] text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 dark:bg-teal-950/60 border border-teal-200/70 dark:border-teal-800/60 text-[#0D9488] dark:text-teal-400 text-xs font-bold uppercase tracking-wider">
             <Calculator className="h-3.5 w-3.5" />
             <span>{t('simulator.tag')}</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             {t('simulator.title')}
           </h2>
-          <p className="text-xs sm:text-sm text-slate-600">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
             {t('simulator.desc')}
           </p>
         </div>
@@ -35,33 +35,33 @@ export const ScoringSimulatorSection: React.FC = () => {
           <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4">
             
             {/* Box 1: 70% Rapor */}
-            <div className="p-6 rounded-3xl bg-[#FAFAF9] border border-slate-200/90 space-y-3 shadow-xs">
-              <div className="h-10 w-10 rounded-2xl bg-teal-100 text-[#0D9488] flex items-center justify-center font-bold text-sm font-mono">
+            <div className="p-6 rounded-3xl bg-[#FAFAF9] dark:bg-slate-950 border border-slate-200/90 dark:border-slate-800 space-y-3 shadow-xs">
+              <div className="h-10 w-10 rounded-2xl bg-teal-100 dark:bg-teal-950/80 text-[#0D9488] dark:text-teal-400 flex items-center justify-center font-bold text-sm font-mono">
                 70%
               </div>
               <div>
-                <h3 className="text-xs font-bold text-slate-900">{t('simulator.boxRaporTitle')}</h3>
-                <p className="text-[11px] text-slate-600 leading-relaxed mt-1">
+                <h3 className="text-xs font-bold text-slate-900 dark:text-white">{t('simulator.boxRaporTitle')}</h3>
+                <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed mt-1">
                   {t('simulator.boxRaporDesc')}
                 </p>
               </div>
             </div>
 
             {/* Box 2: 30% Prestasi */}
-            <div className="p-6 rounded-3xl bg-[#FAFAF9] border border-slate-200/90 space-y-3 shadow-xs">
-              <div className="h-10 w-10 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-sm font-mono">
+            <div className="p-6 rounded-3xl bg-[#FAFAF9] dark:bg-slate-950 border border-slate-200/90 dark:border-slate-800 space-y-3 shadow-xs">
+              <div className="h-10 w-10 rounded-2xl bg-orange-100 dark:bg-orange-950/80 text-orange-600 dark:text-orange-400 flex items-center justify-center font-bold text-sm font-mono">
                 30%
               </div>
               <div>
-                <h3 className="text-xs font-bold text-slate-900">{t('simulator.boxPrestasiTitle')}</h3>
-                <p className="text-[11px] text-slate-600 leading-relaxed mt-1">
+                <h3 className="text-xs font-bold text-slate-900 dark:text-white">{t('simulator.boxPrestasiTitle')}</h3>
+                <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed mt-1">
                   {t('simulator.boxPrestasiDesc')}
                 </p>
               </div>
             </div>
 
             {/* Box 3: Total Skor */}
-            <div className="p-6 rounded-3xl bg-[#0D9488] text-white space-y-3 shadow-md">
+            <div className="p-6 rounded-3xl bg-[#0D9488] dark:bg-teal-800 text-white space-y-3 shadow-md">
               <div className="h-10 w-10 rounded-2xl bg-white/20 text-white flex items-center justify-center font-bold text-sm font-mono">
                 100%
               </div>
@@ -76,10 +76,10 @@ export const ScoringSimulatorSection: React.FC = () => {
           </div>
 
           {/* Right: Interactive Simulator Box (5 cols) */}
-          <div className="lg:col-span-5 bg-[#111827] text-white rounded-3xl p-6 sm:p-7 shadow-xl border border-slate-800 space-y-5">
+          <div className="lg:col-span-5 bg-[#111827] dark:bg-slate-950 text-white rounded-3xl p-6 sm:p-7 shadow-xl border border-slate-800 space-y-5">
             <div className="border-b border-slate-800 pb-3 flex items-center justify-between">
               <div>
-                <span className="text-[11px] font-mono text-[#0D9488] font-bold uppercase tracking-wider block">
+                <span className="text-[11px] font-mono text-[#0D9488] dark:text-teal-400 font-bold uppercase tracking-wider block">
                   {t('simulator.tag')}
                 </span>
                 <h3 className="text-sm font-bold text-white mt-0.5">{t('simulator.simCardTitle')}</h3>
@@ -93,7 +93,7 @@ export const ScoringSimulatorSection: React.FC = () => {
                 <label htmlFor="simulator-rapor-range" className="text-slate-300 font-medium cursor-pointer">
                   {t('simulator.labelRapor')}
                 </label>
-                <span className="font-mono font-bold text-[#0D9488] text-sm">{calcRapor.toFixed(1)}</span>
+                <span className="font-mono font-bold text-[#0D9488] dark:text-teal-400 text-sm">{calcRapor.toFixed(1)}</span>
               </div>
               <input 
                 id="simulator-rapor-range"
@@ -105,7 +105,7 @@ export const ScoringSimulatorSection: React.FC = () => {
                 value={calcRapor}
                 onChange={(e) => setCalcRapor(parseFloat(e.target.value))}
                 aria-label={t('simulator.labelRapor')}
-                className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#0D9488]"
+                className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#0D9488] dark:accent-teal-400"
               />
               <div className="flex justify-between text-[10px] text-slate-500 font-mono">
                 <span>60.0</span>
@@ -125,7 +125,7 @@ export const ScoringSimulatorSection: React.FC = () => {
                 value={calcPrestasi}
                 onChange={(e) => setCalcPrestasi(parseInt(e.target.value))}
                 aria-label={t('simulator.labelPrestasi')}
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#0D9488] font-mono"
+                className="w-full bg-slate-800 dark:bg-slate-900 border border-slate-700 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#0D9488] dark:focus:border-teal-400 font-mono"
               >
                 <option value={0}>{t('simulator.prestasiNone')}</option>
                 <option value={40}>{t('simulator.prestasiCity')}</option>
@@ -136,15 +136,15 @@ export const ScoringSimulatorSection: React.FC = () => {
             </div>
 
             {/* Result Box */}
-            <div className="p-4 bg-slate-800/90 rounded-2xl border border-slate-700 flex items-center justify-between gap-4">
+            <div className="p-4 bg-slate-800/90 dark:bg-slate-900/90 rounded-2xl border border-slate-700 dark:border-slate-800 flex items-center justify-between gap-4">
               <div>
                 <span className="text-[11px] text-slate-400 block">{t('simulator.resultLabel')}</span>
-                <span className="text-2xl sm:text-3xl font-black text-[#0D9488] font-mono">
+                <span className="text-2xl sm:text-3xl font-black text-[#0D9488] dark:text-teal-400 font-mono">
                   {calculatedTotal.toFixed(2)}
                 </span>
               </div>
               <Link to="/daftar">
-                <Button size="sm" className="bg-[#0D9488] hover:bg-teal-700 text-white text-xs font-bold rounded-full px-5 h-10 shadow-xs">
+                <Button size="sm" className="bg-[#0D9488] hover:bg-teal-700 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-xs font-bold rounded-full px-5 h-10 shadow-xs">
                   {t('hero.btnRegister')}
                 </Button>
               </Link>

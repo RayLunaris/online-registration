@@ -9,7 +9,7 @@ export const FeatureCardsSection: React.FC = () => {
   const features = [
     {
       icon: FileEdit,
-      iconBg: 'bg-teal-50 text-[#0D9488] border border-teal-100',
+      iconBg: 'bg-teal-50 text-[#0D9488] border border-teal-100 dark:bg-teal-950/50 dark:text-teal-400 dark:border-teal-800/60',
       title: t('features.f1Title'),
       description: t('features.f1Desc'),
       link: '/daftar',
@@ -17,7 +17,7 @@ export const FeatureCardsSection: React.FC = () => {
     },
     {
       icon: Award,
-      iconBg: 'bg-amber-50 text-amber-600 border border-amber-100',
+      iconBg: 'bg-amber-50 text-amber-600 border border-amber-100 dark:bg-amber-950/50 dark:text-amber-400 dark:border-amber-800/60',
       title: t('features.f2Title'),
       description: t('features.f2Desc'),
       link: '#alur',
@@ -25,7 +25,7 @@ export const FeatureCardsSection: React.FC = () => {
     },
     {
       icon: FileCheck2,
-      iconBg: 'bg-emerald-50 text-emerald-600 border border-emerald-100',
+      iconBg: 'bg-emerald-50 text-emerald-600 border border-emerald-100 dark:bg-emerald-950/50 dark:text-emerald-400 dark:border-emerald-800/60',
       title: t('features.f3Title'),
       description: t('features.f3Desc'),
       link: '/cek-status',
@@ -34,19 +34,19 @@ export const FeatureCardsSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-12 sm:py-16 bg-[#FAFAF9] border-b border-slate-200/70 relative">
+    <section className="py-12 sm:py-16 bg-[#FAFAF9] dark:bg-slate-950 border-b border-slate-200/70 dark:border-slate-800/70 relative transition-colors">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1440px] space-y-10">
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto space-y-2.5">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-200/70 text-[#0D9488] text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 dark:bg-teal-950/60 border border-teal-200/70 dark:border-teal-800/60 text-[#0D9488] dark:text-teal-400 text-xs font-bold uppercase tracking-wider">
             <Sparkles className="h-3.5 w-3.5" />
             <span>{t('features.tag')}</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
             {t('features.title')}
           </h2>
-          <p className="text-xs sm:text-sm text-slate-600">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
             {t('features.desc')}
           </p>
         </div>
@@ -58,7 +58,7 @@ export const FeatureCardsSection: React.FC = () => {
             return (
               <div
                 key={idx}
-                className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/80 shadow-2xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between space-y-5 group"
+                className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200/80 dark:border-slate-800 shadow-2xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between space-y-5 group"
               >
                 <div className="space-y-3.5">
                   <div className={`h-12 w-12 rounded-2xl ${feat.iconBg} flex items-center justify-center shadow-2xs group-hover:scale-110 transition-transform duration-300`}>
@@ -66,19 +66,19 @@ export const FeatureCardsSection: React.FC = () => {
                   </div>
 
                   <div className="space-y-1.5">
-                    <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-[#0D9488] transition-colors">
+                    <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white group-hover:text-[#0D9488] dark:group-hover:text-teal-400 transition-colors">
                       {feat.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-normal">
                       {feat.description}
                     </p>
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-slate-100 flex items-center">
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center">
                   <Link
                     to={feat.link.startsWith('#') ? `/${feat.link}` : feat.link}
-                    className="text-xs font-bold text-[#0D9488] hover:text-teal-800 flex items-center gap-1 group-hover:gap-1.5 transition-all"
+                    className="text-xs font-bold text-[#0D9488] dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300 flex items-center gap-1 group-hover:gap-1.5 transition-all"
                   >
                     <span>{feat.linkText}</span>
                     <ArrowRight className="h-3.5 w-3.5" />

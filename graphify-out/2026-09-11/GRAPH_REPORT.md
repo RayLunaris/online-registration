@@ -1,72 +1,79 @@
-# Graph Report - Pendaftaran  (2026-09-10)
+# Graph Report - Pendaftaran  (2026-09-11)
 
 ## Corpus Check
-- 111 files · ~185,609 words
+- 112 files · ~186,768 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 634 nodes · 1403 edges · 35 communities (31 shown, 4 thin omitted)
+- 638 nodes · 1425 edges · 42 communities (36 shown, 6 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `8bdf7769`
+- Built from commit: `979f3d88`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- utils.ts
+- RegistrationPage.tsx
 - App.tsx
 - cn
-- button.tsx
+- HomePage.tsx
 - Sistem Penerimaan Murid Baru (SPMB)
 - dependencies
 - devDependencies
 - compilerOptions
 - Appendix B - Canonical Sources (read these before reinventing)
 - Major
+- registrationSchema.ts
 - spmb.ts
-- adminService.ts
-- 7. DIAL DEFINITIONS (Technical Reference)
+- AdminStudentDetailPage.tsx
 - 🎓 SPMB Online — Sistem Penerimaan Murid Baru Terpadu
 - components.json
+- School
 - 4. DESIGN ENGINEERING DIRECTIVES (Bias Correction)
 - 10. REFERENCE VOCABULARY (Pattern Names the Agent Should Know)
 - tasteskill: Anti-Slop Frontend Skill
 - compilerOptions
+- Footer.tsx
 - 9. AI TELLS (Forbidden Patterns)
 - 11. REDESIGN PROTOCOL
 - 3. DEFAULT ARCHITECTURE & CONVENTIONS
 - 6. PERFORMANCE & ACCESSIBILITY GUARDRAILS
+- AdminLayout.tsx
 - 0. BRIEF INFERENCE (Read the Room Before Anything Else)
 - 12. THE BLOCK LIBRARY (Contract - Implementations Land Here Iteratively)
 - 5. CONTEXT-AWARE PROACTIVITY
 - 8. DARK MODE PROTOCOL
+- 7. DIAL DEFINITIONS (Technical Reference)
 - vite-env.d.ts
 - vercel.json
 - rules/graphify.md
 - workflows/graphify.md
+- ErrorBoundary
+- authConfig.ts
+- AdminSelectionPage.tsx
 
 ## God Nodes (most connected - your core abstractions)
 1. `cn()` - 64 edges
 2. `Button` - 39 edges
 3. `Major` - 32 edges
 4. `useLanguage()` - 29 edges
-5. `StudentCompleteDetail` - 20 edges
-6. `formatDate()` - 19 edges
-7. `School` - 19 edges
+5. `School` - 21 edges
+6. `StudentCompleteDetail` - 20 edges
+7. `formatDate()` - 19 edges
 8. `isSupabaseConfigured()` - 18 edges
 9. `formatScore()` - 18 edges
 10. `compilerOptions` - 18 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Props` --references--> `StudentCompleteDetail`  [EXTRACTED]
-  src/components/common/StatusResultCard.tsx → src/types/spmb.ts
-- `AdminLayout()` --calls--> `useAuth()`  [EXTRACTED]
-  src/components/admin/AdminLayout.tsx → src/context/AuthContext.tsx
+- `HeroSectionProps` --references--> `School`  [EXTRACTED]
+  src/components/home/HeroSection.tsx → src/types/spmb.ts
+- `AdminLayout()` --calls--> `useTheme()`  [EXTRACTED]
+  src/components/admin/AdminLayout.tsx → src/context/ThemeContext.tsx
+- `AdminSecretLoginModal()` --calls--> `isSupabaseConfigured()`  [EXTRACTED]
+  src/components/admin/AdminSecretLoginModal.tsx → src/lib/supabase.ts
 - `Props` --references--> `Major`  [EXTRACTED]
-  src/components/admin/StudentDetail/MajorChoicesTab.tsx → src/types/spmb.ts
-- `Props` --references--> `StudentCompleteDetail`  [EXTRACTED]
   src/components/admin/StudentDetail/MajorChoicesTab.tsx → src/types/spmb.ts
 - `Props` --references--> `Major`  [EXTRACTED]
   src/components/admin/StudentTable.tsx → src/types/spmb.ts
@@ -74,23 +81,23 @@
 ## Import Cycles
 - None detected.
 
-## Communities (35 total, 4 thin omitted)
+## Communities (42 total, 6 thin omitted)
 
-### Community 0 - "utils.ts"
-Cohesion: 0.10
-Nodes (44): AdminSecretLoginModalProps, SelectionPanel(), Props, StudentTable(), Props, StatusResultCard(), Alert, AlertDescription (+36 more)
+### Community 0 - "RegistrationPage.tsx"
+Cohesion: 0.15
+Nodes (31): AdminSecretLoginModalProps, StatusResultCard(), Alert, AlertDescription, AlertTitle, alertVariants, Badge(), BadgeProps (+23 more)
 
 ### Community 1 - "App.tsx"
-Cohesion: 0.06
-Nodes (24): AdminAnnouncementsPage, AdminMajorsPage, AdminSelectionPage, AdminSettingsPage, AdminSourceSchoolsPage, AdminStudentsPage, AnnouncementDetailPage, AnnouncementListPage (+16 more)
+Cohesion: 0.10
+Nodes (16): AdminAnnouncementsPage, AdminDashboardPage, AdminMajorsPage, AdminSettingsPage, AdminSourceSchoolsPage, AdminStudentsPage, AnnouncementDetailPage, AnnouncementListPage (+8 more)
 
 ### Community 2 - "cn"
-Cohesion: 0.07
-Nodes (40): AdminStudentDetailPage, MajorChoicesTab(), Props, CardFooter, DialogFooter(), DropdownMenu(), DropdownMenuItem(), DropdownMenuProps (+32 more)
+Cohesion: 0.08
+Nodes (33): CardFooter, DialogDescription(), DialogFooter(), DialogHeader(), DialogProps, DialogTitle(), DropdownMenu(), DropdownMenuItem() (+25 more)
 
-### Community 3 - "button.tsx"
-Cohesion: 0.10
-Nodes (32): AdminLayout(), Props, State, FAQSection(), Footer(), Navbar(), AboutSection(), AdmissionRequirementsSection() (+24 more)
+### Community 3 - "HomePage.tsx"
+Cohesion: 0.11
+Nodes (26): FAQSection(), AboutSection(), AdmissionRequirementsSection(), AdmissionScheduleSection(), AnnouncementsSection(), AnnouncementsSectionProps, FeatureBand(), HIGHLIGHTS_EN (+18 more)
 
 ### Community 4 - "Sistem Penerimaan Murid Baru (SPMB)"
 Cohesion: 0.05
@@ -116,17 +123,17 @@ Nodes (21): APPENDICES - Real Source-Backed Reference Material, Appendix A - Ins
 Cohesion: 0.20
 Nodes (14): MajorsSectionProps, RankingSection(), LeaderboardTable(), LeaderboardTableProps, MajorTabs(), MajorTabsProps, SearchMyRank(), SearchMyRankProps (+6 more)
 
-### Community 10 - "spmb.ts"
-Cohesion: 0.06
-Nodes (49): RegistrationPage, AboutSectionProps, HeroSectionProps, Props, RegistrationCardPDF(), Props, RegistrationSuccessCard(), exportElementToPdf() (+41 more)
+### Community 10 - "registrationSchema.ts"
+Cohesion: 0.13
+Nodes (14): achievementItemSchema, AgreementInput, agreementSchema, DocumentsInput, documentsSchema, MajorChoiceInput, majorChoiceSchema, ParentDataInput (+6 more)
 
-### Community 11 - "adminService.ts"
-Cohesion: 0.09
-Nodes (33): AdminDashboardPage, AdminSecretLoginModal(), ProtectedRoute(), AuthContext, AuthContextType, AuthProvider(), useAuth(), RegistrationStatusResult (+25 more)
+### Community 11 - "spmb.ts"
+Cohesion: 0.07
+Nodes (44): AuthContext, AuthContextType, AuthProvider(), RegistrationStatusResult, AsyncLock, mockStoreLock, getStoragePublicUrl(), isSupabaseConfigured() (+36 more)
 
-### Community 12 - "7. DIAL DEFINITIONS (Technical Reference)"
-Cohesion: 0.50
-Nodes (4): 7. DIAL DEFINITIONS (Technical Reference), DESIGN_VARIANCE (Level 1-10), MOTION_INTENSITY (Level 1-10), VISUAL_DENSITY (Level 1-10)
+### Community 12 - "AdminStudentDetailPage.tsx"
+Cohesion: 0.12
+Nodes (28): AdminStudentDetailPage, SelectionPanel(), MajorChoicesTab(), Props, Props, StudentTable(), Props, Progress (+20 more)
 
 ### Community 13 - "🎓 SPMB Online — Sistem Penerimaan Murid Baru Terpadu"
 Cohesion: 0.11
@@ -135,6 +142,10 @@ Nodes (17): 1. Prasyarat, 2. Clone / Buka Repository, 3. Instalasi Dependensi, 4
 ### Community 14 - "components.json"
 Cohesion: 0.12
 Nodes (16): aliases, components, hooks, lib, ui, utils, rsc, $schema (+8 more)
+
+### Community 15 - "School"
+Cohesion: 0.24
+Nodes (12): RegistrationCardPage, AboutSectionProps, Props, RegistrationCardPDF(), Props, RegistrationSuccessCard(), exportElementToPdf(), PDFExportOptions (+4 more)
 
 ### Community 16 - "4. DESIGN ENGINEERING DIRECTIVES (Bias Correction)"
 Cohesion: 0.17
@@ -152,6 +163,10 @@ Nodes (10): 13. OUT OF SCOPE, 14. FINAL PRE-FLIGHT CHECK, 1.A Dial Inference (de
 Cohesion: 0.20
 Nodes (9): vite.config.ts, compilerOptions, allowSyntheticDefaultImports, composite, module, moduleResolution, skipLibCheck, strict (+1 more)
 
+### Community 20 - "Footer.tsx"
+Cohesion: 0.21
+Nodes (9): Footer(), Navbar(), PublicLayout(), Theme, ThemeContext, ThemeContextType, ThemeProvider(), useTheme() (+1 more)
+
 ### Community 21 - "9. AI TELLS (Forbidden Patterns)"
 Cohesion: 0.25
 Nodes (8): 9.A Visual & CSS, 9. AI TELLS (Forbidden Patterns), 9.B Typography, 9.C Layout & Spacing, 9.D Content & Data ("Jane Doe" Effect), 9.E External Resources & Components, 9.F Production-Test Tells (banned outright), 9.G EM-DASH BAN (the single most-violated Tell)
@@ -167,6 +182,10 @@ Nodes (7): 3.A Stack, 3.B State, 3.C Icons, 3.D Emoji Policy, 3. DEFAULT ARCHITE
 ### Community 24 - "6. PERFORMANCE & ACCESSIBILITY GUARDRAILS"
 Cohesion: 0.29
 Nodes (7): 6.A Hardware Acceleration, 6.B Reduced Motion (mandatory), 6.C Dark Mode (mandatory for any consumer-facing page), 6.D Core Web Vitals Targets, 6.E DOM Cost, 6.F Z-Index Restraint, 6. PERFORMANCE & ACCESSIBILITY GUARDRAILS
+
+### Community 25 - "AdminLayout.tsx"
+Cohesion: 0.39
+Nodes (5): AdminLayout(), AdminSecretLoginModal(), ProtectedRoute(), useAuth(), LoginPage()
 
 ### Community 26 - "0. BRIEF INFERENCE (Read the Room Before Anything Else)"
 Cohesion: 0.40
@@ -184,25 +203,33 @@ Nodes (5): 5.A Sticky-Stack - Canonical Skeleton, 5.B Horizontal-Pan - Canonical
 Cohesion: 0.40
 Nodes (5): 8.A Token Strategy (pick one, stick to it), 8.B Do Not Prescribe Specific Colors Here, 8.C Default Mode, 8.D Test in Both Modes Before Finishing, 8. DARK MODE PROTOCOL
 
+### Community 30 - "7. DIAL DEFINITIONS (Technical Reference)"
+Cohesion: 0.50
+Nodes (4): 7. DIAL DEFINITIONS (Technical Reference), DESIGN_VARIANCE (Level 1-10), MOTION_INTENSITY (Level 1-10), VISUAL_DENSITY (Level 1-10)
+
+### Community 39 - "ErrorBoundary"
+Cohesion: 0.22
+Nodes (3): ErrorBoundary, Props, State
+
 ## Knowledge Gaps
 - **273 isolated node(s):** `$schema`, `style`, `rsc`, `tsx`, `config` (+268 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **6 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `cn()` connect `cn` to `utils.ts`, `Major`, `button.tsx`?**
-  _High betweenness centrality (0.048) - this node is a cross-community bridge._
-- **Why does `tasteskill: Anti-Slop Frontend Skill` connect `tasteskill: Anti-Slop Frontend Skill` to `Appendix B - Canonical Sources (read these before reinventing)`, `7. DIAL DEFINITIONS (Technical Reference)`, `4. DESIGN ENGINEERING DIRECTIVES (Bias Correction)`, `10. REFERENCE VOCABULARY (Pattern Names the Agent Should Know)`, `9. AI TELLS (Forbidden Patterns)`, `11. REDESIGN PROTOCOL`, `3. DEFAULT ARCHITECTURE & CONVENTIONS`, `6. PERFORMANCE & ACCESSIBILITY GUARDRAILS`, `0. BRIEF INFERENCE (Read the Room Before Anything Else)`, `12. THE BLOCK LIBRARY (Contract - Implementations Land Here Iteratively)`, `5. CONTEXT-AWARE PROACTIVITY`, `8. DARK MODE PROTOCOL`?**
+- **Why does `cn()` connect `cn` to `RegistrationPage.tsx`, `Major`, `AdminStudentDetailPage.tsx`?**
+  _High betweenness centrality (0.047) - this node is a cross-community bridge._
+- **Why does `tasteskill: Anti-Slop Frontend Skill` connect `tasteskill: Anti-Slop Frontend Skill` to `Appendix B - Canonical Sources (read these before reinventing)`, `4. DESIGN ENGINEERING DIRECTIVES (Bias Correction)`, `10. REFERENCE VOCABULARY (Pattern Names the Agent Should Know)`, `9. AI TELLS (Forbidden Patterns)`, `11. REDESIGN PROTOCOL`, `3. DEFAULT ARCHITECTURE & CONVENTIONS`, `6. PERFORMANCE & ACCESSIBILITY GUARDRAILS`, `0. BRIEF INFERENCE (Read the Room Before Anything Else)`, `12. THE BLOCK LIBRARY (Contract - Implementations Land Here Iteratively)`, `5. CONTEXT-AWARE PROACTIVITY`, `8. DARK MODE PROTOCOL`, `7. DIAL DEFINITIONS (Technical Reference)`?**
   _High betweenness centrality (0.025) - this node is a cross-community bridge._
-- **Why does `Button` connect `button.tsx` to `utils.ts`, `App.tsx`, `cn`, `Major`, `spmb.ts`, `adminService.ts`?**
+- **Why does `Button` connect `RegistrationPage.tsx` to `App.tsx`, `cn`, `HomePage.tsx`, `ErrorBoundary`, `Major`, `spmb.ts`, `AdminStudentDetailPage.tsx`, `School`, `Footer.tsx`, `AdminLayout.tsx`?**
   _High betweenness centrality (0.016) - this node is a cross-community bridge._
 - **What connects `$schema`, `style`, `rsc` to the rest of the system?**
   _273 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `utils.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.10316066725197541 - nodes in this community are weakly interconnected._
 - **Should `App.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.057692307692307696 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.10476190476190476 - nodes in this community are weakly interconnected._
 - **Should `cn` be split into smaller, more focused modules?**
-  _Cohesion score 0.06857142857142857 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08461538461538462 - nodes in this community are weakly interconnected._
+- **Should `HomePage.tsx` be split into smaller, more focused modules?**
+  _Cohesion score 0.10975609756097561 - nodes in this community are weakly interconnected._

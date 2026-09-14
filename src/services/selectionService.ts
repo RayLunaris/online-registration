@@ -6,6 +6,7 @@ import {
 } from '@/types/spmb';
 import { adminService } from './adminService';
 import { mockStudentStore } from './studentService';
+import { mockStoreLock } from '@/lib/asyncLock';
 
 export interface SelectionSummary {
   totalProcessed: number;
@@ -37,6 +38,7 @@ export interface RankedCandidate {
   finalAcceptedMajor: Major | null;
   finalAcceptedFromPriority: number | null; // 1, 2, or null
   status: StudentStatus; // 'Diterima' | 'Tidak Diterima' | 'Menunggu Verifikasi' | 'Terverifikasi'
+  isManualOverride?: boolean;
 
   // Backward compatibility helpers
   allocatedMajor: Major;
@@ -148,7 +150,7 @@ export const selectionService = {
 
     // 3. TAHAP 2: Ranking siswa Pilihan 2 yang tergeser dari Pilihan 1 (Stage 2 Runoff / Alokasi Sisa Kuota)
     activeMajors.forEach((major) => {
-      const acceptedFromCh1 = ch1AcceptedCounts.get(major.id) || 0;
+      const acceptedFromCh1 = Math.min(major.quota, Math.max(0, ch1AcceptedCounts.get(major.id) || 0));
       const sisaKuota = Math.max(0, major.quota - acceptedFromCh1);
 
       // Siswa yang qualify untuk alokasi sisa kuota (choice1_status = 'rejected')
@@ -183,17 +185,24 @@ export const selectionService = {
     let totalRejected = 0;
 
     const allRankedResults: RankedCandidate[] = evaluatedPool.map((item) => {
+      const isManualOverride = Boolean(item.student.selection_results?.is_manual_override);
       const isAcceptedCh1 = item.choice1Status === 'accepted';
       const isAcceptedCh2 = item.choice2Status === 'accepted';
 
+      // PRD 5.4.2: Jika siswa memiliki flag is_manual_override, pertahankan status manualnya
       let status: StudentStatus = 'Tidak Diterima';
-      if (isAcceptedCh1 || isAcceptedCh2) {
+      if (isManualOverride && item.student.status) {
+        status = item.student.status;
+      } else if (isAcceptedCh1 || isAcceptedCh2) {
         status = 'Diterima';
       }
 
-      if (isAcceptedCh1) totalAcceptedCh1++;
-      else if (isAcceptedCh2) totalAcceptedCh2++;
-      else totalRejected++;
+      if (status === 'Diterima') {
+        if (item.finalAcceptedFromPriority === 2) totalAcceptedCh2++;
+        else totalAcceptedCh1++;
+      } else {
+        totalRejected++;
+      }
 
       const allocatedMajor = item.finalAcceptedMajor || item.ch1Major;
       const choiceOrder = item.finalAcceptedFromPriority || 1;
@@ -214,6 +223,7 @@ export const selectionService = {
         finalAcceptedMajor: item.finalAcceptedMajor,
         finalAcceptedFromPriority: item.finalAcceptedFromPriority,
         status,
+        isManualOverride,
         allocatedMajor,
         choiceOrder,
         isChoice2Allocation: item.finalAcceptedFromPriority === 2,
@@ -223,7 +233,7 @@ export const selectionService = {
     // 5. Susun kelompok per jurusan untuk tab tampilan
     const groups: Record<string, MajorSelectionGroup> = {};
     activeMajors.forEach((m) => {
-      const acceptedFromCh1 = ch1AcceptedCounts.get(m.id) || 0;
+      const acceptedFromCh1 = Math.min(m.quota, Math.max(0, ch1AcceptedCounts.get(m.id) || 0));
       const remainingQuota = Math.max(0, m.quota - acceptedFromCh1);
 
       groups[m.id] = {
@@ -317,7 +327,7 @@ export const selectionService = {
     if (isSupabaseConfigured()) {
       try {
         const { data, error } = await supabase.rpc('run_selection_process');
-        if (error) throw error;
+        if (error || !data) throw error || new Error('Gagal menjalankan proses seleksi');
         
         return {
           success: true,
@@ -360,40 +370,45 @@ export const selectionService = {
     const now = new Date().toISOString();
 
     if (!isSupabaseConfigured()) {
-      candidates.forEach((item) => {
-        const idx = mockStudentStore.findIndex((s) => s.id === item.student.id);
-        if (idx !== -1) {
-          mockStudentStore[idx].status = item.status;
-          mockStudentStore[idx].total_score = item.score;
-          mockStudentStore[idx].updated_at = now;
-          
-          mockStudentStore[idx].selection_results = {
-            id: `sel-${item.student.id}`,
-            student_id: item.student.id,
-            major_id: item.finalAcceptedMajor?.id || null,
-            choice1_major_id: item.choice1Major.id,
-            choice1_rank: item.choice1Rank,
-            choice1_status: item.choice1Status,
-            choice2_major_id: item.choice2Major?.id || null,
-            choice2_rank: item.choice2Rank,
-            choice2_status: item.choice2Status,
-            final_accepted_major_id: item.finalAcceptedMajor?.id || null,
-            final_accepted_from_priority: item.finalAcceptedFromPriority,
-            score: item.score,
-            rank: item.rank,
-            status: item.status as any,
-            published_at: now,
-            notes: item.finalAcceptedFromPriority === 1
-              ? `Lolos Seleksi Pilihan 1 (${item.choice1Major.name})`
-              : item.finalAcceptedFromPriority === 2
-              ? `Lolos Seleksi Pilihan 2 (${item.choice2Major?.name})`
-              : 'Belum memenuhi batas kuota penerimaan pada kedua pilihan',
-            created_at: now,
-            updated_at: now,
-          };
-        }
+      return await mockStoreLock.acquire(async () => {
+        candidates.forEach((item) => {
+          const idx = mockStudentStore.findIndex((s) => s.id === item.student.id);
+          if (idx !== -1) {
+            mockStudentStore[idx] = {
+              ...mockStudentStore[idx],
+              status: item.status,
+              total_score: item.score,
+              updated_at: now,
+              selection_results: {
+                id: `sel-${item.student.id}`,
+                student_id: item.student.id,
+                major_id: item.finalAcceptedMajor?.id || null,
+                choice1_major_id: item.choice1Major.id,
+                choice1_rank: item.choice1Rank,
+                choice1_status: item.choice1Status,
+                choice2_major_id: item.choice2Major?.id || null,
+                choice2_rank: item.choice2Rank,
+                choice2_status: item.choice2Status,
+                final_accepted_major_id: item.finalAcceptedMajor?.id || null,
+                final_accepted_from_priority: item.finalAcceptedFromPriority,
+                score: item.score,
+                rank: item.rank,
+                status: item.status as any,
+                is_manual_override: item.isManualOverride ?? Boolean(item.student.selection_results?.is_manual_override),
+                published_at: now,
+                notes: item.finalAcceptedFromPriority === 1
+                  ? `Lolos Seleksi Pilihan 1 (${item.choice1Major.name})`
+                  : item.finalAcceptedFromPriority === 2
+                  ? `Lolos Seleksi Pilihan 2 (${item.choice2Major?.name})`
+                  : 'Belum memenuhi batas kuota penerimaan pada kedua pilihan',
+                created_at: now,
+                updated_at: now,
+              },
+            };
+          }
+        });
+        return { success: true };
       });
-      return { success: true };
     }
 
     try {
@@ -431,6 +446,7 @@ export const selectionService = {
               score: item.score,
               rank: item.rank,
               status: item.status as any,
+              is_manual_override: item.isManualOverride ?? Boolean(item.student.selection_results?.is_manual_override),
               notes,
               published_at: now,
               updated_at: now,

@@ -14,22 +14,21 @@ import { FinalCtaBanner } from '@/components/home/FinalCtaBanner';
 import { FAQSection } from '@/components/common/FAQSection';
 import { schoolService } from '@/services/schoolService';
 import { announcementService } from '@/services/announcementService';
-import { School, Major, Announcement } from '@/types/spmb';
+import { Major, Announcement } from '@/types/spmb';
+import { useSchool } from '@/context/SchoolContext';
 
 export const HomePage: React.FC = () => {
-  const [school, setSchool] = useState<School | null>(null);
+  const { school } = useSchool();
   const [majors, setMajors] = useState<Major[]>([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [schoolData, majorsData, announcementsData] = await Promise.all([
-          schoolService.getSchoolProfile(),
+        const [majorsData, announcementsData] = await Promise.all([
           schoolService.getMajors(),
           announcementService.getPublishedAnnouncements(3),
         ]);
-        setSchool(schoolData);
         setMajors(majorsData);
         setAnnouncements(announcementsData);
       } catch (err) {
@@ -42,7 +41,7 @@ export const HomePage: React.FC = () => {
   const totalQuota = majors.reduce((acc, m) => acc + (m.quota || 0), 0) || (school?.target_students || 400);
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FAFAF9] text-slate-900 font-sans selection:bg-[#CCFBF1] selection:text-[#0D9488]">
+    <div className="flex flex-col min-h-screen bg-[#FAFAF9] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-[#CCFBF1] selection:text-[#0D9488] transition-colors">
       {/* 1. HERO SECTION */}
       <HeroSection 
         school={school} 

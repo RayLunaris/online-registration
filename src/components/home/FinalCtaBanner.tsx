@@ -8,10 +8,10 @@ export const FinalCtaBanner: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="py-14 sm:py-20 bg-[#111827] text-white relative overflow-hidden">
+    <section className="py-14 sm:py-20 bg-[#111827] dark:bg-slate-950 text-white relative overflow-hidden border-t border-slate-800 transition-colors">
       {/* Subtle Glows */}
-      <div className="absolute top-0 right-1/4 w-96 h-96 rounded-full bg-[#0D9488]/20 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-96 h-96 rounded-full bg-[#FDBA74]/10 blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-1/4 w-96 h-96 rounded-full bg-[#0D9488]/20 dark:bg-teal-500/10 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 w-96 h-96 rounded-full bg-[#FDBA74]/10 dark:bg-amber-500/10 blur-3xl pointer-events-none" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl text-center space-y-6 relative z-10">
         
@@ -30,14 +30,14 @@ export const FinalCtaBanner: React.FC = () => {
 
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link to="/daftar">
-            <Button className="w-full sm:w-auto h-12 px-8 bg-[#0D9488] hover:bg-teal-700 text-white font-bold text-xs rounded-full shadow-lg gap-2">
+            <Button className="w-full sm:w-auto h-12 px-8 bg-[#0D9488] hover:bg-teal-700 dark:bg-teal-600 dark:hover:bg-teal-500 text-white font-bold text-xs rounded-full shadow-lg gap-2">
               <span>{t('finalCta.btnRegister')}</span>
               <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>
 
           <Link to="/cek-status">
-            <Button className="w-full sm:w-auto h-12 px-7 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-full border border-slate-600 transition-colors shadow-sm">
+            <Button className="w-full sm:w-auto h-12 px-7 bg-slate-800 hover:bg-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 text-white font-bold text-xs rounded-full border border-slate-600 dark:border-slate-700 transition-colors shadow-sm">
               {t('finalCta.btnCheck')}
             </Button>
           </Link>
@@ -45,15 +45,15 @@ export const FinalCtaBanner: React.FC = () => {
 
         <div className="pt-6 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-400 font-medium">
           <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="h-4 w-4 text-[#0D9488]" />
+            <CheckCircle2 className="h-4 w-4 text-[#0D9488] dark:text-teal-400" />
             {t('finalCta.p1')}
           </span>
           <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="h-4 w-4 text-[#0D9488]" />
+            <CheckCircle2 className="h-4 w-4 text-[#0D9488] dark:text-teal-400" />
             {t('finalCta.p2')}
           </span>
           <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="h-4 w-4 text-[#0D9488]" />
+            <CheckCircle2 className="h-4 w-4 text-[#0D9488] dark:text-teal-400" />
             {t('finalCta.p3')}
           </span>
         </div>
